@@ -1,0 +1,228 @@
+import mongoose from "mongoose";
+import User from "../models/User.js";
+import Post from "../models/Post.js";
+import { createError } from "../error.js";
+import Group from "../models/Group.js";
+import Notification from "../models/Notification.js";
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(createError(404, "User does not exist!"));
+
+    if (user._id.toString() !== req.user.id) {
+      return next(createError(401, "You can only update your own profile."));
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true }
+    );
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) return next(createError(404, "User does not exist!"));
+
+    if (user._id.toString() !== req.user.id) {
+      return next(createError(401, "You can only delete your own profile."));
+    }
+
+    await User.findByIdAndDelete(req.params.id);
+    res.status(200).json("User deleted successfully.");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const followGroup = async (req, res, next) => {
+  try {
+    await Group.findByIdAndUpdate(
+      req.params.groupId,
+      {
+        $addToSet: { followedUsers: req.user.id },
+      },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $addToSet: { followedGroups: req.params.groupId },
+      },
+      { new: true }
+    );
+
+    res.status(200).json("Successfully joined group.");
+  } catch (error) {}
+};
+
+export const unfollowGroup = async (req, res, next) => {
+  try {
+    await Group.findByIdAndUpdate(
+      req.params.groupId,
+      {
+        $pull: { followedUsers: req.user.id },
+      },
+      { new: true }
+    );
+
+    await User.findByIdAndUpdate(
+      req.user.id,
+      {
+        $pull: { followedGroups: req.params.groupId },
+      },
+      { new: true }
+    );
+
+    res.status(200).json("Successfully left group.");
+  } catch (error) {}
+};
+
+export const requestGame = async (req, res, next) => {
+  try {
+    const requestedPost = await Post.findById(req.params.postId);
+
+    if (requestedPost.joinable === false)
+      return res.status(403).json("Game is not joinable.");
+
+    if (req.user.id === requestedPost.userId) {
+      return res.status(403).json("You cannot join your own game!");
+    }
+
+    if (requestedPost.pendingUsers.includes(req.user.id)) {
+      return res.status(403).json("You have already requested for this game.");
+    } else {
+      const post = await Post.findByIdAndUpdate(
+        req.params.postId,
+        { $addToSet: { pendingUsers: req.user.id } },
+        { new: true }
+      );
+
+      const notification = new Notification({
+        senderId: req.user.id,
+        receiverId: post.userId,
+        postId: post._id,
+        title: "Reqeust to join game:",
+        message:
+          "Someone has requested to join your game. Click here to view more.",
+      });
+
+      await notification.save();
+
+      res.status(200).json("Request to join have been sent.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const unrequestGame = async (req, res, next) => {
+  try {
+    const post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      { $pull: { pendingUsers: req.user.id } },
+      { new: true }
+    );
+
+    await Notification.findOneAndDelete({
+      senderId: req.user.id,
+      receiverId: post.userId,
+      postId: post._id,
+      title: "Reqeust to join game:",
+      message: `${req.body.username} has requested to join your game. Click here to view more.`,
+    });
+
+    res.status(200).json("Request to join have been cancelled.");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const acceptRequest = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+
+    if (post.isMatched.includes(req.body.requesterId)) {
+      return res.status(403).json("Player is already matched!");
+    }
+
+    if (post.userId !== req.user.id) {
+      return res.status(401).json("You can only accept your games!");
+    }
+
+    if (post.joinable === true) {
+      let updatedPost = await Post.findByIdAndUpdate(
+        req.params.postId,
+        {
+          $pull: { pendingUsers: req.body.requesterId },
+          $addToSet: { isMatched: req.body.requesterId },
+        },
+        { new: true }
+      );
+
+      if (updatedPost.isMatched.length + 1 >= updatedPost.noOfPeople) {
+        updatedPost = await Post.findByIdAndUpdate(
+          req.params.postId,
+          {
+            $set: { joinable: false },
+          },
+          { new: true }
+        );
+      }
+
+      const notification = new Notification({
+        senderId: req.user.id,
+        receiverId: req.body.requesterId,
+        postId: post._id,
+        title: `You have been matched!`,
+        message: `${post.title} is ready for you to play.`,
+      });
+
+      await notification.save();
+
+      res.status(200).json(updatedPost);
+    } else {
+      return res.status(403).json("This game is no longer joinable.");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const declineRequest = async (req, res, next) => {
+  try {
+    const postToDecline = await Post.findById(req.params.postId);
+
+    if (postToDecline.userId !== req.user.id) {
+      return res.status(401).json("You can only decline your games!");
+    }
+
+    const post = await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $pull: { pendingUsers: req.body.requesterId },
+      },
+      { new: true }
+    );
+
+    res.status(200).json(post);
+  } catch (error) {
+    next(error);
+  }
+};
