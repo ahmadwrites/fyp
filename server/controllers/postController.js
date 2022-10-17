@@ -84,6 +84,9 @@ export const getFilteredPosts = async (req, res, next) => {
   const locationFilter = req.query.location;
   const genderFilter = req.query.gender;
 
+  // min.max level, min.max distance, min.max no of people
+  // min.max age, location, gender
+
   try {
     const filteredPosts = await Post.find({
       $and: [
@@ -99,3 +102,6 @@ export const getFilteredPosts = async (req, res, next) => {
     next(error);
   }
 };
+
+// Todo: get following groups posts and filter based on preferences
+// Todo: get following groups posts and filter based on new

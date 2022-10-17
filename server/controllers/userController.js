@@ -226,3 +226,41 @@ export const declineRequest = async (req, res, next) => {
     next(error);
   }
 };
+
+export const completeGame = async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.postId);
+    if (!post) return res.status(400).json("Post does not exist!");
+
+    if (post.userId !== req.user.id)
+      return res.status(401).json("You can only complete your own games.");
+
+    if (post.isCompleted === true)
+      return res.status(403).json("Game is already completed!");
+
+    // TODO*: If game has venue/paid, then cannot comlpete game until bill settled
+
+    const updatedPost = await Post.findByIdAndUpdate(
+      req.params.postId,
+      { $set: { isCompleted: true } },
+      { new: true }
+    );
+
+    const playedUsers = updatedPost.isMatched;
+    for (let i = 0; i < playedUsers.length; i++) {
+      let notification = new Notification({
+        senderId: req.user.id,
+        receiverId: playedUsers[i],
+        postId: updatedPost._id,
+        title: `${updatedPost.title} has been completed.!`,
+        message: `Click here to rate each other.`,
+      });
+
+      await notification.save();
+    }
+
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 
+// min.max level, min.max distance, min.max no of people
+// min.max age, location, gender, date
+
 const PreferenceSchema = new mongoose.Schema(
   {
     userId: {
@@ -13,12 +16,32 @@ const PreferenceSchema = new mongoose.Schema(
       type: Number,
       default: 60,
     },
-    maxLocation: {
+    location: {
+      type: string,
+    },
+    maxDistance: {
       type: Number,
       default: 80,
     },
-    level: {
+    minLevel: {
       type: Number,
+    },
+    maxLevel: {
+      type: Number,
+    },
+    gender: {
+      type: String,
+    },
+    minNoOfPeople: {
+      type: Number,
+      default: 2,
+    },
+    maxNoOfPeople: {
+      type: Number,
+      default: 4,
+    },
+    date: {
+      type: Date,
     },
   },
   { timestamps: true }

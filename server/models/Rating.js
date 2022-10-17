@@ -22,10 +22,14 @@ const RatingSchema = new mongoose.Schema(
     overallRating: {
       type: Number,
       required: true,
+      minimum: 0,
+      maximum: 5,
     },
     level: {
       type: Number,
       required: true,
+      minimum: 0,
+      maximum: 5,
     },
   },
   { timestamps: true }

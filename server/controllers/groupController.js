@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import Group from "../models/Group.js";
+import Post from "../models/Post.js";
 
 export const addGroup = async (req, res, next) => {
   try {
@@ -15,7 +16,7 @@ export const deleteGroup = async (req, res, next) => {
   try {
     const group = await Group.findById(req.params.id);
     if (!group) return res.status(400).json("Group does not exist.");
-    // TODO*: Find all posts related to group and delete
+    await Post.deleteMany({ groupId: req.params.id });
     await Group.findByIdAndDelete(req.params.id);
     res.status(200).json("Group deleted successfully.");
   } catch (error) {

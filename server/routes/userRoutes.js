@@ -9,6 +9,7 @@ import {
   unfollowGroup,
   unrequestGame,
   updateUser,
+  completeGame,
 } from "../controllers/userController.js";
 import { verifyToken } from "../verifyToken.js";
 
@@ -28,5 +29,6 @@ router.post("/request/:postId", verifyToken, requestGame);
 router.post("/unrequest/:postId", verifyToken, unrequestGame);
 router.post("/accept-request/:postId", verifyToken, acceptRequest);
 router.post("/decline-request/:postId", verifyToken, declineRequest);
+router.post("/complete-game/:postId", verifyToken, completeGame);
 
 export default router;
