@@ -8,6 +8,7 @@ import groupRoutes from "./routes/groupRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
+import venueRoutes from "./routes/venueRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -27,6 +28,7 @@ app.use("/api/groups", groupRoutes);
 app.use("/api/posts", postRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/ratings", ratingRoutes);
+app.use("/api/venues", venueRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;

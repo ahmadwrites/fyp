@@ -7,6 +7,7 @@ import {
   getPosts,
   updatePost,
   getFilteredPosts,
+  getFollowingNew,
 } from "../controllers/postController.js";
 import { verifyToken } from "../verifyToken.js";
 const router = express.Router();
@@ -48,6 +49,7 @@ router.post("/", verifyToken, addPost);
 router.put("/:id", verifyToken, updatePost);
 router.delete("/:id", verifyToken, deletePost);
 router.get("/filter", getFilteredPosts);
+router.get("/following", verifyToken, getFollowingNew);
 router.get("/:id", getPost);
 router.get("/", getPosts);
 router.get("/group/:groupId", getGroupPosts);

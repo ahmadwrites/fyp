@@ -51,7 +51,7 @@ const PostSchema = new mongoose.Schema(
     image: {
       type: String,
     },
-    langitude: {
+    latitude: {
       type: Number,
     },
     longitude: {
