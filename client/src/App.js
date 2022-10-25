@@ -6,6 +6,9 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Navbar from "./components/Navbar";
 import { Box } from "@mui/system";
+import Groups from "./pages/Groups";
+import PrivateRoute from "./PrivateRoute";
+import CreateGroup from "./pages/CreateGroup";
 
 function App() {
   return (
@@ -18,6 +21,17 @@ function App() {
               <Route index element={<Home />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route path="groups">
+                <Route index element={<Groups />} />
+                <Route
+                  path="create"
+                  element={
+                    <PrivateRoute>
+                      <CreateGroup />
+                    </PrivateRoute>
+                  }
+                />
+              </Route>
             </Route>
           </Routes>
         </Box>

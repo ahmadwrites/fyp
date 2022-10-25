@@ -45,7 +45,7 @@ const NavUser = () => {
       <Avatar
         sx={{ cursor: "pointer" }}
         onClick={handleClick}
-        src={currentUser?.avatar}
+        src={currentUser.avatar}
       />
       <Menu
         id="basic-menu"

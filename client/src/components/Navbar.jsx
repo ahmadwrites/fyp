@@ -10,24 +10,29 @@ import {
   Grid,
   Button,
   Tooltip,
+  useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import AddIcon from "@mui/icons-material/Add";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
+import CloseIcon from "@mui/icons-material/Close";
 import GridViewIcon from "@mui/icons-material/GridView";
-import React from "react";
+import MapIcon from "@mui/icons-material/Map";
+import React, { useState } from "react";
 import logo from "../images/sportify-icon-square.svg";
 import theme from "../theme";
 import { useSelector } from "react-redux";
 import NavUser from "./NavUser";
 import Notifications from "./Notifications";
+import DrawerMobile from "./DrawerMobile";
 
 const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
-
-  console.log(currentUser);
+  const isMatch = useMediaQuery(theme.breakpoints.down("md"));
+  const [search, setSearch] = useState("");
 
   return (
     <>
@@ -68,16 +73,29 @@ const Navbar = () => {
                   borderRadius: "5px",
                 }}
                 size="small"
-                placeholder="Search Sportify"
+                placeholder="Search"
                 inputProps={{
                   style: {
                     color: "#FFF",
                   },
                 }}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
                       <SearchIcon sx={{ color: "#fff" }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: search !== "" && (
+                    <InputAdornment position="end">
+                      <CloseIcon
+                        onClick={() => setSearch("")}
+                        sx={{
+                          color: "#fff",
+                          cursor: "pointer",
+                        }}
+                      />
                     </InputAdornment>
                   ),
                 }}
@@ -85,75 +103,161 @@ const Navbar = () => {
             </Grid>
 
             <Grid item xs={4}>
-              {currentUser ? (
+              {isMatch ? (
                 <>
-                  <Grid
-                    container
-                    alignItems="center"
-                    sx={{ gap: "1rem" }}
-                    justifyContent="flex-end"
-                  >
-                    <Notifications />
-                    <Tooltip title="Groups">
-                      <Link component={RouterLink} to="/groups">
-                        <GridViewIcon
-                          sx={{
-                            color: "#FFF",
-                            "&:hover": { color: theme.palette.primary.main },
-                            transition: ".3s ease all",
-                          }}
-                        />
-                      </Link>
-                    </Tooltip>
-                    <Tooltip title="Games">
-                      <Link
-                        component={RouterLink}
-                        to={`user/${currentUser._id}/games`}
+                  {currentUser ? (
+                    <>
+                      <Grid
+                        container
+                        alignItems="center"
+                        sx={{ gap: ".5rem" }}
+                        justifyContent="flex-end"
                       >
-                        <VideogameAssetIcon
-                          sx={{
-                            color: "#FFF",
-                            "&:hover": { color: theme.palette.primary.main },
-                            transition: ".3s ease all",
-                          }}
-                        />
-                      </Link>
-                    </Tooltip>
-                    <Button
-                      sx={{ margin: "0 .5rem" }}
-                      variant="contained"
-                      color="primary"
-                    >
-                      <AddIcon />
-                      Create
-                    </Button>
-                    <NavUser />
-                  </Grid>
+                        <Notifications />
+                        <DrawerMobile />
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid
+                        container
+                        sx={{ gap: ".5rem" }}
+                        justifyContent="flex-end"
+                      >
+                        <Button
+                          component={RouterLink}
+                          to="/register"
+                          size="small"
+                          color="white"
+                          variant="outlined"
+                        >
+                          Register
+                        </Button>
+                        <DrawerMobile />
+                      </Grid>
+                    </>
+                  )}
                 </>
               ) : (
                 <>
-                  <Grid
-                    container
-                    sx={{ gap: ".5rem" }}
-                    justifyContent="flex-end"
-                  >
-                    <Button
-                      component={RouterLink}
-                      to="/register"
-                      color="white"
-                      variant="outlined"
-                    >
-                      Register
-                    </Button>
-                    <Button
-                      component={RouterLink}
-                      to="/login"
-                      color="primary"
-                      variant="contained"
-                    >
-                      Login
-                    </Button>
-                  </Grid>
+                  {currentUser ? (
+                    <>
+                      <Grid
+                        container
+                        alignItems="center"
+                        sx={{ gap: "1rem" }}
+                        justifyContent="flex-end"
+                      >
+                        <Notifications />
+                        <Tooltip title="Groups">
+                          <Link component={RouterLink} to="/groups">
+                            <GridViewIcon
+                              sx={{
+                                color: "#FFF",
+                                "&:hover": {
+                                  color: theme.palette.primary.main,
+                                },
+                                transition: ".3s ease all",
+                              }}
+                            />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="Explore">
+                          <Link component={RouterLink} to="explore">
+                            <MapIcon
+                              sx={{
+                                color: "#FFF",
+                                "&:hover": {
+                                  color: theme.palette.primary.main,
+                                },
+                                transition: ".3s ease all",
+                              }}
+                            />
+                          </Link>
+                        </Tooltip>
+                        <Tooltip title="Games">
+                          <Link
+                            component={RouterLink}
+                            to={`user/${currentUser._id}/games`}
+                          >
+                            <VideogameAssetIcon
+                              sx={{
+                                color: "#FFF",
+                                "&:hover": {
+                                  color: theme.palette.primary.main,
+                                },
+                                transition: ".3s ease all",
+                              }}
+                            />
+                          </Link>
+                        </Tooltip>
+                        {/* <Tooltip title="Create Game">
+                          <Link component={RouterLink} to={`Create`}>
+                            <AddIcon
+                              sx={{
+                                color: "#FFF",
+                                "&:hover": {
+                                  color: theme.palette.primary.main,
+                                },
+                                transition: ".3s ease all",
+                              }}
+                            />
+                          </Link>
+                        </Tooltip>
+                        <Button
+                          sx={{ margin: "0 .5rem" }}
+                          variant="contained"
+                          color="primary"
+                          size="small"
+                        >
+                          <AutoAwesomeIcon
+                            fontSize="small"
+                            sx={{ marginRight: ".5rem" }}
+                          />
+                          2 / 3
+                        </Button> */}
+                        <Button
+                          component={RouterLink}
+                          to="/create"
+                          sx={{ margin: "0 .5rem" }}
+                          variant="contained"
+                          color="primary"
+                        >
+                          <AddIcon
+                            fontSize="small"
+                            sx={{ marginRight: ".5rem" }}
+                          />
+                          Create
+                        </Button>
+                        <NavUser />
+                      </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Grid
+                        container
+                        sx={{ gap: ".5rem" }}
+                        justifyContent="flex-end"
+                      >
+                        <Button
+                          component={RouterLink}
+                          to="/register"
+                          color="white"
+                          variant="outlined"
+                        >
+                          Register
+                        </Button>
+                        <Button
+                          component={RouterLink}
+                          to="/login"
+                          color="primary"
+                          variant="contained"
+                        >
+                          Login
+                        </Button>
+                      </Grid>
+                    </>
+                  )}
                 </>
               )}
             </Grid>

@@ -11,14 +11,13 @@ import { Container } from "@mui/system";
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
+import { Link as RouterLink, Navigate } from "react-router-dom";
 import CustomAlert from "../components/CustomAlert";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
   const { currentUser } = useSelector((state) => state.user);
-  const navigate = useNavigate();
   const [userForm, setUserForm] = useState({
     username: "",
     password: "",

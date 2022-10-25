@@ -52,10 +52,16 @@ export const getUser = async (req, res, next) => {
 
 export const followGroup = async (req, res, next) => {
   try {
+    const group = await Group.findById(req.params.groupId);
+    if (group.followedUsers.includes(req.user.id)) {
+      return res.status(403).json("You are already following this group!");
+    }
+
     await Group.findByIdAndUpdate(
       req.params.groupId,
       {
         $addToSet: { followedUsers: req.user.id },
+        $inc: { followers: 1 },
       },
       { new: true }
     );
@@ -74,10 +80,16 @@ export const followGroup = async (req, res, next) => {
 
 export const unfollowGroup = async (req, res, next) => {
   try {
+    const group = await Group.findById(req.params.groupId);
+    if (!group.followedUsers.includes(req.user.id)) {
+      return res.status(403).json("You are not following this group!");
+    }
+
     await Group.findByIdAndUpdate(
       req.params.groupId,
       {
         $pull: { followedUsers: req.user.id },
+        $inc: { followers: -1 },
       },
       { new: true }
     );
@@ -118,9 +130,8 @@ export const requestGame = async (req, res, next) => {
         senderId: req.user.id,
         receiverId: post.userId,
         postId: post._id,
-        title: "Reqeust to join game:",
-        message:
-          "Someone has requested to join your game. Click here to view more.",
+        title: "Player Request!",
+        message: `Someone wants to join ${post.title}`,
       });
 
       await notification.save();
@@ -144,8 +155,8 @@ export const unrequestGame = async (req, res, next) => {
       senderId: req.user.id,
       receiverId: post.userId,
       postId: post._id,
-      title: "Reqeust to join game:",
-      message: `${req.body.username} has requested to join your game. Click here to view more.`,
+      title: "Player Request!",
+      message: `Someone wants to join ${post.title}`,
     });
 
     res.status(200).json("Request to join have been cancelled.");
@@ -190,7 +201,7 @@ export const acceptRequest = async (req, res, next) => {
         senderId: req.user.id,
         receiverId: req.body.requesterId,
         postId: post._id,
-        title: `You have been matched!`,
+        title: `Game Matched!`,
         message: `${post.title} is ready for you to play.`,
       });
 
@@ -252,7 +263,7 @@ export const completeGame = async (req, res, next) => {
         senderId: req.user.id,
         receiverId: playedUsers[i],
         postId: updatedPost._id,
-        title: `${updatedPost.title} has been completed.!`,
+        title: `${updatedPost.title} is completed.!`,
         message: `Click here to rate each other.`,
       });
 

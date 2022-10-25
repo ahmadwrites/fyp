@@ -2,12 +2,12 @@ import mongoose from "mongoose";
 import User from "../models/User.js";
 import Rating from "../models/Rating.js";
 import Post from "../models/Post.js";
+import Notification from "../models/Notification.js";
 
 export const addRating = async (req, res, next) => {
   try {
     const post = await Post.findById(req.body.postId);
-    // Check if rating exists in the postId where the raterId and rateeId is the same
-    // Disallow it
+
     const existingRating = await Rating.findOne({
       postId: req.body.postId,
       raterId: req.user.id,
@@ -27,6 +27,18 @@ export const addRating = async (req, res, next) => {
 
     const rating = new Rating({ raterId: req.user.id, ...req.body });
     await rating.save();
+
+    const notification = new Notification({
+      senderId: req.user.id,
+      receiverId: req.body.rateeId,
+      postId: req.body.postId,
+      title: "You have been rated!",
+      type: "rating",
+      message: `Someone rated you for ${post.title} game.`,
+    });
+
+    await notification.save();
+
     res.status(200).json(rating);
   } catch (error) {
     next(error);

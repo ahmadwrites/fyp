@@ -3,6 +3,7 @@ import Group from "../models/Group.js";
 import Post from "../models/Post.js";
 import Notification from "../models/Notification.js";
 import User from "../models/User.js";
+import Rating from "../models/Rating.js";
 
 export const addPost = async (req, res, next) => {
   try {
@@ -45,6 +46,7 @@ export const deletePost = async (req, res, next) => {
       return res.status(401).json("You can only delete your own post!");
 
     await Notification.deleteMany({ postId: req.params.id });
+    await Rating.deleteMany({ postId: req.params.id });
     await Post.findByIdAndDelete(req.params.id);
     res.status(200).json("Post deleted successfully.");
   } catch (error) {

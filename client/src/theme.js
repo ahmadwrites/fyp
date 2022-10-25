@@ -23,6 +23,9 @@ let theme = createTheme({
     tertiary: {
       main: TERTIARY,
     },
+    gold: {
+      main: "#ffeb3b",
+    },
   },
   components: {
     MuiButton: {

@@ -15,6 +15,10 @@ const NotifcationSchema = mongoose.Schema(
       type: String,
     },
     /* The notifcation title */
+    type: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,

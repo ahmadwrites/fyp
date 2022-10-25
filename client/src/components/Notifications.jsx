@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import { Box } from "@mui/system";
 import { Link as RouterLink } from "react-router-dom";
@@ -6,6 +6,7 @@ import {
   Avatar,
   Badge,
   Button,
+  Divider,
   Grid,
   ListItemIcon,
   ListItemText,
@@ -17,9 +18,13 @@ import {
 } from "@mui/material";
 import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import theme from "../theme";
+import axios from "axios";
 
 const Notifications = () => {
+  const [notifications, setNotifications] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -31,11 +36,39 @@ const Notifications = () => {
     setAnchorEl(null);
   };
 
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const res = await axios.get("/notifications/received?limit=6");
+        setNotifications(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getNotifications();
+
+    const timer = window.setInterval(() => {
+      getNotifications();
+    }, 5000);
+
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, []);
+
   return (
     <Box
       sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
-      <Badge badgeContent={2} color="error">
+      <Badge
+        max={5}
+        badgeContent={
+          notifications.filter((notification) => notification.read !== true)
+            .length
+        }
+        color="error"
+      >
         <NotificationsNoneIcon
           id="demo-positioned-button"
           aria-controls={open ? "demo-positioned-menu" : undefined}
@@ -93,25 +126,64 @@ const Notifications = () => {
               Show All
             </Button>
           </Grid>
+          <Divider />
           <MenuList>
-            <MenuItem>
-              <ListItemIcon sx={{ marginRight: ".5rem" }}>
-                <Avatar
-                  sx={{
-                    height: "2rem",
-                    width: "2rem",
-                    backgroundColor: theme.palette.error.light,
-                  }}
-                >
-                  <WhatshotIcon />
-                </Avatar>
-              </ListItemIcon>
-              <ListItemText
-                primary="Game Matched!"
-                secondary="John has accepted your request."
-              />
-            </MenuItem>
-            <MenuItem>
+            {notifications.length > 0 &&
+              notifications.map((notification) => (
+                <MenuItem key={notification._id}>
+                  <ListItemIcon sx={{ marginRight: ".5rem" }}>
+                    <Avatar
+                      sx={{
+                        height: "2rem",
+                        width: "2rem",
+                        backgroundColor:
+                          notification?.type === "request"
+                            ? theme.palette.tertiary.main
+                            : notification?.type === "match"
+                            ? theme.palette.error.light
+                            : notification?.type === "completed"
+                            ? theme.palette.success.light
+                            : theme.palette.gold.main,
+                      }}
+                    >
+                      {notification?.type === "request" ? (
+                        <EmojiPeopleIcon />
+                      ) : notification?.type === "match" ? (
+                        <WhatshotIcon />
+                      ) : notification?.type === "completed" ? (
+                        <CheckCircleOutlineIcon />
+                      ) : (
+                        <StarBorderIcon />
+                      )}
+                    </Avatar>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={notification?.title}
+                    primaryTypographyProps={{
+                      style: {
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontWeight: !notification.read ? "500" : "400",
+                      },
+                    }}
+                    secondaryTypographyProps={{
+                      style: {
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        fontWeight: !notification.read ? "500" : "400",
+                      },
+                    }}
+                    secondary={notification?.message}
+                  />
+                </MenuItem>
+              ))}
+            {notifications.length === 0 && (
+              <Typography sx={{ textAlign: "center", padding: "1rem" }}>
+                No new notifications.
+              </Typography>
+            )}
+
+            {/* <MenuItem>
               <ListItemIcon sx={{ marginRight: ".5rem" }}>
                 <Avatar
                   sx={{
@@ -127,7 +199,7 @@ const Notifications = () => {
                 primary="Player Request!"
                 secondary="Sara wants to join your game!"
               />
-            </MenuItem>
+            </MenuItem> */}
           </MenuList>
         </Paper>
       </Menu>
