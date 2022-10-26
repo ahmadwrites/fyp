@@ -9,6 +9,7 @@ import { Box } from "@mui/system";
 import Groups from "./pages/Groups";
 import PrivateRoute from "./PrivateRoute";
 import CreateGroup from "./pages/CreateGroup";
+import Settings from "./pages/settings/Settings";
 
 function App() {
   return (
@@ -21,6 +22,14 @@ function App() {
               <Route index element={<Home />} />
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
+              <Route
+                path="settings/*"
+                element={
+                  <PrivateRoute>
+                    <Settings />
+                  </PrivateRoute>
+                }
+              />
               <Route path="groups">
                 <Route index element={<Groups />} />
                 <Route

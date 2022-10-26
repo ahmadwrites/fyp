@@ -19,7 +19,10 @@ export const updateUser = async (req, res, next) => {
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json(updatedUser);
+
+    const { password, ...others } = updatedUser._doc;
+
+    res.status(200).json(others);
   } catch (error) {
     next(error);
   }

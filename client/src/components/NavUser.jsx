@@ -69,7 +69,11 @@ const NavUser = () => {
           </ListItemIcon>
           <ListItemText>Profile</ListItemText>
         </MenuItem>
-        <MenuItem onClick={handleClose} component={Link} to={`/profile/edit`}>
+        <MenuItem
+          onClick={handleClose}
+          component={Link}
+          to={`/settings/profile`}
+        >
           <ListItemIcon>
             <SettingsIcon />
           </ListItemIcon>

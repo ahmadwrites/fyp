@@ -24,7 +24,7 @@ let theme = createTheme({
       main: TERTIARY,
     },
     gold: {
-      main: "#ffeb3b",
+      main: "#FFD700",
     },
   },
   components: {

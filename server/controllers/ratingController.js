@@ -19,7 +19,7 @@ export const addRating = async (req, res, next) => {
       return res.status(403).json("You cannot rate yourself.");
     }
 
-    if (!post.isMatched.includes(req.user.id)) {
+    if (!post.isMatched.includes(req.user.id) && post.userId !== req.user.id) {
       return res
         .status(403)
         .json("You must have been matched to rate one another.");

@@ -38,10 +38,19 @@ export const userSlice = createSlice({
         state.currentUser.followedGroups.push(action.payload);
       }
     },
+    editProfile: (state, action) => {
+      state.currentUser = action.payload;
+    },
   },
 });
 
-export const { loginStart, loginSuccess, loginFailure, logout, followGroup } =
-  userSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailure,
+  logout,
+  followGroup,
+  editProfile,
+} = userSlice.actions;
 
 export default userSlice.reducer;
