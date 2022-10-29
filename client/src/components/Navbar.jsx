@@ -149,7 +149,7 @@ const Navbar = () => {
                         justifyContent="flex-end"
                       >
                         <Notifications />
-                        <Tooltip title="Groups">
+                        <Tooltip arrow title="Groups">
                           <Link component={RouterLink} to="/groups">
                             <GridViewIcon
                               sx={{
@@ -162,7 +162,7 @@ const Navbar = () => {
                             />
                           </Link>
                         </Tooltip>
-                        <Tooltip title="Explore">
+                        <Tooltip arrow title="Explore">
                           <Link component={RouterLink} to="explore">
                             <MapIcon
                               sx={{
@@ -175,7 +175,7 @@ const Navbar = () => {
                             />
                           </Link>
                         </Tooltip>
-                        <Tooltip title="Games">
+                        <Tooltip arrow title="Games">
                           <Link
                             component={RouterLink}
                             to={`user/${currentUser._id}/games`}
@@ -218,7 +218,7 @@ const Navbar = () => {
                         </Button> */}
                         <Button
                           component={RouterLink}
-                          to="/create"
+                          to="/games/create"
                           sx={{ margin: "0 .5rem" }}
                           variant="contained"
                           color="primary"

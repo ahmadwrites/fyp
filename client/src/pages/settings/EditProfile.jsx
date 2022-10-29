@@ -7,6 +7,7 @@ import {
   Button,
   CircularProgress,
   Typography,
+  Tooltip,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -58,6 +59,8 @@ const EditProfile = () => {
     const storageRef = ref(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
+    // Todo: Find current image in firebase and delete it.
+
     uploadTask.on(
       "state_changed",
       (snapshot) => {
@@ -95,6 +98,19 @@ const EditProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (
+      userForm.firstName.trim() === "" ||
+      userForm.lastName.trim() === "" ||
+      userForm.email.trim() === ""
+    ) {
+      setAlert({
+        open: true,
+        severity: "error",
+        message: "Please fill in all fields!",
+      });
+      return;
+    }
+
     try {
       const res = await axios.put(`/users/${currentUser._id}`, userForm, {
         withCredentials: true,
@@ -114,14 +130,12 @@ const EditProfile = () => {
     }
   };
 
-  console.log(imageProgress);
-
   return (
     <Paper
       elevation={1}
       sx={{
         background: "#fff",
-        padding: { xs: "1rem .5rem", md: "2rem 1rem" },
+        padding: { xs: "1rem .5rem", md: "1rem 1rem" },
       }}
     >
       <Grid container sx={{ gap: "1rem" }}>
@@ -157,41 +171,47 @@ const EditProfile = () => {
             </Box>
           ) : (
             <>
-              <label htmlFor="input-avatar" style={{ position: "relative" }}>
-                <Avatar
-                  src={userForm.avatar}
-                  sx={{
-                    height: 128,
-                    width: 128,
-                    cursor: "pointer",
-                    zIndex: 1,
-                    transition: ".3s all",
-                    "&:hover": { opacity: 0.5 },
-                  }}
-                />
-                <Box
-                  sx={{
-                    height: 128,
-                    borderRadius: "50%",
-                    width: 128,
-                    position: "absolute",
-                    top: 0,
-                    left: 0,
-                    backgroundColor: "#000",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "flex",
-                  }}
-                ></Box>
-                <input
-                  name="avatar"
-                  id="input-avatar"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setImage(e.target.files[0])}
-                  style={{ display: "none" }}
-                />
-              </label>
+              <Tooltip
+                arrow
+                followCursor
+                title="Click to upload or change image."
+              >
+                <label htmlFor="input-avatar" style={{ position: "relative" }}>
+                  <Avatar
+                    src={userForm.avatar}
+                    sx={{
+                      height: 128,
+                      width: 128,
+                      cursor: "pointer",
+                      zIndex: 1,
+                      transition: ".3s all",
+                      "&:hover": { opacity: 0.5 },
+                    }}
+                  />
+                  <Box
+                    sx={{
+                      height: 128,
+                      borderRadius: "50%",
+                      width: 128,
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      backgroundColor: "#000",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex",
+                    }}
+                  ></Box>
+                  <input
+                    name="avatar"
+                    id="input-avatar"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImage(e.target.files[0])}
+                    style={{ display: "none" }}
+                  />
+                </label>
+              </Tooltip>
             </>
           )}
         </Grid>

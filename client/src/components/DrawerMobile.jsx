@@ -73,7 +73,7 @@ const DrawerMobile = () => {
           </Grid>
         </Box>
         <Divider />
-        <List dense sx={{ minWidth: 230 }}>
+        <List sx={{ minWidth: 230 }}>
           <Typography
             ml={2}
             variant="body1"
@@ -82,34 +82,54 @@ const DrawerMobile = () => {
           >
             Navigation
           </Typography>
-          <ListItemButton onClick={() => setOpenDrawer(false)}>
+          <ListItemButton
+            component={RouterLink}
+            to="/"
+            onClick={() => setOpenDrawer(false)}
+          >
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
             <ListItemText>Home</ListItemText>
           </ListItemButton>
-          <ListItemButton onClick={() => setOpenDrawer(false)}>
+          <ListItemButton
+            component={RouterLink}
+            to="/groups"
+            onClick={() => setOpenDrawer(false)}
+          >
             <ListItemIcon>
               <GridViewIcon />
             </ListItemIcon>
             <ListItemText>Groups</ListItemText>
           </ListItemButton>
 
-          <ListItemButton onClick={() => setOpenDrawer(false)}>
+          <ListItemButton
+            component={RouterLink}
+            to="/explore"
+            onClick={() => setOpenDrawer(false)}
+          >
             <ListItemIcon>
               <MapIcon />
             </ListItemIcon>
             <ListItemText>Explore</ListItemText>
           </ListItemButton>
 
-          <ListItemButton onClick={() => setOpenDrawer(false)}>
+          <ListItemButton
+            component={RouterLink}
+            to="/games"
+            onClick={() => setOpenDrawer(false)}
+          >
             <ListItemIcon>
               <VideogameAssetIcon />
             </ListItemIcon>
             <ListItemText>Games</ListItemText>
           </ListItemButton>
           {currentUser && (
-            <ListItemButton onClick={() => setOpenDrawer(false)}>
+            <ListItemButton
+              component={RouterLink}
+              to="/games/create"
+              onClick={() => setOpenDrawer(false)}
+            >
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
@@ -128,7 +148,11 @@ const DrawerMobile = () => {
           </Typography>
           {currentUser ? (
             <>
-              <ListItemButton onClick={() => setOpenDrawer(false)}>
+              <ListItemButton
+                to={`/profile/${currentUser._id}`}
+                component={RouterLink}
+                onClick={() => setOpenDrawer(false)}
+              >
                 <ListItemIcon>
                   <Avatar
                     src={currentUser?.avatar}
@@ -137,7 +161,11 @@ const DrawerMobile = () => {
                 </ListItemIcon>
                 <ListItemText>Profile</ListItemText>
               </ListItemButton>
-              <ListItemButton onClick={() => setOpenDrawer(false)}>
+              <ListItemButton
+                to="/settings/profile"
+                component={RouterLink}
+                onClick={() => setOpenDrawer(false)}
+              >
                 <ListItemIcon>
                   <SettingsIcon />
                 </ListItemIcon>

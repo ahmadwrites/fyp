@@ -17,6 +17,7 @@ const PostSchema = new mongoose.Schema(
     noOfPeople: {
       type: Number,
       required: true,
+      default: 2,
     },
     /* Set to false once isMatched.length == noOfPeople or the user sets it to false */
     joinable: {
@@ -59,6 +60,7 @@ const PostSchema = new mongoose.Schema(
     },
     location: {
       type: String,
+      required: true,
     },
     level: {
       type: Number,
@@ -67,10 +69,10 @@ const PostSchema = new mongoose.Schema(
       type: Date,
     },
     startTime: {
-      type: Number,
+      type: String,
     },
     endTime: {
-      type: Number,
+      type: String,
     },
     gender: {
       type: String,

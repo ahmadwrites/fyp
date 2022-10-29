@@ -1,7 +1,7 @@
-import { Grid, Tabs, Typography, useMediaQuery } from "@mui/material";
+import { Grid, Grow, Tabs, Typography, useMediaQuery } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 import Tab from "@mui/material/Tab";
 import { Link as RouterLink } from "react-router-dom";
 import EditProfile from "./EditProfile";
@@ -11,11 +11,16 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import KeyIcon from "@mui/icons-material/Key";
 import theme from "../../theme";
+import { useEffect } from "react";
 
 function LinkTab(props) {
   return (
     <Tab
-      sx={{ textTransform: "none", marginRight: "auto" }}
+      sx={{
+        textTransform: "none",
+        marginRight: "auto",
+        paddingLeft: 0,
+      }}
       value={props.value}
       iconPosition="start"
       component={RouterLink}
@@ -32,6 +37,28 @@ const Settings = () => {
     setValue(newValue);
   };
 
+  const location = useLocation().pathname.split("/")[2];
+
+  useEffect(() => {
+    switch (location) {
+      case "profile":
+        setValue(0);
+        break;
+      case "preferences":
+        setValue(1);
+        break;
+      case "notifications":
+        setValue(2);
+        break;
+      case "change-password":
+        setValue(3);
+        break;
+      default:
+        setValue(0);
+        break;
+    }
+  }, [location]);
+
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Container maxWidth="lg" sx={{ padding: { xs: ".5rem", md: "1rem" } }}>
@@ -44,13 +71,14 @@ const Settings = () => {
           User Settings
         </Typography>
 
-        <Grid container>
+        <Grid container columnSpacing={2}>
           <Grid item xs={12} md={2}>
             <Box
               sx={{
                 borderRight: !isMatch ? 1 : 0,
                 borderBottom: isMatch ? 1 : 0,
                 borderColor: "#d7d7d7",
+                height: "100%",
               }}
             >
               <Tabs
@@ -58,7 +86,7 @@ const Settings = () => {
                 onChange={handleChange}
                 orientation={isMatch ? "horizontal" : "vertical"}
                 variant={isMatch ? "scrollable" : "standard"}
-                indicatorColor="secondary"
+                indicatorColor="primary"
                 textColor="secondary"
                 aria-label="User Settings Tabs"
               >
@@ -90,12 +118,13 @@ const Settings = () => {
             item
             xs={12}
             md={10}
-            sx={{ padding: { xs: ".5rem 0", md: "0 1rem" } }}
+            sx={{ padding: { xs: ".5rem 0", md: "0" } }}
           >
             <Routes>
               <Route path="profile" element={<EditProfile />} />
               <Route path="preferences" element={<Preferences />} />
-              <Route path="notifications" element={<Preferences />} />
+              <Route path="notifications" element={<>Notifications</>} />
+              <Route path="change-password" element={<>Change Passsword</>} />
             </Routes>
           </Grid>
         </Grid>

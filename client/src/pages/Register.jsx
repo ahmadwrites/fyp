@@ -54,7 +54,6 @@ const Register = () => {
 
   const handleChange = (e) => {
     setUserForm({ ...userForm, [e.target.name]: e.target.value });
-    console.log(userForm);
   };
 
   const handleSubmit = async (e) => {
@@ -96,6 +95,7 @@ const Register = () => {
       sx={{ padding: "2rem 1rem" }}
       justifyContent="center"
       alignItems="center"
+      minHeight="calc(100vh - 64px)"
       direction="column"
     >
       <Paper elevation={1}>
