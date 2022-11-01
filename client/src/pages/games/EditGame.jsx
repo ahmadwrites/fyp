@@ -34,7 +34,7 @@ import {
 } from "firebase/storage";
 import app from "../../firebase";
 import theme from "../../theme";
-import CustomAlert from "../../components/CustomAlert";
+import CustomAlert from "../../components/feedback/CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const EditGame = () => {
@@ -80,6 +80,7 @@ const EditGame = () => {
       componentRestrictions: { country: "my" },
     },
     onPlaceSelected: (place) => {
+      console.log(place);
       setPostForm((prev) => {
         return {
           ...prev,

@@ -135,6 +135,7 @@ export const requestGame = async (req, res, next) => {
         postId: post._id,
         title: "Player Request!",
         message: `Someone wants to join ${post.title}`,
+        type: "request",
       });
 
       await notification.save();
@@ -154,12 +155,22 @@ export const unrequestGame = async (req, res, next) => {
       { new: true }
     );
 
+    const notification = await Notification.findOne({
+      senderId: req.user.id,
+      receiverId: post.userId,
+      postId: post._id,
+      title: "Player Request!",
+      message: `Someone wants to join ${post.title}`,
+      type: "request",
+    });
+
     await Notification.findOneAndDelete({
       senderId: req.user.id,
       receiverId: post.userId,
       postId: post._id,
       title: "Player Request!",
       message: `Someone wants to join ${post.title}`,
+      type: "request",
     });
 
     res.status(200).json("Request to join have been cancelled.");
@@ -206,6 +217,7 @@ export const acceptRequest = async (req, res, next) => {
         postId: post._id,
         title: `Game Matched!`,
         message: `${post.title} is ready for you to play.`,
+        type: "match",
       });
 
       await notification.save();
@@ -268,6 +280,7 @@ export const completeGame = async (req, res, next) => {
         postId: updatedPost._id,
         title: `${updatedPost.title} is completed.!`,
         message: `Click here to rate each other.`,
+        type: "complete",
       });
 
       await notification.save();

@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PersonIcon from "@mui/icons-material/Person";
-import { logout } from "../redux/userSlice";
+import { logout } from "../../redux/userSlice";
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";

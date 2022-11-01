@@ -20,7 +20,7 @@ import EmojiPeopleIcon from "@mui/icons-material/EmojiPeople";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-import theme from "../theme";
+import theme from "../../theme";
 import axios from "axios";
 
 const Notifications = () => {
@@ -39,7 +39,9 @@ const Notifications = () => {
   useEffect(() => {
     const getNotifications = async () => {
       try {
-        const res = await axios.get("/notifications/received?limit=6");
+        const res = await axios.get("/notifications/received?limit=6", {
+          withCredentials: true,
+        });
         setNotifications(res.data);
       } catch (error) {
         console.log(error);

@@ -19,7 +19,7 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import app from "../../firebase";
-import CustomAlert from "../../components/CustomAlert";
+import CustomAlert from "../../components/feedback/CustomAlert";
 import axios from "axios";
 import { editProfile } from "../../redux/userSlice";
 

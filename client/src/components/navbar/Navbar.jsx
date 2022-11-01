@@ -13,15 +13,14 @@ import {
   useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import AddIcon from "@mui/icons-material/Add";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import CloseIcon from "@mui/icons-material/Close";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import React, { useState } from "react";
-import logo from "../images/sportify-icon-square.svg";
-import theme from "../theme";
+import logo from "../../images/sportify-icon-square.svg";
+import theme from "../../theme";
 import { useSelector } from "react-redux";
 import NavUser from "./NavUser";
 import Notifications from "./Notifications";

@@ -12,7 +12,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, Navigate } from "react-router-dom";
-import CustomAlert from "../components/CustomAlert";
+import CustomAlert from "../components/feedback/CustomAlert";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
 
 const Login = () => {

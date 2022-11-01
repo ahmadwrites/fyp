@@ -26,7 +26,20 @@ export const updatePost = async (req, res, next) => {
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.id,
       {
-        $set: req.body,
+        $set: {
+          image: req.bodyimage,
+          title: req.body.title,
+          groupId: req.body.groupId,
+          location: req.body.location,
+          gender: req.body.gender,
+          date: req.body.date,
+          startTime: req.body.startTime,
+          endTime: req.body.endTime,
+          level: req.body.level,
+          noOfPeople: req.body.noOfPeople,
+          latitude: req.body.latitude,
+          longitude: req.body.longitude,
+        },
       },
       { new: true }
     );
@@ -126,5 +139,46 @@ export const getFollowingNew = async (req, res, next) => {
     next(error);
   }
 };
+
+function distance(lat1, lat2, lon1, lon2) {
+  // The math module contains a function
+  // named toRadians which converts from
+  // degrees to radians.
+  lon1 = (lon1 * Math.PI) / 180;
+  lon2 = (lon2 * Math.PI) / 180;
+  lat1 = (lat1 * Math.PI) / 180;
+  lat2 = (lat2 * Math.PI) / 180;
+
+  // Haversine formula
+  let dlon = lon2 - lon1;
+  let dlat = lat2 - lat1;
+  let a =
+    Math.pow(Math.sin(dlat / 2), 2) +
+    Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
+
+  let c = 2 * Math.asin(Math.sqrt(a));
+
+  // Radius of earth in kilometers. Use 3956
+  // for miles
+  let r = 6371;
+
+  // calculate the result
+  return c * r;
+}
+
+export const getDistance = async (req, res, next) => {
+  try {
+    const distanceKm = distance(
+      req.body.lat1,
+      req.body.lat2,
+      req.body.long1,
+      req.body.long2
+    );
+    res.status(200).json(`Distance is: ${distanceKm}KM`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // Todo: Reformat code so that all the gets return joinable games
 // Todo: Look into how to reformat code such that it follows preferences model

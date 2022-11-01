@@ -16,9 +16,9 @@ import { Link as RouterLink } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import { useDispatch, useSelector } from "react-redux";
-import theme from "../theme";
+import theme from "../../theme";
 import { useCallback } from "react";
-import { followGroup } from "../redux/userSlice";
+import { followGroup } from "../../redux/userSlice";
 
 const Groups = () => {
   const { currentUser } = useSelector((state) => state.user);

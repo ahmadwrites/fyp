@@ -6,10 +6,8 @@ import {
   Grid,
   IconButton,
   List,
-  ListItemAvatar,
   ListItemButton,
   ListItemIcon,
-  Link,
   ListItemText,
   Typography,
 } from "@mui/material";
@@ -18,18 +16,16 @@ import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
 import MenuIcon from "@mui/icons-material/Menu";
 import AddIcon from "@mui/icons-material/Add";
 import MapIcon from "@mui/icons-material/Map";
-import InfoIcon from "@mui/icons-material/Info";
 import LoginIcon from "@mui/icons-material/Login";
 import LogoutIcon from "@mui/icons-material/Logout";
 import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import GridViewIcon from "@mui/icons-material/GridView";
-import logo from "../images/sportify-icon-square.svg";
-import theme from "../theme";
+import logo from "../../images/sportify-icon-square.svg";
 import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import SettingsIcon from "@mui/icons-material/Settings";
 import axios from "axios";
-import { logout } from "../redux/userSlice";
+import { logout } from "../../redux/userSlice";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
 
 const DrawerMobile = () => {

@@ -23,12 +23,111 @@ import { useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
 import GameCardMenu from "./GameCardMenu";
+import RequestDialog from "../dialogs/RequestDialog";
+import DeleteGameDialog from "../dialogs/DeleteGameDialog";
+import CustomAlert from "../feedback/CustomAlert";
+import CancelRequestDialog from "../dialogs/CancelRequestDialog";
 const capitalize = (s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase();
 
-const GameCard = ({ post }) => {
+const GameCard = ({ getPosts, post }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
   const [group, setGroup] = useState(null);
+  const [openRequest, setOpenRequest] = useState(false);
+  const [openDelete, setOpenDelete] = useState(false);
+  const [openCancelRequest, setOpenCancelRequest] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    severity: null,
+    message: null,
+  });
+
+  const handleCloseModel = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert({ ...alert, open: false });
+  };
+
+  const handleRequest = async () => {
+    try {
+      await axios.post(
+        `/users/request/${post?._id}`,
+        {},
+        { withCredentials: true }
+      );
+      handleCloseRequest(true);
+      getPosts();
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Request sent.",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCancelRequest = async () => {
+    try {
+      await axios.post(
+        `/users/unrequest/${post?._id}`,
+        {},
+        { withCredentials: true }
+      );
+      handleCloseCancelRequest(true);
+      getPosts();
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Request cancelled successfully.",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`/posts/${post?._id}`, {
+        withCredentials: true,
+      });
+      handleCloseDelete(true);
+      getPosts();
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Game deleted successfully.",
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleClickOpenRequest = () => {
+    setOpenRequest(true);
+  };
+
+  const handleCloseRequest = () => {
+    setOpenRequest(false);
+  };
+
+  const handleClickOpenCancelRequest = () => {
+    setOpenCancelRequest(true);
+  };
+
+  const handleCloseCancelRequest = () => {
+    setOpenCancelRequest(false);
+  };
+
+  const handleClickOpenDelete = () => {
+    setOpenDelete(true);
+  };
+
+  const handleCloseDelete = () => {
+    setOpenDelete(false);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -43,7 +142,7 @@ const GameCard = ({ post }) => {
     };
 
     getData();
-  });
+  }, [post.groupId, post.userId]);
 
   return (
     <Grid sx={{ display: "flex" }} item xs={12} sm={6}>
@@ -256,16 +355,45 @@ const GameCard = ({ post }) => {
 
           {currentUser?._id === post.userId ? (
             <>
-              <Button variant="contained" color="error">
+              <Button
+                onClick={handleClickOpenDelete}
+                variant="contained"
+                color="error"
+              >
                 Delete
               </Button>
             </>
           ) : (
             <>
               {currentUser ? (
-                <Button variant="contained" color="tertiary">
-                  Request
-                </Button>
+                <>
+                  {post.pendingUsers.includes(currentUser._id) ? (
+                    <Button
+                      variant="contained"
+                      color="inherit"
+                      onClick={handleClickOpenCancelRequest}
+                    >
+                      Cancel Request
+                    </Button>
+                  ) : post.isMatched.includes(currentUser._id) ? (
+                    <Button
+                      component={RouterLink}
+                      to={`/games/${post._id}`}
+                      variant="contained"
+                      color="success"
+                    >
+                      Enter Game
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleClickOpenRequest}
+                      variant="contained"
+                      color="tertiary"
+                    >
+                      Request
+                    </Button>
+                  )}
+                </>
               ) : (
                 <Button
                   component={RouterLink}
@@ -280,6 +408,30 @@ const GameCard = ({ post }) => {
           )}
         </Grid>
       </Paper>
+      <RequestDialog
+        open={openRequest}
+        handleClose={handleCloseRequest}
+        post={post}
+        handleRequest={handleRequest}
+      />
+      <CancelRequestDialog
+        open={openCancelRequest}
+        handleClose={handleCloseCancelRequest}
+        post={post}
+        handleRequest={handleCancelRequest}
+      />
+      <DeleteGameDialog
+        open={openDelete}
+        handleClose={handleCloseDelete}
+        handleDelete={handleDelete}
+        post={post}
+      />
+      <CustomAlert
+        open={alert.open}
+        handleClose={handleCloseModel}
+        message={alert.message}
+        severity={alert.severity}
+      />
     </Grid>
   );
 };

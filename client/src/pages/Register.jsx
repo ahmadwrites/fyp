@@ -18,7 +18,7 @@ import {
 import React, { useState } from "react";
 import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import CustomAlert from "../components/CustomAlert";
+import CustomAlert from "../components/feedback/CustomAlert";
 import MuiPhoneNumber from "material-ui-phone-number";
 import { useSelector } from "react-redux";
 

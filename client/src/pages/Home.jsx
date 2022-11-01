@@ -16,26 +16,27 @@ import WhatshotIcon from "@mui/icons-material/Whatshot";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { Link as RouterLink } from "react-router-dom";
 import { useSelector } from "react-redux";
-import GameCard from "../components/GameCard";
+import GameCard from "../components/gamecard/GameCard";
 import { useEffect } from "react";
 import axios from "axios";
+import { useCallback } from "react";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    const getPosts = async () => {
-      try {
-        const res = await axios.get("/posts");
-        setPosts(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getPosts();
+  const getPosts = useCallback(async () => {
+    try {
+      const res = await axios.get("/posts");
+      setPosts(res.data);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
+
+  useEffect(() => {
+    getPosts();
+  }, [getPosts]);
 
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
@@ -127,7 +128,7 @@ const Home = () => {
 
             <Grid container alignItems="stretch" spacing={2}>
               {posts.map((post) => (
-                <GameCard post={post} key={post?._id} />
+                <GameCard getPosts={getPosts} post={post} key={post?._id} />
               ))}
             </Grid>
           </Grid>

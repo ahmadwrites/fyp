@@ -34,7 +34,7 @@ import {
 } from "firebase/storage";
 import app from "../../firebase";
 import theme from "../../theme";
-import CustomAlert from "../../components/CustomAlert";
+import CustomAlert from "../../components/feedback/CustomAlert";
 import { useNavigate } from "react-router-dom";
 
 const CreateGame = () => {
