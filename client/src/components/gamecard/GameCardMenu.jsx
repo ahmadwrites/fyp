@@ -45,11 +45,11 @@ const GameCardMenu = ({ post }) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        {currentUser?._id === post.userId && (
+        {currentUser?._id === post?.userId && (
           <MenuItem
             onClick={handleClose}
             component={RouterLink}
-            to={`/games/edit/${post._id}`}
+            to={`/games/edit/${post?._id}`}
           >
             <ListItemIcon>
               <EditOutlinedIcon />
@@ -61,7 +61,7 @@ const GameCardMenu = ({ post }) => {
           onClick={handleClose}
           component={Link}
           target="_blank"
-          href={`https://api.whatsapp.com/send?text=localhost:3000/games/${post._id}`}
+          href={`https://api.whatsapp.com/send?text=localhost:3000/games/${post?._id}`}
         >
           <ListItemIcon>
             <MapsUgcOutlinedIcon />

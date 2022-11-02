@@ -22,6 +22,8 @@ import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import theme from "../../theme";
 import axios from "axios";
+import { format } from "timeago.js";
+import { useCallback } from "react";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -36,18 +38,32 @@ const Notifications = () => {
     setAnchorEl(null);
   };
 
-  useEffect(() => {
-    const getNotifications = async () => {
-      try {
-        const res = await axios.get("/notifications/received?limit=6", {
-          withCredentials: true,
-        });
-        setNotifications(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const readNotification = async (notification) => {
+    try {
+      await axios.put(
+        `/notifications/read/${notification._id}`,
+        {},
+        { withCredentials: true }
+      );
+      getNotifications();
+      handleClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  const getNotifications = useCallback(async () => {
+    try {
+      const res = await axios.get("/notifications/received?limit=6", {
+        withCredentials: true,
+      });
+      setNotifications(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
     getNotifications();
 
     const timer = window.setInterval(() => {
@@ -57,7 +73,7 @@ const Notifications = () => {
     return () => {
       window.clearInterval(timer);
     };
-  }, []);
+  }, [getNotifications]);
 
   return (
     <Box
@@ -132,9 +148,15 @@ const Notifications = () => {
           <MenuList>
             {notifications.length > 0 &&
               notifications.map((notification) => (
-                <MenuItem key={notification._id}>
+                <MenuItem
+                  component={RouterLink}
+                  to={`/games/${notification.postId}`}
+                  key={notification._id}
+                  onClick={() => readNotification(notification)}
+                >
                   <ListItemIcon sx={{ marginRight: ".5rem" }}>
                     <Avatar
+                      src={notification.avatar}
                       sx={{
                         height: "2rem",
                         width: "2rem",
@@ -147,17 +169,17 @@ const Notifications = () => {
                             ? theme.palette.success.light
                             : theme.palette.gold.main,
                       }}
-                    >
-                      {notification?.type === "request" ? (
-                        <EmojiPeopleIcon />
-                      ) : notification?.type === "match" ? (
-                        <WhatshotIcon />
-                      ) : notification?.type === "completed" ? (
-                        <CheckCircleOutlineIcon />
-                      ) : (
-                        <StarBorderIcon />
-                      )}
-                    </Avatar>
+                    />
+                    {/* {notification?.type === "request" ? (
+                            <EmojiPeopleIcon fontSize="large" />
+                          ) : notification?.type === "match" ? (
+                            <WhatshotIcon fontSize="large" />
+                          ) : notification?.type === "completed" ? (
+                            <CheckCircleOutlineIcon fontSize="large" />
+                          ) : (
+                            <StarBorderIcon fontSize="large" />
+                          )}
+                        </Avatar> */}
                   </ListItemIcon>
                   <ListItemText
                     primary={notification?.title}
@@ -177,6 +199,17 @@ const Notifications = () => {
                     }}
                     secondary={notification?.message}
                   />
+                  <Typography
+                    color="text.secondary"
+                    variant="caption"
+                    sx={{
+                      display: "flex",
+                      alignSelf: "flex-start",
+                      fontWeight: !notification.read ? "500" : "400",
+                    }}
+                  >
+                    {format(notification?.createdAt)}
+                  </Typography>
                 </MenuItem>
               ))}
             {notifications.length === 0 && (

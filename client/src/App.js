@@ -12,6 +12,8 @@ import CreateGroup from "./pages/groups/CreateGroup";
 import Settings from "./pages/settings/Settings";
 import CreateGame from "./pages/games/CreateGame";
 import EditGame from "./pages/games/EditGame";
+import Notifications from "./pages/notifications/Notifications";
+import Game from "./pages/games/Game";
 
 function App() {
   return (
@@ -42,6 +44,14 @@ function App() {
                   }
                 />
                 <Route
+                  path=":id"
+                  element={
+                    <PrivateRoute>
+                      <Game />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
                   path="edit/:id"
                   element={
                     <PrivateRoute>
@@ -57,6 +67,16 @@ function App() {
                   element={
                     <PrivateRoute>
                       <CreateGroup />
+                    </PrivateRoute>
+                  }
+                />
+              </Route>
+              <Route path="notifications">
+                <Route
+                  index
+                  element={
+                    <PrivateRoute>
+                      <Notifications />
                     </PrivateRoute>
                   }
                 />

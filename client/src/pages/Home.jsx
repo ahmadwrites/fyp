@@ -128,7 +128,15 @@ const Home = () => {
 
             <Grid container alignItems="stretch" spacing={2}>
               {posts.map((post) => (
-                <GameCard getPosts={getPosts} post={post} key={post?._id} />
+                <Grid
+                  key={post?._id}
+                  sx={{ display: "flex" }}
+                  item
+                  xs={12}
+                  sm={6}
+                >
+                  <GameCard getPosts={getPosts} post={post} />
+                </Grid>
               ))}
             </Grid>
           </Grid>
