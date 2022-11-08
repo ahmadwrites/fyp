@@ -47,6 +47,7 @@ const EditGame = () => {
     image: null,
     title: "title",
     groupId: null,
+    desc: "",
     location: "Kuala Lumpur",
     gender: "all",
     date: null,
@@ -180,7 +181,7 @@ const EditGame = () => {
         severity: "success",
         message: "Post has been updated successfully.",
       });
-      setTimeout(() => navigate("/login"), 500);
+      setTimeout(() => navigate(`/games/${location}/overview`), 500);
     } catch (error) {
       setAlert({
         open: true,
@@ -190,6 +191,8 @@ const EditGame = () => {
       console.log(error);
     }
   };
+
+  console.log(postForm);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -254,6 +257,17 @@ const EditGame = () => {
                         }}
                       />
                     )}
+                  />
+                  <TextField
+                    onChange={handleChange}
+                    name="desc"
+                    label="Description or Rules"
+                    InputLabelProps={{ shrink: postForm.title && true }}
+                    size="small"
+                    fullWidth
+                    multiline
+                    minRows={4}
+                    value={postForm?.desc}
                   />
                   <TextField
                     fullWidth

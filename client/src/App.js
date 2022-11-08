@@ -13,7 +13,7 @@ import Settings from "./pages/settings/Settings";
 import CreateGame from "./pages/games/CreateGame";
 import EditGame from "./pages/games/EditGame";
 import Notifications from "./pages/notifications/Notifications";
-import Game from "./pages/games/Game";
+import GamePage from "./pages/games/GamePage";
 
 function App() {
   return (
@@ -44,10 +44,10 @@ function App() {
                   }
                 />
                 <Route
-                  path=":id"
+                  path=":id/*"
                   element={
                     <PrivateRoute>
-                      <Game />
+                      <GamePage />
                     </PrivateRoute>
                   }
                 />

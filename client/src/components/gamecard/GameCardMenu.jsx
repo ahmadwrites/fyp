@@ -13,7 +13,7 @@ import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { useSelector } from "react-redux";
 
-const GameCardMenu = ({ post }) => {
+const GameCardMenu = ({ post, color }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -29,7 +29,7 @@ const GameCardMenu = ({ post }) => {
     <Box>
       <MoreVertOutlinedIcon
         onClick={handleClick}
-        sx={{ cursor: "pointer" }}
+        sx={{ cursor: "pointer", color: color }}
         fontSize="small"
         color="text.secondary"
       />

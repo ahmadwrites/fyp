@@ -150,13 +150,12 @@ const Notifications = () => {
               notifications.map((notification) => (
                 <MenuItem
                   component={RouterLink}
-                  to={`/games/${notification.postId}`}
+                  to={`/games/${notification.postId}/overview`}
                   key={notification._id}
                   onClick={() => readNotification(notification)}
                 >
                   <ListItemIcon sx={{ marginRight: ".5rem" }}>
                     <Avatar
-                      src={notification.avatar}
                       sx={{
                         height: "2rem",
                         width: "2rem",
@@ -169,17 +168,17 @@ const Notifications = () => {
                             ? theme.palette.success.light
                             : theme.palette.gold.main,
                       }}
-                    />
-                    {/* {notification?.type === "request" ? (
-                            <EmojiPeopleIcon fontSize="large" />
-                          ) : notification?.type === "match" ? (
-                            <WhatshotIcon fontSize="large" />
-                          ) : notification?.type === "completed" ? (
-                            <CheckCircleOutlineIcon fontSize="large" />
-                          ) : (
-                            <StarBorderIcon fontSize="large" />
-                          )}
-                        </Avatar> */}
+                    >
+                      {notification?.type === "request" ? (
+                        <EmojiPeopleIcon fontSize="small" />
+                      ) : notification?.type === "match" ? (
+                        <WhatshotIcon fontSize="small" />
+                      ) : notification?.type === "completed" ? (
+                        <CheckCircleOutlineIcon fontSize="small" />
+                      ) : (
+                        <StarBorderIcon fontSize="small" />
+                      )}
+                    </Avatar>
                   </ListItemIcon>
                   <ListItemText
                     primary={notification?.title}

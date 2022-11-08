@@ -46,6 +46,7 @@ const CreateGame = () => {
     image: null,
     title: "",
     groupId: null,
+    desc: "",
     location: null,
     gender: "all",
     date: null,
@@ -235,6 +236,16 @@ const CreateGame = () => {
                         }}
                       />
                     )}
+                  />
+                  <TextField
+                    fullWidth
+                    variant="outlined"
+                    size="small"
+                    multiline
+                    minRows={4}
+                    label="Description or Rules"
+                    name="desc"
+                    onChange={handleChange}
                   />
                   <TextField
                     fullWidth

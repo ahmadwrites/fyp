@@ -27,9 +27,10 @@ export const updatePost = async (req, res, next) => {
       req.params.id,
       {
         $set: {
-          image: req.bodyimage,
+          image: req.body.image,
           title: req.body.title,
           groupId: req.body.groupId,
+          desc: req.body.desc,
           location: req.body.location,
           gender: req.body.gender,
           date: req.body.date,

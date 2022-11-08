@@ -120,6 +120,8 @@ export const requestGame = async (req, res, next) => {
       return res.status(403).json("You cannot join your own game!");
     }
 
+    const requestedUser = await User.findById(req.user.id);
+
     if (requestedPost.pendingUsers.includes(req.user.id)) {
       return res.status(403).json("You have already requested for this game.");
     } else {
@@ -134,7 +136,7 @@ export const requestGame = async (req, res, next) => {
         receiverId: post.userId,
         postId: post._id,
         title: "Player Request!",
-        message: `Someone wants to join ${post.title}`,
+        message: `${requestedUser.username} wants to join ${post.title}`,
         type: "request",
       });
 
@@ -155,12 +157,14 @@ export const unrequestGame = async (req, res, next) => {
       { new: true }
     );
 
+    const requestedUser = await User.findById(req.user.id);
+
     const notification = await Notification.findOne({
       senderId: req.user.id,
       receiverId: post.userId,
       postId: post._id,
       title: "Player Request!",
-      message: `Someone wants to join ${post.title}`,
+      message: `${requestedUser.username} wants to join ${post.title}`,
       type: "request",
     });
 
@@ -169,7 +173,7 @@ export const unrequestGame = async (req, res, next) => {
       receiverId: post.userId,
       postId: post._id,
       title: "Player Request!",
-      message: `Someone wants to join ${post.title}`,
+      message: `${requestedUser.username} wants to join ${post.title}`,
       type: "request",
     });
 
@@ -183,7 +187,7 @@ export const acceptRequest = async (req, res, next) => {
   try {
     const post = await Post.findById(req.params.postId);
 
-    if (post.isMatched.includes(req.body.requesterId)) {
+    if (post.isMatched.includes(req.body.senderId)) {
       return res.status(403).json("Player is already matched!");
     }
 
@@ -195,8 +199,8 @@ export const acceptRequest = async (req, res, next) => {
       let updatedPost = await Post.findByIdAndUpdate(
         req.params.postId,
         {
-          $pull: { pendingUsers: req.body.requesterId },
-          $addToSet: { isMatched: req.body.requesterId },
+          $pull: { pendingUsers: req.body.senderId },
+          $addToSet: { isMatched: req.body.senderId },
         },
         { new: true }
       );
@@ -213,7 +217,7 @@ export const acceptRequest = async (req, res, next) => {
 
       const notification = new Notification({
         senderId: req.user.id,
-        receiverId: req.body.requesterId,
+        receiverId: req.body.senderId,
         postId: post._id,
         title: `Game Matched!`,
         message: `${post.title} is ready for you to play.`,
@@ -242,10 +246,18 @@ export const declineRequest = async (req, res, next) => {
     const post = await Post.findByIdAndUpdate(
       req.params.postId,
       {
-        $pull: { pendingUsers: req.body.requesterId },
+        $pull: { pendingUsers: req.body.senderId },
       },
       { new: true }
     );
+
+    await Notification.findOneAndDelete({
+      senderId: req.body.senderId,
+      receiverId: req.user.id,
+      postId: post._id,
+      title: "Player Request!",
+      type: "request",
+    });
 
     res.status(200).json(post);
   } catch (error) {

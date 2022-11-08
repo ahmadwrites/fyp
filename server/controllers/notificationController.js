@@ -115,6 +115,19 @@ export const getReceivedFalse = async (req, res, next) => {
   }
 };
 
+export const getRequestsFromGame = async () => {
+  try {
+    const notifications = await Notification.find({
+      postId: req.params.postId,
+      type: "request",
+    });
+
+    res.status(200).json(notifications);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const readNotification = async (req, res, next) => {
   try {
     const notification = await Notification.findById(req.params.id);

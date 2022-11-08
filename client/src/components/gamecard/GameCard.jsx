@@ -182,6 +182,8 @@ const GameCard = ({ getPosts, post }) => {
         </Grid>
 
         <Avatar
+          component={RouterLink}
+          to={`/games/${post?._id}/overview`}
           sx={{
             height: "200px",
             width: "100%",
@@ -313,8 +315,8 @@ const GameCard = ({ getPosts, post }) => {
           >
             <AccessTimeIcon />
             <Typography variant="body2" color="text.secondary">
-              {moment(post?.startTime).format("h:mm")}-
-              {moment(post?.endTime).format("h:mm")}
+              {moment(post?.startTime).format("HH:mm")} -{" "}
+              {moment(post?.endTime).format("HH:mm")}
             </Typography>
           </Grid>
 
@@ -374,11 +376,20 @@ const GameCard = ({ getPosts, post }) => {
                 ) : post?.isMatched.includes(currentUser._id) ? (
                   <Button
                     component={RouterLink}
-                    to={`/games/${post?._id}`}
+                    to={`/games/${post?._id}/overview`}
                     variant="contained"
                     color="success"
                   >
                     Enter Game
+                  </Button>
+                ) : !post?.joinable ? (
+                  <Button
+                    component={RouterLink}
+                    to={`/games/${post?._id}/overview`}
+                    variant="contained"
+                    disabled
+                  >
+                    Not Joinable
                   </Button>
                 ) : (
                   <Button

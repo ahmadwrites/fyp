@@ -7,6 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  Link,
   MenuItem,
   MenuList,
   Paper,
@@ -29,6 +30,19 @@ import { format } from "timeago.js";
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [mode, setMode] = useState("all");
+
+  const handleAccept = async (postId, senderId) => {
+    try {
+      const res = await axios.post(
+        `/users/accept-request/${postId}`,
+        { senderId },
+        { withCredentials: true }
+      );
+      alert(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleFilter = () => {
     if (mode === "unread") {
@@ -81,8 +95,6 @@ const Notifications = () => {
     };
   }, [getNotifications]);
 
-  console.log(notifications);
-
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Container maxWidth="sm" sx={{ padding: { xs: ".5rem", md: "1rem" } }}>
@@ -120,73 +132,117 @@ const Notifications = () => {
                   variant={mode === "unread" ? "filled" : "outlined"}
                 />
               </Grid>
-              <MenuList sx={{ width: "100%" }}>
+              <MenuList
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: ".5rem",
+                }}
+              >
                 {notifications.length > 0 &&
                   notifications.map((notification) => (
-                    <MenuItem
-                      sx={{ padding: ".5rem", width: "100%" }}
-                      component={RouterLink}
-                      to={`/games/${notification.postId}`}
-                      key={notification._id}
-                      onClick={() => readNotification(notification)}
-                    >
-                      <ListItemIcon sx={{ marginRight: "1rem" }}>
-                        <Avatar
-                          src={notification.avatar}
-                          sx={{
-                            height: "48px",
-                            width: "48px",
-                            backgroundColor:
-                              notification?.type === "request"
-                                ? theme.palette.tertiary.main
-                                : notification?.type === "match"
-                                ? theme.palette.error.light
-                                : notification?.type === "completed"
-                                ? theme.palette.success.light
-                                : theme.palette.gold.main,
-                          }}
-                        />
-                        {/* {notification?.type === "request" ? (
-                            <EmojiPeopleIcon fontSize="large" />
-                          ) : notification?.type === "match" ? (
-                            <WhatshotIcon fontSize="large" />
-                          ) : notification?.type === "completed" ? (
-                            <CheckCircleOutlineIcon fontSize="large" />
-                          ) : (
-                            <StarBorderIcon fontSize="large" />
-                          )}
-                        </Avatar> */}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={notification?.title}
-                        primaryTypographyProps={{
-                          style: {
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            fontWeight: !notification.read ? "500" : "400",
-                          },
-                        }}
-                        secondaryTypographyProps={{
-                          style: {
-                            overflow: "hidden",
-                            textOverflow: "ellipsis",
-                            fontWeight: !notification.read ? "500" : "400",
-                          },
-                        }}
-                        secondary={notification?.message}
-                      />
-                      <Typography
-                        color="text.secondary"
-                        variant="caption"
-                        sx={{
-                          display: "flex",
-                          alignSelf: "flex-start",
-                          fontWeight: !notification.read ? "500" : "400",
-                        }}
+                    <Box>
+                      <MenuItem
+                        sx={{ padding: ".5rem", width: "100%" }}
+                        key={notification._id}
+                        onClick={() => readNotification(notification)}
                       >
-                        {format(notification?.createdAt)}
-                      </Typography>
-                    </MenuItem>
+                        <ListItemIcon sx={{ marginRight: "1rem" }}>
+                          <Avatar
+                            component={RouterLink}
+                            to={`/profile/${notification.senderId}`}
+                            sx={{
+                              height: "48px",
+                              width: "48px",
+                              backgroundColor:
+                                notification?.type === "request"
+                                  ? theme.palette.tertiary.main
+                                  : notification?.type === "match"
+                                  ? theme.palette.error.light
+                                  : notification?.type === "completed"
+                                  ? theme.palette.success.light
+                                  : theme.palette.gold.main,
+                            }}
+                          >
+                            {notification?.type === "request" ? (
+                              <EmojiPeopleIcon fontSize="large" />
+                            ) : notification?.type === "match" ? (
+                              <WhatshotIcon fontSize="large" />
+                            ) : notification?.type === "completed" ? (
+                              <CheckCircleOutlineIcon fontSize="large" />
+                            ) : (
+                              <StarBorderIcon fontSize="large" />
+                            )}
+                          </Avatar>
+                        </ListItemIcon>
+                        <Link
+                          component={RouterLink}
+                          to={`/games/${notification.postId}`}
+                        >
+                          <ListItemText
+                            primary={notification?.title}
+                            primaryTypographyProps={{
+                              style: {
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                color: "#000",
+                                fontWeight: !notification.read ? "500" : "400",
+                              },
+                            }}
+                            secondaryTypographyProps={{
+                              style: {
+                                overflow: "hidden",
+                                textOverflow: "ellipsis",
+                                fontWeight: !notification.read ? "500" : "400",
+                              },
+                            }}
+                            secondary={notification?.message}
+                          />
+                        </Link>
+                        <Typography
+                          color="text.secondary"
+                          variant="caption"
+                          sx={{
+                            display: "flex",
+                            alignSelf: "flex-start",
+                            marginLeft: "auto",
+                            fontWeight: !notification.read ? "500" : "400",
+                          }}
+                        >
+                          {format(notification?.createdAt)}
+                        </Typography>
+                      </MenuItem>
+                      {/* {notification?.type === "request" && (
+                        <Grid
+                          container
+                          alignItems="center"
+                          justifyContent="flex-end"
+                          sx={{ gap: ".5rem" }}
+                        >
+                          <Button
+                            size="small"
+                            variant="contained"
+                            color="inherit"
+                          >
+                            Reject
+                          </Button>
+                          <Button
+                            onClick={() =>
+                              handleAccept(
+                                notification?.postId,
+                                notification?.senderId
+                              )
+                            }
+                            size="small"
+                            variant="contained"
+                            color="tertiary"
+                          >
+                            Accept
+                          </Button>
+                        </Grid>
+                      )} */}
+                    </Box>
                   ))}
                 {notifications.length === 0 && (
                   <Typography sx={{ textAlign: "center", padding: "1rem" }}>
