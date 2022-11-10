@@ -23,10 +23,20 @@ const RequestDialog = ({ post, handleRequest, handleClose, open }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="inherit">
+          <Button
+            autoFocus
+            onClick={handleClose}
+            variant="contained"
+            color="inherit"
+          >
             Cancel
           </Button>
-          <Button onClick={handleRequest} autoFocus color="primary">
+          <Button
+            onClick={handleRequest}
+            autoFocus
+            variant="contained"
+            color="primary"
+          >
             Confirm
           </Button>
         </DialogActions>

@@ -83,9 +83,9 @@ const CreateGame = () => {
       setPostForm((prev) => {
         return {
           ...prev,
-          location: place.formatted_address,
-          latitude: place.geometry.location.lat(),
-          longitude: place.geometry.location.lng(),
+          location: place?.formatted_address,
+          latitude: place?.geometry.location.lat(),
+          longitude: place?.geometry.location.lng(),
         };
       });
     },

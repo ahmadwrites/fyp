@@ -11,6 +11,7 @@ const GameHeader = ({
   handleRequest,
   handleCancelRequest,
   handleDelete,
+  handleComplete,
 }) => {
   const { currentUser } = useSelector((state) => state.user);
   return (
@@ -26,7 +27,7 @@ const GameHeader = ({
       <Box
         sx={{ position: "absolute", top: "1rem", right: "1rem", zIndex: 100 }}
       >
-        <GameCardMenu post={post} color="#FFF" />
+        <GameCardMenu handleDelete={handleDelete} post={post} color="#FFF" />
       </Box>
       <Avatar
         src={post?.image}
@@ -100,13 +101,19 @@ const GameHeader = ({
             >
               {currentUser?._id === post?.userId ? (
                 <>
-                  <Button
-                    onClick={handleDelete}
-                    variant="contained"
-                    color="error"
-                  >
-                    Delete
-                  </Button>
+                  {post?.isCompleted ? (
+                    <Button variant="contained" color="success" disabled>
+                      Completed
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleComplete}
+                      variant="contained"
+                      color="success"
+                    >
+                      Complete
+                    </Button>
+                  )}
                 </>
               ) : (
                 <>

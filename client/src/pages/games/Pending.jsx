@@ -27,16 +27,33 @@ const Pending = ({ post, acceptUser, declineUser }) => {
       </Grid>
       <Divider sx={{ margin: ".5rem 0" }} />
       <Grid container spacing={2}>
-        {post?.pendingUsers.map((pendingUser) => (
-          <Grid key={pendingUser} item xs={6} md={2.5}>
-            <UserCard
-              declineUser={declineUser}
-              type="pending"
-              acceptUser={acceptUser}
-              userId={pendingUser}
-            />
-          </Grid>
-        ))}
+        {post?.isMatched.length + 1 === post?.noOfPeople ? (
+          <>
+            <Grid
+              container
+              sx={{ marginTop: "2rem" }}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Typography variant="h6" color="text.secondary">
+                No more people can join this game.
+              </Typography>
+            </Grid>
+          </>
+        ) : (
+          <>
+            {post?.pendingUsers.map((pendingUser) => (
+              <Grid key={pendingUser} item xs={6} md={2.5}>
+                <UserCard
+                  declineUser={declineUser}
+                  type="pending"
+                  acceptUser={acceptUser}
+                  userId={pendingUser}
+                />
+              </Grid>
+            ))}
+          </>
+        )}
       </Grid>
     </Box>
   );

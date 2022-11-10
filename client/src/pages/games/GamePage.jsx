@@ -1,16 +1,7 @@
-import {
-  Avatar,
-  Box,
-  Grid,
-  Tabs,
-  Tab,
-  Typography,
-  useMediaQuery,
-  Badge,
-} from "@mui/material";
+import { Box, Tabs, Tab, useMediaQuery, Badge, Tooltip } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useCallback, useState } from "react";
-import { useEffect, Navigate } from "react";
+import { useEffect } from "react";
 import {
   Link as RouterLink,
   Routes,
@@ -157,6 +148,24 @@ const GamePage = () => {
     }
   };
 
+  const handleComplete = async () => {
+    try {
+      await axios.post(
+        `/users/complete-game/${post?._id}`,
+        {},
+        { withCredentials: true }
+      );
+      setAlert({
+        open: true,
+        severity: "success",
+        message: "Game completed! Go ahead and rate the participants!",
+      });
+      getPost();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -206,6 +215,7 @@ const GamePage = () => {
         <GameHeader
           handleRequest={handleRequest}
           handleCancelRequest={handleCancelRequest}
+          handleComplete={handleComplete}
           handleDelete={handleDelete}
           group={group}
           post={post}
@@ -225,7 +235,23 @@ const GamePage = () => {
             to="overview"
           />
           <LinkTab
-            icon={<PeopleIcon fontSize="small" />}
+            icon={
+              post?.isCompleted ? (
+                <Badge
+                  badgeContent={
+                    <Tooltip arrow title="Rate players!">
+                      <span>!</span>
+                    </Tooltip>
+                  }
+                  size="small"
+                  color="error"
+                >
+                  <PeopleIcon fontSize="small" />!
+                </Badge>
+              ) : (
+                <PeopleIcon fontSize="small" />
+              )
+            }
             label="Participants"
             to="participants"
           />
@@ -243,7 +269,11 @@ const GamePage = () => {
               icon={
                 <Badge
                   max={5}
-                  badgeContent={post?.pendingUsers.length}
+                  badgeContent={
+                    post?.isMatched.length + 1 === post?.noOfPeople
+                      ? 0
+                      : post?.pendingUsers.length
+                  }
                   size="small"
                   color="error"
                 >
@@ -260,7 +290,10 @@ const GamePage = () => {
             path="overview"
             element={<Overview post={post} creator={creator} />}
           />
-          <Route path="participants" element={<Participants post={post} />} />
+          <Route
+            path="participants"
+            element={<Participants getPost={getPost} post={post} />}
+          />
           <Route path="chat" element={<>Chat</>} />
           <Route
             path="pending"

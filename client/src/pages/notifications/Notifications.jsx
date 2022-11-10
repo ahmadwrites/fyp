@@ -1,12 +1,8 @@
 import {
   Avatar,
-  Badge,
-  Button,
-  Divider,
   Grid,
   ListItemIcon,
   ListItemText,
-  Menu,
   Link,
   MenuItem,
   MenuList,
@@ -30,19 +26,6 @@ import { format } from "timeago.js";
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [mode, setMode] = useState("all");
-
-  const handleAccept = async (postId, senderId) => {
-    try {
-      const res = await axios.post(
-        `/users/accept-request/${postId}`,
-        { senderId },
-        { withCredentials: true }
-      );
-      alert(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleFilter = () => {
     if (mode === "unread") {
@@ -178,7 +161,7 @@ const Notifications = () => {
                         </ListItemIcon>
                         <Link
                           component={RouterLink}
-                          to={`/games/${notification.postId}`}
+                          to={`/games/${notification.postId}/overview`}
                         >
                           <ListItemText
                             primary={notification?.title}

@@ -1,14 +1,13 @@
 import {
   Avatar,
   Button,
-  Chip,
   Divider,
   Grid,
   Paper,
   Rating,
   Typography,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -16,9 +15,41 @@ import getAge from "../../utils/getAge";
 
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
+import { useSelector } from "react-redux";
+import RatingDialog from "../dialogs/RatingDialog";
 
-const UserCard = ({ userId, acceptUser, declineUser, type, creator }) => {
+const UserCard = ({
+  userId,
+  acceptUser,
+  declineUser,
+  type,
+  post,
+  creator,
+  getPost,
+}) => {
+  const { currentUser } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
+  const [openRatingModal, setOpenRatingModal] = useState(false);
+  const [rating, setRating] = useState([]);
+
+  const handleOpenRatingModal = () => {
+    setOpenRatingModal(true);
+  };
+
+  const handleCloseRatingModal = () => {
+    setOpenRatingModal(false);
+  };
+
+  const getRating = useCallback(async () => {
+    try {
+      const ratingRes = await axios.get(
+        `/ratings/post/${post?._id}?raterId=${currentUser._id}&rateeId=${userId}`
+      );
+      setRating(ratingRes.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [post?._id, currentUser._id, userId]);
 
   useEffect(() => {
     const getUser = async () => {
@@ -30,8 +61,9 @@ const UserCard = ({ userId, acceptUser, declineUser, type, creator }) => {
       }
     };
 
+    getRating();
     getUser();
-  }, [userId]);
+  }, [userId, getRating]);
 
   return (
     <>
@@ -98,13 +130,34 @@ const UserCard = ({ userId, acceptUser, declineUser, type, creator }) => {
               </>
             ) : (
               <>
-                <Button size="small" variant="text" color="tertiary">
-                  View Profile
+                <Button size="small" variant="contained" color="inherit">
+                  Profile
                 </Button>
+                {rating.length < 1 &&
+                  post?.isCompleted &&
+                  user?._id !== currentUser._id && (
+                    <Button
+                      onClick={handleOpenRatingModal}
+                      size="small"
+                      variant="contained"
+                      color="tertiary"
+                    >
+                      Rate
+                    </Button>
+                  )}
               </>
             )}
           </Grid>
         </Grid>
+        <RatingDialog
+          getPost={getPost}
+          open={openRatingModal}
+          handleClose={handleCloseRatingModal}
+          post={post}
+          userId={userId}
+          user={user}
+          getRating={getRating}
+        />
       </Paper>
     </>
   );

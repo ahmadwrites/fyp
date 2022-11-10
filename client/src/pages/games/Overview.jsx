@@ -77,7 +77,9 @@ const Overview = ({ post, creator }) => {
                 >
                   People
                 </Typography>
-                <Typography variant="body2">{post?.noOfPeople}</Typography>
+                <Typography variant="body2">
+                  {post?.isMatched.length + 1} / {post?.noOfPeople}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography

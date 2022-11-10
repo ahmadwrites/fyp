@@ -35,15 +35,14 @@ const PostSchema = new mongoose.Schema(
     pendingUsers: {
       type: [String],
     },
+    isRated: {
+      type: [String],
+    },
     paidUsers: {
       type: [String],
     },
     billSettled: {
       type: Boolean,
-    },
-    isRated: {
-      type: Boolean,
-      default: false,
     },
     title: {
       type: String,

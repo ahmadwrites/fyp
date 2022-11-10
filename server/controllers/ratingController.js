@@ -28,6 +28,10 @@ export const addRating = async (req, res, next) => {
     const rating = new Rating({ raterId: req.user.id, ...req.body });
     await rating.save();
 
+    await Post.findByIdAndUpdate(req.body.postId, {
+      $addToSet: { isRated: req.body.rateeId },
+    });
+
     const notification = new Notification({
       senderId: req.user.id,
       receiverId: req.body.rateeId,
@@ -90,11 +94,13 @@ export const getRating = async (req, res, next) => {
 };
 
 export const getPostRatings = async (req, res, next) => {
+  const raterId = req.query.raterId;
+  const rateeId = req.query.rateeId;
   try {
     const post = await Post.findById(req.params.postId);
     if (!post) return res.status(400).json("Post does not exist!");
 
-    const ratings = await Rating.find({ postId: post._id });
+    const ratings = await Rating.find({ postId: post._id, raterId, rateeId });
     res.status(200).json(ratings);
   } catch (error) {
     next(error);

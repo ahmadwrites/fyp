@@ -23,10 +23,20 @@ const DeleteGameDialog = ({ post, handleDelete, handleClose, open }) => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose} color="inherit">
+          <Button
+            autoFocus
+            onClick={handleClose}
+            variant="contained"
+            color="inherit"
+          >
             Cancel
           </Button>
-          <Button onClick={handleDelete} autoFocus color="primary">
+          <Button
+            onClick={handleDelete}
+            autoFocus
+            variant="contained"
+            color="primary"
+          >
             Confirm
           </Button>
         </DialogActions>

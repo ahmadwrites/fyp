@@ -10,10 +10,11 @@ import React, { useState } from "react";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Link as RouterLink } from "react-router-dom";
 import MapsUgcOutlinedIcon from "@mui/icons-material/MapsUgcOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { useSelector } from "react-redux";
 
-const GameCardMenu = ({ post, color }) => {
+const GameCardMenu = ({ post, color, handleDelete }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -55,6 +56,14 @@ const GameCardMenu = ({ post, color }) => {
               <EditOutlinedIcon />
             </ListItemIcon>
             <ListItemText>Edit</ListItemText>
+          </MenuItem>
+        )}
+        {handleDelete && currentUser?._id === post?.userId && (
+          <MenuItem onClick={handleDelete}>
+            <ListItemIcon>
+              <DeleteIcon />
+            </ListItemIcon>
+            <ListItemText>Delete</ListItemText>
           </MenuItem>
         )}
         <MenuItem

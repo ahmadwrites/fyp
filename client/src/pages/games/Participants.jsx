@@ -1,11 +1,9 @@
 import React from "react";
-import { Navigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { Chip, Divider, Grid, Typography } from "@mui/material";
 import UserCard from "../../components/game/UserCard";
 
-const Participants = ({ post }) => {
+const Participants = ({ post, getPost }) => {
   return (
     <Box sx={{ marginTop: "1rem" }}>
       <Grid container alignItems="center" sx={{ gap: "1rem" }}>
@@ -22,11 +20,11 @@ const Participants = ({ post }) => {
       <Divider sx={{ margin: ".5rem 0" }} />
       <Grid container spacing={2}>
         <Grid item xs={6} md={2.5}>
-          <UserCard creator userId={post?.userId} />
+          {post && <UserCard post={post} creator userId={post?.userId} />}
         </Grid>
         {post?.isMatched.map((isMatched) => (
           <Grid key={isMatched} item xs={6} md={2.5}>
-            <UserCard userId={isMatched} />
+            <UserCard getPost={getPost} post={post} userId={isMatched} />
           </Grid>
         ))}
       </Grid>
