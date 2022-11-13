@@ -175,7 +175,7 @@ export const getDistance = async (req, res, next) => {
       req.body.long1,
       req.body.long2
     );
-    res.status(200).json(`Distance is: ${distanceKm}KM`);
+    res.status(200).json(distanceKm);
   } catch (error) {
     next(error);
   }

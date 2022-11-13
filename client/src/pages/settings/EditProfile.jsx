@@ -22,6 +22,7 @@ import app from "../../firebase";
 import CustomAlert from "../../components/feedback/CustomAlert";
 import axios from "axios";
 import { editProfile } from "../../redux/userSlice";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 const EditProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -39,6 +40,28 @@ const EditProfile = () => {
     lastName: currentUser.lastName,
     email: currentUser.email,
     desc: currentUser.desc,
+    location: currentUser.location,
+    latitude: currentUser.latitude,
+    longitude: currentUser.longitude,
+  });
+
+  const { ref } = usePlacesWidget({
+    apiKey: process.env.REACT_APP_googleMapsKey,
+    options: {
+      types: ["(regions)"],
+      componentRestrictions: { country: "my" },
+    },
+    onPlaceSelected: (place) => {
+      console.log(place);
+      setUserForm((prev) => {
+        return {
+          ...prev,
+          location: place?.formatted_address,
+          latitude: place?.geometry.location.lat(),
+          longitude: place?.geometry.location.lng(),
+        };
+      });
+    },
   });
 
   const handleChange = (e) => {
@@ -246,6 +269,18 @@ const EditProfile = () => {
           size="small"
           label="Email Address"
           onChange={handleChange}
+        />
+
+        <TextField
+          defaultValue={currentUser.location}
+          fullWidth
+          inputRef={ref}
+          name="location"
+          size="small"
+          label="Current Location"
+          onChange={(e) =>
+            setUserForm({ ...userForm, location: e.target.value })
+          }
         />
 
         <TextField

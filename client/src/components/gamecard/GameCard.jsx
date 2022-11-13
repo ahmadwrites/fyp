@@ -18,7 +18,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Link as RouterLink } from "react-router-dom";
-import NavigationIcon from "@mui/icons-material/Navigation";
+import MapIcon from "@mui/icons-material/Map";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
@@ -28,6 +28,7 @@ import RequestDialog from "../dialogs/RequestDialog";
 import DeleteGameDialog from "../dialogs/DeleteGameDialog";
 import CustomAlert from "../feedback/CustomAlert";
 import CancelRequestDialog from "../dialogs/CancelRequestDialog";
+
 const capitalize = (s) =>
   s?.charAt(0).toUpperCase() + s?.slice(1).toLowerCase();
 
@@ -36,6 +37,8 @@ const GameCard = ({ getPosts, post }) => {
   const [user, setUser] = useState(null);
   const [averageRating, setAverageRating] = useState(0);
   const [group, setGroup] = useState(null);
+  const [distance, setDistance] = useState(0);
+
   const [openRequest, setOpenRequest] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
   const [openCancelRequest, setOpenCancelRequest] = useState(false);
@@ -151,6 +154,38 @@ const GameCard = ({ getPosts, post }) => {
     getData();
   }, [post?.groupId, post?.userId]);
 
+  useEffect(() => {
+    const getDistance = async () => {
+      try {
+        if (!currentUser) {
+          setDistance(0);
+        } else {
+          const res = await axios.post(
+            `/posts/distance`,
+            {
+              lat1: post?.latitude,
+              long1: post?.longitude,
+              lat2: currentUser?.latitude,
+              long2: currentUser?.longitude,
+            },
+            { withCredentials: true }
+          );
+          setDistance(res.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getDistance();
+  }, [
+    currentUser,
+    currentUser?.latitude,
+    currentUser?.longitude,
+    post?.latitude,
+    post?.longitude,
+  ]);
+
   return (
     <Paper
       sx={{
@@ -236,10 +271,35 @@ const GameCard = ({ getPosts, post }) => {
               </Tooltip>
             </Grid>
 
-            <Tooltip title={post?.location} arrow>
-              <Typography variant="body1" color="text.primary">
+            <Tooltip
+              title={<Typography variant="body2">{post?.location}</Typography>}
+              arrow
+            >
+              <Typography variant="body2" color="text.primary">
                 {/* Todo: Change distance  */}
-                30km
+                {currentUser?.location ? (
+                  `${Math.round(distance)}km`
+                ) : (
+                  <>
+                    {currentUser ? (
+                      <Typography
+                        color="text.primary"
+                        component={RouterLink}
+                        to={`/settings/profile`}
+                      >
+                        <MapIcon sx={{ color: "inherit" }} fontSize="small" />
+                      </Typography>
+                    ) : (
+                      <Typography
+                        color="text.primary"
+                        component={RouterLink}
+                        to={`/login`}
+                      >
+                        <MapIcon sx={{ color: "inherit" }} fontSize="small" />
+                      </Typography>
+                    )}
+                  </>
+                )}
               </Typography>
             </Tooltip>
           </Grid>
