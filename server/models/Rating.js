@@ -13,7 +13,6 @@ const RatingSchema = new mongoose.Schema(
     },
     title: {
       type: String,
-      required: true,
     },
     desc: {
       type: String,

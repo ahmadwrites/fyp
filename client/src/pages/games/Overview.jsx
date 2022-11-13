@@ -9,18 +9,35 @@ import {
   Typography,
 } from "@mui/material";
 import moment from "moment";
-import React from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import getAge from "../../utils/getAge";
 
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
+import axios from "axios";
 
 const capitalize = (s) =>
   s?.charAt(0).toUpperCase() + s?.slice(1).toLowerCase();
 
 const Overview = ({ post, creator }) => {
+  const [averageRating, setAverageRating] = useState(0);
   const postLocation = post?.location.replaceAll(" ", "+");
+
+  const getRating = useCallback(async () => {
+    try {
+      const averageRes = await axios.get(
+        `/ratings/user-received-average/${post?.userId}`
+      );
+      setAverageRating(averageRes.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [post?.userId]);
+
+  useEffect(() => {
+    getRating();
+  }, [getRating]);
 
   return (
     <Box sx={{ marginTop: "1rem" }}>
@@ -140,7 +157,7 @@ const Overview = ({ post, creator }) => {
                   flexDirection: "column",
                 }}
               >
-                <Rating readOnly size="small" value={4} />
+                <Rating readOnly size="small" value={averageRating} />
                 <Typography sx={{ fontWeight: 400 }} variant="body1">
                   {capitalize(creator?.firstName)}{" "}
                   {capitalize(creator?.lastName)}

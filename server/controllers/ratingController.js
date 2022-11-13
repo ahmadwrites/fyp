@@ -109,12 +109,32 @@ export const getPostRatings = async (req, res, next) => {
 
 // Get ratings of one particular user
 export const getRatingOfUser = async (req, res, next) => {
+  const sort = req.query.sort;
   try {
     const user = await User.findById(req.params.userId);
     if (!user) return res.status(400).json("User does not exist!");
 
-    const ratings = await Rating.find({ rateeId: req.params.userId });
+    const ratings = await Rating.find({ rateeId: req.params.userId }).sort({
+      createdAt: sort,
+    });
     res.status(200).json(ratings);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAvereageRatingOfUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).json("User does not exist!");
+
+    const ratings = await Rating.aggregate([
+      { $match: { rateeId: req.params.userId } },
+      { $group: { _id: null, avg: { $avg: "$overallRating" } } },
+    ]);
+
+    const averageRating = ratings.length === 0 ? 0 : ratings[0].avg;
+    res.status(200).json(averageRating);
   } catch (error) {
     next(error);
   }

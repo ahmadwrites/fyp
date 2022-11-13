@@ -3,6 +3,7 @@ import { verifyToken } from "../verifyToken.js";
 import {
   addRating,
   deleteRating,
+  getAvereageRatingOfUser,
   getPostRatings,
   getRating,
   getRatingFromUser,
@@ -18,6 +19,7 @@ router.put("/:id", verifyToken, updateRating);
 router.get("/:id", getRating);
 router.get("/post/:postId", getPostRatings);
 router.get("/user-received/:userId", getRatingOfUser);
+router.get("/user-received-average/:userId", getAvereageRatingOfUser);
 router.get("/user-sent/:userId", getRatingFromUser);
 
 export default router;

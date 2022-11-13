@@ -76,7 +76,7 @@ const RatingDialog = ({ post, handleClose, open, user, userId, getRating }) => {
             based on his timing, perfomance, sportsmanship and overall attitude!
             Remember to give them a fair and honest rating!
           </DialogContentText>
-          <TextField
+          {/* <TextField
             margin="dense"
             name="title"
             label="Title"
@@ -84,7 +84,7 @@ const RatingDialog = ({ post, handleClose, open, user, userId, getRating }) => {
             size="small"
             variant="outlined"
             onChange={handleChange}
-          />
+          /> */}
           <TextField
             margin="dense"
             label="Description"

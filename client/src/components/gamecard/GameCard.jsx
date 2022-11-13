@@ -18,6 +18,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import { Link as RouterLink } from "react-router-dom";
+import NavigationIcon from "@mui/icons-material/Navigation";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 import axios from "axios";
@@ -33,6 +34,7 @@ const capitalize = (s) =>
 const GameCard = ({ getPosts, post }) => {
   const { currentUser } = useSelector((state) => state.user);
   const [user, setUser] = useState(null);
+  const [averageRating, setAverageRating] = useState(0);
   const [group, setGroup] = useState(null);
   const [openRequest, setOpenRequest] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
@@ -137,6 +139,10 @@ const GameCard = ({ getPosts, post }) => {
         setUser(userRes.data);
         const groupRes = await axios.get(`/groups/${post?.groupId}`);
         setGroup(groupRes.data);
+        const averageRes = await axios.get(
+          `/ratings/user-received-average/${post?.userId}`
+        );
+        setAverageRating(averageRes.data);
       } catch (error) {
         console.log(error);
       }
@@ -210,21 +216,37 @@ const GameCard = ({ getPosts, post }) => {
             >
               <Avatar
                 src={user?.avatar}
-                sx={{ height: "2rem", width: "2rem" }}
+                sx={{ height: "42px", width: "42px" }}
               />
               {/* <UserDetails user={user} /> */}
-              <Typography variant="text.primary">{user?.username}</Typography>
+
+              <Tooltip title="Average User Rating" arrow>
+                <Box sx={{ display: "flex", flexDirection: "column" }}>
+                  {" "}
+                  <Typography variant="text.primary">
+                    {user?.username}
+                  </Typography>
+                  <Rating
+                    size="small"
+                    value={averageRating}
+                    readOnly
+                    precision={0.5}
+                  />
+                </Box>
+              </Tooltip>
             </Grid>
-            <Tooltip title="Average User Rating" arrow>
-              <Box>
-                <Rating name="rating" value={3} readOnly />
-              </Box>
+
+            <Tooltip title={post?.location} arrow>
+              <Typography variant="body1" color="text.primary">
+                {/* Todo: Change distance  */}
+                30km
+              </Typography>
             </Tooltip>
           </Grid>
           <Grid container></Grid>
         </Grid>
 
-        <Divider />
+        {/* <Divider />
 
         <Box sx={{ padding: ".5rem" }}>
           <Typography
@@ -239,7 +261,7 @@ const GameCard = ({ getPosts, post }) => {
           >
             {post?.location}
           </Typography>
-        </Box>
+        </Box> */}
 
         <Divider />
 

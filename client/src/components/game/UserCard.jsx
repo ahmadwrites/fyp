@@ -31,6 +31,7 @@ const UserCard = ({
   const [user, setUser] = useState(null);
   const [openRatingModal, setOpenRatingModal] = useState(false);
   const [rating, setRating] = useState([]);
+  const [averageRating, setAverageRating] = useState(0);
 
   const handleOpenRatingModal = () => {
     setOpenRatingModal(true);
@@ -46,6 +47,10 @@ const UserCard = ({
         `/ratings/post/${post?._id}?raterId=${currentUser._id}&rateeId=${userId}`
       );
       setRating(ratingRes.data);
+      const averageRes = await axios.get(
+        `/ratings/user-received-average/${userId}`
+      );
+      setAverageRating(averageRes.data);
     } catch (error) {
       console.log(error);
     }
@@ -106,7 +111,7 @@ const UserCard = ({
             )}
             {getAge(user?.dateOfBirth)} Years Old
           </Typography>
-          <Rating value={3.6} readOnly size="small" />
+          <Rating value={averageRating} precision={0.5} readOnly size="small" />
           <Divider sx={{ margin: ".5rem 0" }} flexItem />
           <Grid container justifyContent="space-evenly">
             {type === "pending" ? (
@@ -130,7 +135,13 @@ const UserCard = ({
               </>
             ) : (
               <>
-                <Button size="small" variant="contained" color="inherit">
+                <Button
+                  component={RouterLink}
+                  to={`/profile/${user?._id}`}
+                  size="small"
+                  variant="contained"
+                  color="inherit"
+                >
                   Profile
                 </Button>
                 {rating.length < 1 &&

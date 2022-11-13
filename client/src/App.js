@@ -14,6 +14,7 @@ import CreateGame from "./pages/games/CreateGame";
 import EditGame from "./pages/games/EditGame";
 import Notifications from "./pages/notifications/Notifications";
 import GamePage from "./pages/games/GamePage";
+import Profile from "./pages/profile/Profile";
 
 function App() {
   return (
@@ -31,6 +32,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Settings />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="profile/:id"
+                element={
+                  <PrivateRoute>
+                    <Profile />
                   </PrivateRoute>
                 }
               />

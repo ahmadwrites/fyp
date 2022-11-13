@@ -150,7 +150,11 @@ const Notifications = () => {
               notifications.map((notification) => (
                 <MenuItem
                   component={RouterLink}
-                  to={`/games/${notification.postId}/overview`}
+                  to={
+                    notification.type === "rating"
+                      ? `/profile/${notification?.receiverId}/?tab=rating`
+                      : `/games/${notification?.postId}/overview`
+                  }
                   key={notification._id}
                   onClick={() => readNotification(notification)}
                 >
