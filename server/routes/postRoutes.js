@@ -8,6 +8,7 @@ import {
   updatePost,
   getFilteredPosts,
   getFollowingNew,
+  getUserPosts,
   getDistance,
 } from "../controllers/postController.js";
 import { verifyToken } from "../verifyToken.js";
@@ -54,6 +55,7 @@ router.get("/following", verifyToken, getFollowingNew);
 router.get("/:id", getPost);
 router.get("/", getPosts);
 router.get("/group/:groupId", getGroupPosts);
+router.get("/user/:userId", getUserPosts);
 router.post("/distance", verifyToken, getDistance);
 // router.get("/following", getFollowingPosts);
 // router.get("/following/filter", verifyToken, getFollowingFilteredPosts);

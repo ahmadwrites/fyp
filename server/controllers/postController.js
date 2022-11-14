@@ -141,6 +141,21 @@ export const getFollowingNew = async (req, res, next) => {
   }
 };
 
+export const getUserPosts = async (req, res, next) => {
+  const sort = req.query.sort;
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).json("User does not exist!");
+
+    const posts = await Post.find({ userId: req.params.userId }).sort({
+      createdAt: sort,
+    });
+    res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
 function distance(lat1, lat2, lon1, lon2) {
   // The math module contains a function
   // named toRadians which converts from

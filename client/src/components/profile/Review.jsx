@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Chip,
   CircularProgress,
   Divider,
   Grid,
@@ -69,6 +70,22 @@ const Review = ({ rating }) => {
           </Typography>
           <Rating value={rating?.overallRating} readOnly size="small" />
         </Grid>
+        <Chip
+          sx={{ marginLeft: "auto" }}
+          label={
+            user?.level === 0
+              ? "Any"
+              : user?.level === 1
+              ? "Novice"
+              : user?.level === 2
+              ? "Beginner"
+              : user?.level === 3
+              ? "Intermediate"
+              : user?.level === 4
+              ? "Advanced"
+              : "Professional"
+          }
+        />
       </Grid>
       <Typography mb={1} color="text.primary">
         {rating?.desc}

@@ -2,7 +2,6 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import cors from "cors";
 
 import authRoutes from "./routes/authRoutes.js";
 import groupRoutes from "./routes/groupRoutes.js";
@@ -14,7 +13,6 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 
 const app = express();
 dotenv.config();
-app.use(cors());
 
 const connect = () => {
   mongoose

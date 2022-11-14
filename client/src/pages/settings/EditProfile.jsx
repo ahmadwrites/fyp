@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import {
   getStorage,
-  ref,
+  ref as firebaseRef,
   uploadBytesResumable,
   getDownloadURL,
 } from "firebase/storage";
@@ -79,7 +79,7 @@ const EditProfile = () => {
   const uploadFile = (file) => {
     const storage = getStorage(app);
     const fileName = new Date().getTime() + file.name;
-    const storageRef = ref(storage, fileName);
+    const storageRef = firebaseRef(storage, fileName);
     const uploadTask = uploadBytesResumable(storageRef, file);
 
     // Todo: Find current image in firebase and delete it.

@@ -45,7 +45,6 @@ const Profile = () => {
   const location = useLocation().pathname.split("/")[2];
   const { currentUser } = useSelector((state) => state.user);
   const tab = new URLSearchParams(useLocation().search).get("tab");
-  console.log(tab);
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
 
   const [value, setValue] = useState(0);
@@ -53,6 +52,36 @@ const Profile = () => {
   const [ratings, setRatings] = useState([]);
   const [averageRating, setAverageRating] = useState(0);
   const [ratingsSort, setRatingsSort] = useState(-1);
+  const [postsSort, setPostsSort] = useState(-1);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const getUser = async () => {
+      try {
+        const res = await axios.get(`/users/${location}`);
+        setUser(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUser();
+  }, [location]);
+
+  useEffect(() => {
+    const getPosts = async () => {
+      try {
+        const res = await axios.get(
+          `/posts/user/${location}?sort=${postsSort}`
+        );
+        setPosts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getPosts();
+  }, [location, postsSort]);
 
   useEffect(() => {
     const getRatings = async () => {
@@ -73,19 +102,6 @@ const Profile = () => {
 
     getRatings();
   }, [user?._id, ratingsSort]);
-
-  useEffect(() => {
-    const getUser = async () => {
-      try {
-        const res = await axios.get(`/users/${location}`);
-        setUser(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    getUser();
-  }, [location]);
 
   useEffect(() => {
     switch (tab) {
@@ -143,9 +159,21 @@ const Profile = () => {
               <Typography>({ratings?.length})</Typography>
             </Grid>
             {/* Todo: Change location */}
-            <Typography variant="body2">
-              Kuala Lumpur ∙ Joined {format(user?.createdAt)}
+            <Typography mb={1} variant="body2">
+              {user?.location} ∙ Joined {format(user?.createdAt)}
             </Typography>
+            {currentUser?._id === user?._id && (
+              <Button
+                component={RouterLink}
+                to="/settings/profile"
+                variant="contained"
+                fullWidth
+                color="tertiary"
+                size="small"
+              >
+                Edit Profile
+              </Button>
+            )}
           </Grid>
           <Grid item xs={12} md={9}>
             <Tabs
@@ -166,7 +194,9 @@ const Profile = () => {
               <LinkTab label="Reviews" />
             </Tabs>
             <Box sx={{ marginTop: "1rem" }}>
-              {value === 0 && <ProfileListings />}
+              {value === 0 && (
+                <ProfileListings setPostsSort={setPostsSort} posts={posts} />
+              )}
               {value === 1 && (
                 <ProfileReviews
                   setRatingsSort={setRatingsSort}
