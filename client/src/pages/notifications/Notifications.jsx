@@ -81,122 +81,124 @@ const Notifications = () => {
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Container maxWidth="sm" sx={{ padding: { xs: ".5rem", md: "1rem" } }}>
-        <Typography
-          mb=".5rem"
-          variant="h5"
-          sx={{ fontWeight: 500 }}
-          color="text.primary"
-        >
-          <Paper elevation={1}>
-            <Grid container sx={{ padding: "1rem", gap: ".5rem" }}>
-              <Grid container justifyContent="space-between">
-                <Typography
-                  color="text.primary"
-                  variant="h5"
-                  sx={{ fontWeight: "500", textAlign: "center" }}
-                >
-                  Notifications
-                </Typography>
-                <MoreHorizIcon
-                  sx={{ color: "rgba(0, 0, 0, 0.6)", cursor: "pointer" }}
-                />
-              </Grid>
-              <Grid container sx={{ gap: ".5rem" }}>
-                <Chip
-                  sx={{ cursor: "pointer" }}
-                  label="All"
-                  onClick={handleFilter}
-                  variant={mode === "all" ? "filled" : "outlined"}
-                />
-                <Chip
-                  sx={{ cursor: "pointer" }}
-                  label="Unread"
-                  onClick={handleFilter}
-                  variant={mode === "unread" ? "filled" : "outlined"}
-                />
-              </Grid>
-              <MenuList
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: ".5rem",
-                }}
+        <Paper elevation={1}>
+          <Grid container sx={{ padding: "1rem", gap: ".5rem" }}>
+            <Grid container justifyContent="space-between">
+              <Typography
+                color="text.primary"
+                variant="h5"
+                sx={{ fontWeight: "500", textAlign: "center" }}
               >
-                {notifications.length > 0 &&
-                  notifications.map((notification) => (
-                    <Box>
-                      <MenuItem
-                        sx={{ padding: ".5rem", width: "100%" }}
-                        key={notification._id}
-                        onClick={() => readNotification(notification)}
-                      >
-                        <ListItemIcon sx={{ marginRight: "1rem" }}>
-                          <Avatar
-                            component={RouterLink}
-                            to={`/profile/${notification.senderId}`}
-                            sx={{
-                              height: "48px",
-                              width: "48px",
-                              backgroundColor:
-                                notification?.type === "request"
-                                  ? theme.palette.tertiary.main
-                                  : notification?.type === "match"
-                                  ? theme.palette.error.light
-                                  : notification?.type === "completed"
-                                  ? theme.palette.success.light
-                                  : theme.palette.gold.main,
-                            }}
-                          >
-                            {notification?.type === "request" ? (
-                              <EmojiPeopleIcon fontSize="large" />
-                            ) : notification?.type === "match" ? (
-                              <WhatshotIcon fontSize="large" />
-                            ) : notification?.type === "completed" ? (
-                              <CheckCircleOutlineIcon fontSize="large" />
-                            ) : (
-                              <StarBorderIcon fontSize="large" />
-                            )}
-                          </Avatar>
-                        </ListItemIcon>
-                        <Link
+                Notifications
+              </Typography>
+              <MoreHorizIcon
+                sx={{ color: "rgba(0, 0, 0, 0.6)", cursor: "pointer" }}
+              />
+            </Grid>
+            <Grid container sx={{ gap: ".5rem" }}>
+              <Chip
+                sx={{
+                  cursor: "pointer",
+                  color: mode === "all" ? "#fff" : "inherit",
+                }}
+                label="All"
+                onClick={handleFilter}
+                color={mode === "all" ? "primary" : "default"}
+                variant={mode === "all" ? "filled" : "outlined"}
+              />
+              <Chip
+                sx={{
+                  cursor: "pointer",
+                  color: mode === "unread" ? "#fff" : "inherit",
+                }}
+                label="Unread"
+                onClick={handleFilter}
+                color={mode === "unread" ? "primary" : "default"}
+                variant={mode === "unread" ? "filled" : "outlined"}
+              />
+            </Grid>
+            <MenuList
+              sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: ".5rem",
+              }}
+            >
+              {notifications.length > 0 &&
+                notifications.map((notification) => (
+                  <Box>
+                    <MenuItem
+                      sx={{ padding: ".5rem", width: "100%" }}
+                      key={notification._id}
+                      onClick={() => readNotification(notification)}
+                    >
+                      <ListItemIcon sx={{ marginRight: "1rem" }}>
+                        <Avatar
                           component={RouterLink}
-                          to={`/games/${notification.postId}/overview`}
-                        >
-                          <ListItemText
-                            primary={notification?.title}
-                            primaryTypographyProps={{
-                              style: {
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                color: "#000",
-                                fontWeight: !notification.read ? "500" : "400",
-                              },
-                            }}
-                            secondaryTypographyProps={{
-                              style: {
-                                overflow: "hidden",
-                                textOverflow: "ellipsis",
-                                fontWeight: !notification.read ? "500" : "400",
-                              },
-                            }}
-                            secondary={notification?.message}
-                          />
-                        </Link>
-                        <Typography
-                          color="text.secondary"
-                          variant="caption"
+                          to={`/profile/${notification.senderId}`}
                           sx={{
-                            display: "flex",
-                            alignSelf: "flex-start",
-                            marginLeft: "auto",
-                            fontWeight: !notification.read ? "500" : "400",
+                            height: "48px",
+                            width: "48px",
+                            backgroundColor:
+                              notification?.type === "request"
+                                ? theme.palette.tertiary.main
+                                : notification?.type === "match"
+                                ? theme.palette.error.light
+                                : notification?.type === "completed"
+                                ? theme.palette.success.light
+                                : theme.palette.gold.main,
                           }}
                         >
-                          {format(notification?.createdAt)}
-                        </Typography>
-                      </MenuItem>
-                      {/* {notification?.type === "request" && (
+                          {notification?.type === "request" ? (
+                            <EmojiPeopleIcon fontSize="large" />
+                          ) : notification?.type === "match" ? (
+                            <WhatshotIcon fontSize="large" />
+                          ) : notification?.type === "completed" ? (
+                            <CheckCircleOutlineIcon fontSize="large" />
+                          ) : (
+                            <StarBorderIcon fontSize="large" />
+                          )}
+                        </Avatar>
+                      </ListItemIcon>
+                      <Link
+                        component={RouterLink}
+                        to={`/games/${notification.postId}/overview`}
+                      >
+                        <ListItemText
+                          primary={notification?.title}
+                          primaryTypographyProps={{
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              color: "#000",
+                              fontWeight: !notification.read ? "500" : "400",
+                            },
+                          }}
+                          secondaryTypographyProps={{
+                            style: {
+                              overflow: "hidden",
+                              textOverflow: "ellipsis",
+                              fontWeight: !notification.read ? "500" : "400",
+                            },
+                          }}
+                          secondary={notification?.message}
+                        />
+                      </Link>
+                      <Typography
+                        color="text.secondary"
+                        variant="caption"
+                        sx={{
+                          display: "flex",
+                          alignSelf: "flex-start",
+                          marginLeft: "auto",
+                          fontWeight: !notification.read ? "500" : "400",
+                        }}
+                      >
+                        {format(notification?.createdAt)}
+                      </Typography>
+                    </MenuItem>
+                    {/* {notification?.type === "request" && (
                         <Grid
                           container
                           alignItems="center"
@@ -225,15 +227,15 @@ const Notifications = () => {
                           </Button>
                         </Grid>
                       )} */}
-                    </Box>
-                  ))}
-                {notifications.length === 0 && (
-                  <Typography sx={{ textAlign: "center", padding: "1rem" }}>
-                    No new notifications.
-                  </Typography>
-                )}
+                  </Box>
+                ))}
+              {notifications.length === 0 && (
+                <Typography sx={{ textAlign: "center", padding: "1rem" }}>
+                  No new notifications.
+                </Typography>
+              )}
 
-                {/* <MenuItem>
+              {/* <MenuItem>
               <ListItemIcon sx={{ marginRight: ".5rem" }}>
                 <Avatar
                   sx={{
@@ -250,10 +252,9 @@ const Notifications = () => {
                 secondary="Sara wants to join your game!"
               />
             </MenuItem> */}
-              </MenuList>
-            </Grid>
-          </Paper>
-        </Typography>
+            </MenuList>
+          </Grid>
+        </Paper>
       </Container>
     </Box>
   );

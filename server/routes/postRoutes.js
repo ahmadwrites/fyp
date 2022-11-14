@@ -10,6 +10,8 @@ import {
   getFollowingNew,
   getUserPosts,
   getDistance,
+  getPostsWithUser,
+  searchPosts,
 } from "../controllers/postController.js";
 import { verifyToken } from "../verifyToken.js";
 const router = express.Router();
@@ -52,7 +54,9 @@ router.put("/:id", verifyToken, updatePost);
 router.delete("/:id", verifyToken, deletePost);
 router.get("/filter", getFilteredPosts);
 router.get("/following", verifyToken, getFollowingNew);
+router.get("/search", searchPosts);
 router.get("/:id", getPost);
+router.get("/with-user/:userId", getPostsWithUser);
 router.get("/", getPosts);
 router.get("/group/:groupId", getGroupPosts);
 router.get("/user/:userId", getUserPosts);

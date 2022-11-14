@@ -106,9 +106,9 @@ const ListingCard = ({ post }) => {
           />
         )}
       </Box>
-      <Box sx={{ padding: ".5rem" }}>
+      <Box sx={{ padding: "1rem" }}>
         <Grid
-          sx={{ padding: "1rem 0" }}
+          sx={{ padding: ".5rem 0 1rem" }}
           container
           alignItems="center"
           justifyContent="space-between"
@@ -194,16 +194,21 @@ const ListingCard = ({ post }) => {
             {moment(post?.endTime).format("HH:mm")}
           </Typography>
         </Box>
-        <LinearProgress
-          sx={{ margin: "1rem 0", height: 8, borderRadius: "4px" }}
-          variant="determinate"
-          color={post?.isCompleted ? "success" : "primary"}
-          value={
-            post?.isCompleted
-              ? 100
-              : post?.isMatched.length + (1 / post?.noOfPeople) * 100
-          }
-        />
+        <Tooltip
+          arrow
+          title={`${post?.isMatched.length + 1} / ${post?.noOfPeople} Players`}
+        >
+          <LinearProgress
+            sx={{ margin: "1rem 0", height: 8, borderRadius: "4px" }}
+            variant="determinate"
+            color={post?.isCompleted ? "success" : "primary"}
+            value={
+              post?.isCompleted
+                ? 100
+                : ((post?.isMatched.length + 1) / post?.noOfPeople) * 100
+            }
+          />
+        </Tooltip>
         <Grid container justifyContent="space-between">
           <Box sx={{ display: "flex", alignItems: "center", gap: ".25rem" }}>
             <Typography variant="body1" sx={{ fontWeight: 500 }}>

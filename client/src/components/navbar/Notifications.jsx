@@ -54,7 +54,7 @@ const Notifications = () => {
 
   const getNotifications = useCallback(async () => {
     try {
-      const res = await axios.get("/notifications/received?limit=6", {
+      const res = await axios.get("/notifications/received?limit=5", {
         withCredentials: true,
       });
       setNotifications(res.data);
@@ -80,9 +80,9 @@ const Notifications = () => {
       sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
     >
       <Badge
-        max={5}
+        max={3}
         badgeContent={
-          notifications.filter((notification) => notification.read !== true)
+          notifications?.filter((notification) => notification.read !== true)
             .length
         }
         color="error"

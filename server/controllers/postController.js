@@ -86,6 +86,20 @@ export const getPosts = async (req, res, next) => {
   }
 };
 
+export const searchPosts = async (req, res, next) => {
+  const title = req.query.title;
+  try {
+    const posts = await Post.find({
+      title: { $regex: title, $options: "i" },
+      isCompleted: false,
+      isjoinable: true,
+    }).sort({ createdAt: -1 });
+    res.status(200).json(posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getGroupPosts = async (req, res, next) => {
   try {
     const posts = await Post.find({ groupId: req.params.groupId });
@@ -191,6 +205,27 @@ export const getDistance = async (req, res, next) => {
       req.body.long2
     );
     res.status(200).json(distanceKm);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPostsWithUser = async (req, res, next) => {
+  const isCompleted = req.query.isCompleted;
+
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(400).json("User does not exist!");
+
+    const posts = await Post.find({
+      $or: [
+        { isMatched: { $in: req.params.userId } },
+        { userId: req.params.userId },
+      ],
+      isCompleted: isCompleted,
+    }).sort({ createdAt: 1 });
+
+    res.status(200).json(posts);
   } catch (error) {
     next(error);
   }

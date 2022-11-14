@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Link,
@@ -30,8 +30,14 @@ const Offset = styled("div")(({ theme }) => theme.mixins.toolbar);
 
 const Navbar = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
   const [search, setSearch] = useState("");
+
+  const handleSubmit = () => {
+    navigate(`/search?title=${search}`);
+    setSearch("");
+  };
 
   return (
     <>
@@ -79,6 +85,11 @@ const Navbar = () => {
                   },
                 }}
                 value={search}
+                onKeyPress={(e) => {
+                  if (e.key === "Enter") {
+                    handleSubmit();
+                  }
+                }}
                 onChange={(e) => setSearch(e.target.value)}
                 InputProps={{
                   startAdornment: (
@@ -175,10 +186,7 @@ const Navbar = () => {
                           </Link>
                         </Tooltip>
                         <Tooltip arrow title="Games">
-                          <Link
-                            component={RouterLink}
-                            to={`user/${currentUser._id}/games`}
-                          >
+                          <Link component={RouterLink} to={`/games`}>
                             <VideogameAssetIcon
                               sx={{
                                 color: "#FFF",

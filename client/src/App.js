@@ -15,6 +15,8 @@ import EditGame from "./pages/games/EditGame";
 import Notifications from "./pages/notifications/Notifications";
 import GamePage from "./pages/games/GamePage";
 import Profile from "./pages/profile/Profile";
+import Games from "./pages/games/Games";
+import Search from "./pages/search/Search";
 
 function App() {
   return (
@@ -44,6 +46,14 @@ function App() {
                 }
               />
               <Route path="games">
+                <Route
+                  index
+                  element={
+                    <PrivateRoute>
+                      <Games />
+                    </PrivateRoute>
+                  }
+                />
                 <Route
                   path="create"
                   element={
@@ -80,6 +90,14 @@ function App() {
                   }
                 />
               </Route>
+              <Route
+                path="search"
+                element={
+                  <PrivateRoute>
+                    <Search />
+                  </PrivateRoute>
+                }
+              />
               <Route path="notifications">
                 <Route
                   index
