@@ -17,7 +17,7 @@ const PreferenceSchema = new mongoose.Schema(
       default: 60,
     },
     location: {
-      type: string,
+      type: String,
     },
     maxDistance: {
       type: Number,
@@ -31,6 +31,7 @@ const PreferenceSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
+      default: "all",
     },
     minNoOfPeople: {
       type: Number,
@@ -47,4 +48,4 @@ const PreferenceSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Preferance", PreferenceSchema);
+export default mongoose.model("Preference", PreferenceSchema);

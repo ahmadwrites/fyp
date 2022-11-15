@@ -3,14 +3,23 @@ import bcrypt from "bcryptjs";
 import mongoose from "mongoose";
 import User from "../models/User.js";
 import { createError } from "../error.js";
+import getAge from "../utils/getAge.js";
+import Preference from "../models/Preference.js";
 
 export const signup = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
     const hashedPassword = bcrypt.hashSync(req.body.password, salt);
-    const newUser = new User({ ...req.body, password: hashedPassword });
+    const newUser = new User({
+      ...req.body,
+      password: hashedPassword,
+      age: getAge(req.body.dateOfBirth),
+    });
 
     await newUser.save();
+
+    const newPreference = new Preference({ userId: newUser._id });
+    await newPreference.save();
     res.status(200).json("Successfully created user.");
   } catch (error) {
     next(error);

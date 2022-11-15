@@ -78,7 +78,7 @@ const Games = () => {
                   variant="h6"
                   color="text.secondary"
                 >
-                  No Ongoing Games
+                  No Games Yet
                 </Typography>
               </Grid>
             </>

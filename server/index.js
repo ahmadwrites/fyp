@@ -10,6 +10,7 @@ import userRoutes from "./routes/userRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import venueRoutes from "./routes/venueRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
+import preferenceRoutes from "./routes/preferenceRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -31,6 +32,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/venues", venueRoutes);
 app.use("/api/notifications", notificationRoutes);
+app.use("/api/preferences", preferenceRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;

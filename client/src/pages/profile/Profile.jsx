@@ -19,7 +19,10 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import MaleIcon from "@mui/icons-material/Male";
+import FemaleIcon from "@mui/icons-material/Female";
 import { useSelector } from "react-redux";
+import getAge from "../../utils/getAge";
 import theme from "../../theme";
 import ProfileListings from "./ProfileListings";
 import ProfileReviews from "./ProfileReviews";
@@ -136,6 +139,14 @@ const Profile = () => {
               src={user?.avatar}
               sx={{ height: "128px", width: "128px", marginBottom: "1rem" }}
             />
+            <Grid container sx={{ gap: ".5rem" }} alignItems="center">
+              {user?.gender === "male" ? (
+                <MaleIcon fontSize="small" color="tertiary" />
+              ) : (
+                <FemaleIcon fontSize="small" sx={{ color: "#DE3163" }} />
+              )}
+              <Typography>{user?.age} Years Old</Typography>
+            </Grid>
             <Typography variant="h6" color="text.primary">
               {capitalize(user?.firstName)} {capitalize(user?.lastName)}
             </Typography>

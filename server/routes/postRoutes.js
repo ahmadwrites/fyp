@@ -12,6 +12,7 @@ import {
   getDistance,
   getPostsWithUser,
   searchPosts,
+  getCustom,
 } from "../controllers/postController.js";
 import { verifyToken } from "../verifyToken.js";
 const router = express.Router();
@@ -55,6 +56,7 @@ router.delete("/:id", verifyToken, deletePost);
 router.get("/filter", getFilteredPosts);
 router.get("/following", verifyToken, getFollowingNew);
 router.get("/search", searchPosts);
+router.get("/preference", verifyToken, getCustom);
 router.get("/:id", getPost);
 router.get("/with-user/:userId", getPostsWithUser);
 router.get("/", getPosts);

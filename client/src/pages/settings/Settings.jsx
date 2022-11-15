@@ -101,11 +101,6 @@ const Settings = () => {
                   to="/settings/preferences"
                 />
                 <LinkTab
-                  icon={<NotificationsNoneIcon />}
-                  label="Notifications"
-                  to="/settings/notifications"
-                />
-                <LinkTab
                   icon={<KeyIcon />}
                   label="Change Password"
                   to="/settings/change-password"
@@ -123,7 +118,6 @@ const Settings = () => {
             <Routes>
               <Route path="profile" element={<EditProfile />} />
               <Route path="preferences" element={<Preferences />} />
-              <Route path="notifications" element={<>Notifications</>} />
               <Route path="change-password" element={<>Change Passsword</>} />
             </Routes>
           </Grid>

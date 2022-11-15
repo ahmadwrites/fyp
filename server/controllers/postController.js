@@ -4,6 +4,7 @@ import Post from "../models/Post.js";
 import Notification from "../models/Notification.js";
 import User from "../models/User.js";
 import Rating from "../models/Rating.js";
+import Preference from "../models/Preference.js";
 
 export const addPost = async (req, res, next) => {
   try {
@@ -135,6 +136,55 @@ export const getFilteredPosts = async (req, res, next) => {
 };
 
 // Todo: get following groups posts and filter based on preferences
+export const getCustom = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(400).json("User does not exist!");
+
+    const preference = await Preference.findOne({ userId: req.user.id });
+    const followedGroups = user.followedGroups;
+    let followingPosts;
+
+    if (preference === null) {
+      followingPosts = await Promise.all(
+        followedGroups.map((group) => {
+          return Post.find({
+            groupId: group,
+            isCompleted: false,
+            joinable: true,
+          });
+        })
+      );
+    } else {
+      // Todo: filter distance
+      followingPosts = await Promise.all(
+        followedGroups.map((group) => {
+          return Post.find({
+            groupId: group,
+            isCompleted: false,
+            joinable: true,
+            gender:
+              preference.gender === "all"
+                ? { $in: ["male", "female", "all"] }
+                : preference.gender === "male"
+                ? "male"
+                : "female",
+          });
+        })
+      );
+    }
+
+    res
+      .status(200)
+      .json(
+        followingPosts
+          .flat()
+          .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+      );
+  } catch (error) {
+    next(error);
+  }
+};
 
 // Todo: get following groups posts and filter based on new
 export const getFollowingNew = async (req, res, next) => {
@@ -171,15 +221,11 @@ export const getUserPosts = async (req, res, next) => {
 };
 
 function distance(lat1, lat2, lon1, lon2) {
-  // The math module contains a function
-  // named toRadians which converts from
-  // degrees to radians.
   lon1 = (lon1 * Math.PI) / 180;
   lon2 = (lon2 * Math.PI) / 180;
   lat1 = (lat1 * Math.PI) / 180;
   lat2 = (lat2 * Math.PI) / 180;
 
-  // Haversine formula
   let dlon = lon2 - lon1;
   let dlat = lat2 - lat1;
   let a =
@@ -187,12 +233,8 @@ function distance(lat1, lat2, lon1, lon2) {
     Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
 
   let c = 2 * Math.asin(Math.sqrt(a));
-
-  // Radius of earth in kilometers. Use 3956
-  // for miles
   let r = 6371;
 
-  // calculate the result
   return c * r;
 }
 
@@ -223,7 +265,7 @@ export const getPostsWithUser = async (req, res, next) => {
         { userId: req.params.userId },
       ],
       isCompleted: isCompleted,
-    }).sort({ createdAt: 1 });
+    }).sort({ createdAt: -1 });
 
     res.status(200).json(posts);
   } catch (error) {

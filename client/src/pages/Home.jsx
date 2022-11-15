@@ -27,16 +27,24 @@ const Home = () => {
 
   const getPosts = useCallback(async () => {
     try {
-      const res = await axios.get("/posts");
+      const res = currentUser
+        ? await axios.get("/posts/preference", {
+            withCredentials: true,
+          })
+        : await axios.get("/posts");
       setPosts(res.data);
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [currentUser]);
 
   useEffect(() => {
     getPosts();
   }, [getPosts]);
+
+  // Todo: filter based on distance
+  // check preferences -> if no, as nomral,
+  // if yes -> get distance -> filter posts, map only less than preference distance
 
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
@@ -127,17 +135,38 @@ const Home = () => {
             </Paper>
 
             <Grid container alignItems="stretch" spacing={2}>
-              {posts.map((post) => (
-                <Grid
-                  key={post?._id}
-                  sx={{ display: "flex" }}
-                  item
-                  xs={12}
-                  sm={6}
-                >
-                  <GameCard getPosts={getPosts} post={post} />
-                </Grid>
-              ))}
+              {posts.length === 0 ? (
+                <>
+                  <Grid
+                    sx={{ marginTop: "1rem" }}
+                    container
+                    direction="column"
+                    alignItems="center"
+                  >
+                    <Typography variant="h6" color="text.secondary">
+                      No posts yet.
+                    </Typography>
+                    <Typography color="text.secondary">
+                      Consider following more groups or changing your
+                      preferences.
+                    </Typography>
+                  </Grid>
+                </>
+              ) : (
+                <>
+                  {posts.map((post) => (
+                    <Grid
+                      key={post?._id}
+                      sx={{ display: "flex" }}
+                      item
+                      xs={12}
+                      sm={6}
+                    >
+                      <GameCard getPosts={getPosts} post={post} />
+                    </Grid>
+                  ))}
+                </>
+              )}
             </Grid>
           </Grid>
           <Grid item xs={12} md={4}></Grid>
