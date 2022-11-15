@@ -17,6 +17,7 @@ import GamePage from "./pages/games/GamePage";
 import Profile from "./pages/profile/Profile";
 import Games from "./pages/games/Games";
 import Search from "./pages/search/Search";
+import Group from "./pages/groups/Group";
 
 function App() {
   return (
@@ -86,6 +87,14 @@ function App() {
                   element={
                     <PrivateRoute>
                       <CreateGroup />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path=":title"
+                  element={
+                    <PrivateRoute>
+                      <Group />
                     </PrivateRoute>
                   }
                 />

@@ -281,7 +281,7 @@ export const completeGame = async (req, res, next) => {
 
     const updatedPost = await Post.findByIdAndUpdate(
       req.params.postId,
-      { $set: { isCompleted: true } },
+      { $set: { isCompleted: true, joinable: false } },
       { new: true }
     );
 

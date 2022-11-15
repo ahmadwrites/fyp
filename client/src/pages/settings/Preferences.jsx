@@ -19,6 +19,8 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
+import CustomAlert from "../../components/feedback/CustomAlert";
+
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -43,6 +45,20 @@ const Preferences = () => {
     maxDistance: 80,
     gender: "all",
   });
+
+  const [alert, setAlert] = useState({
+    open: false,
+    severity: null,
+    message: null,
+  });
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setAlert({ ...alert, open: false });
+  };
 
   useEffect(() => {
     const getPreference = async () => {
@@ -71,12 +87,20 @@ const Preferences = () => {
           withCredentials: true,
         });
         // Todo: Change to toast
-        alert("Saved successfully.");
+        setAlert({
+          open: true,
+          severity: "success",
+          message: "Successfully saved preference.",
+        });
       } else {
         await axios.put("/preferences", preference, {
           withCredentials: true,
         });
-        alert("Updated successfully.");
+        setAlert({
+          open: true,
+          severity: "success",
+          message: "Successfully updated preference.",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -185,6 +209,12 @@ const Preferences = () => {
           </Grid>
         </Grid>
       </Container>
+      <CustomAlert
+        open={alert.open}
+        handleClose={handleClose}
+        message={alert.message}
+        severity={alert.severity}
+      />
     </Paper>
   );
 };

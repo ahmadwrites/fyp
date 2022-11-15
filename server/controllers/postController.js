@@ -103,8 +103,18 @@ export const searchPosts = async (req, res, next) => {
 
 export const getGroupPosts = async (req, res, next) => {
   try {
-    const posts = await Post.find({ groupId: req.params.groupId });
-    res.status(200).json(posts);
+    const group = await Group.findOne({ title: req.params.groupTitle });
+    if (!group)
+      return res
+        .status(200)
+        .json({ message: `${req.params.groupTitle} does not exist!` });
+
+    const posts = await Post.find({
+      groupId: group._id,
+      joinable: true,
+      isCompleted: false,
+    });
+    res.status(200).json({ posts, group });
   } catch (error) {
     next(error);
   }
