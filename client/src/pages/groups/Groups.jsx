@@ -73,7 +73,7 @@ const Groups = () => {
         </Typography>
 
         <Grid alignItems="stretch" spacing={{ xs: 1, md: 2 }} container>
-          <Grid style={{ display: "flex" }} item xs={12} sm={6} md={3}>
+          {/* <Grid style={{ display: "flex" }} item xs={12} sm={6} md={3}>
             <Paper
               elevation={1}
               sx={{
@@ -104,7 +104,7 @@ const Groups = () => {
                 Can't find a sport or activity? Create one here!
               </Typography>
             </Paper>
-          </Grid>
+          </Grid> */}
           {groups.map((group) => (
             <Grid
               style={{ display: "flex" }}

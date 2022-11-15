@@ -70,6 +70,8 @@ const GameHeader = ({
           >
             <Box sx={{ display: "flex", marginRight: "auto" }}>
               <Avatar
+                component={RouterLink}
+                to={`/groups/${group?.title}`}
                 src={group?.avatar}
                 variant="square"
                 sx={{
@@ -79,6 +81,8 @@ const GameHeader = ({
                 }}
               />
               <Typography
+                component={RouterLink}
+                to={`/groups/${group?.title}`}
                 sx={{
                   marginTop: "auto",
                   fontWeight: "600",
@@ -86,6 +90,7 @@ const GameHeader = ({
                   marginLeft: "1rem",
                   whiteSpace: "nowrap",
                   overflow: "hidden",
+                  textDecoration: "none",
                   textOverflow: "ellipsis",
                   maxWidth: { xs: "200px", md: "700px" },
                 }}

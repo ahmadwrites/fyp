@@ -102,6 +102,7 @@ export const searchPosts = async (req, res, next) => {
 };
 
 export const getGroupPosts = async (req, res, next) => {
+  const sortType = req.query.sortType;
   try {
     const group = await Group.findOne({ title: req.params.groupTitle });
     if (!group)
@@ -113,7 +114,7 @@ export const getGroupPosts = async (req, res, next) => {
       groupId: group._id,
       joinable: true,
       isCompleted: false,
-    });
+    }).sort(sortType === "createdAt" ? { createdAt: -1 } : { date: 1 });
     res.status(200).json({ posts, group });
   } catch (error) {
     next(error);
@@ -147,6 +148,8 @@ export const getFilteredPosts = async (req, res, next) => {
 
 // Todo: get following groups posts and filter based on preferences
 export const getCustom = async (req, res, next) => {
+  // sort by the createdAt or date
+  const sortType = req.query.sortType;
   try {
     const user = await User.findById(req.user.id);
     if (!user) return res.status(400).json("User does not exist!");
@@ -155,6 +158,7 @@ export const getCustom = async (req, res, next) => {
     const followedGroups = user.followedGroups;
     let followingPosts;
 
+    // Todo: delete as preference is already setup upon signup ->
     if (preference === null) {
       followingPosts = await Promise.all(
         followedGroups.map((group) => {
@@ -184,13 +188,15 @@ export const getCustom = async (req, res, next) => {
       );
     }
 
-    res
-      .status(200)
-      .json(
-        followingPosts
-          .flat()
-          .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-      );
+    res.status(200).json(
+      followingPosts.flat().sort((a, b) => {
+        if (sortType === "createdAt") {
+          return a.createdAt < b.createdAt ? 1 : -1;
+        } else {
+          return a.date > b.date ? 1 : -1;
+        }
+      })
+    );
   } catch (error) {
     next(error);
   }

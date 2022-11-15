@@ -89,7 +89,8 @@ const Notifications = () => {
                 variant="h5"
                 sx={{ fontWeight: "500", textAlign: "center" }}
               >
-                Notifications
+                ({notifications?.length}) Notification
+                {notifications?.length !== 1 ? "s" : ""}
               </Typography>
               <MoreHorizIcon
                 sx={{ color: "rgba(0, 0, 0, 0.6)", cursor: "pointer" }}

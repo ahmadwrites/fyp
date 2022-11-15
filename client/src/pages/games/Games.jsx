@@ -39,7 +39,7 @@ const Games = () => {
             sx={{ fontWeight: 500, marginBottom: ".5rem" }}
             color="text.primary"
           >
-            Games
+            ({posts?.length}) Game{posts?.length !== 1 ? "s" : ""}
           </Typography>
           <Grid
             sx={{

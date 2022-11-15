@@ -37,6 +37,7 @@ const Group = () => {
   const location = useLocation().pathname.split("/")[2];
   const [posts, setPosts] = useState([]);
   const [group, setGroup] = useState();
+  const [sortType, setSortType] = useState("createdAt");
 
   const handleFollow = async (groupId) => {
     try {
@@ -62,14 +63,16 @@ const Group = () => {
 
   const getPosts = useCallback(async () => {
     try {
-      const res = await axios.get(`/posts/group/${location}`);
+      const res = await axios.get(
+        `/posts/group/${location}?sortType=${sortType}`
+      );
       if (res.data.message) return navigate("/groups");
       setPosts(res.data.posts);
       setGroup(res.data.group);
     } catch (error) {
       console.log(error);
     }
-  }, [location, navigate]);
+  }, [location, navigate, sortType]);
 
   useEffect(() => {
     getPosts();
@@ -201,27 +204,26 @@ const Group = () => {
                 }}
               >
                 <Chip
-                  component={RouterLink}
-                  to="/"
+                  onClick={() => setSortType("createdAt")}
                   icon={<DynamicFeedIcon fontSize="small" />}
                   label="Custom"
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: sortType === "createdAt" ? "#fff" : "inherit",
+                  }}
+                  color={sortType === "createdAt" ? "primary" : "default"}
+                  variant={sortType === "createdAt" ? "filled" : "outlined"}
                 />
                 <Chip
-                  component={RouterLink}
-                  to="/soon"
-                  icon={<WhatshotIcon fontSize="small" />}
-                  label="Soon"
-                  sx={{ cursor: "pointer" }}
-                  variant="outlined"
-                />
-                <Chip
-                  component={RouterLink}
                   icon={<FiberNewIcon fontSize="small" />}
                   label="New"
-                  sx={{ cursor: "pointer" }}
-                  to="/new"
-                  variant="outlined"
+                  onClick={() => setSortType("new")}
+                  sx={{
+                    cursor: "pointer",
+                    color: sortType === "new" ? "#fff" : "inherit",
+                  }}
+                  color={sortType === "new" ? "primary" : "default"}
+                  variant={sortType === "new" ? "filled" : "outlined"}
                 />
                 <Grid container alignItems="center" justifyContent="flex-end">
                   <Button

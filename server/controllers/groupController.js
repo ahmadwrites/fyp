@@ -71,7 +71,7 @@ export const getGroups = async (req, res, next) => {
 
 export const getPopularGroups = async (req, res, next) => {
   try {
-    const trendingGroups = await Group.find().sort({ followers: -1 }).limit(9);
+    const trendingGroups = await Group.find().sort({ followers: -1 }).limit(5);
     res.status(200).json(trendingGroups);
   } catch (error) {
     next(error);

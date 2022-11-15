@@ -9,26 +9,36 @@ import {
   TextField,
   Chip,
   Button,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemButton,
 } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { Link as RouterLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../components/gamecard/GameCard";
 import { useEffect } from "react";
 import axios from "axios";
 import { useCallback } from "react";
+import { followGroup } from "../redux/userSlice";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
+  const [popularGroups, setPopularGroups] = useState([]);
+  const [sortType, setSortType] = useState("createdAt");
 
   const getPosts = useCallback(async () => {
     try {
       const res = currentUser
-        ? await axios.get("/posts/preference", {
+        ? await axios.get(`/posts/preference?sortType=${sortType}`, {
             withCredentials: true,
           })
         : await axios.get("/posts");
@@ -36,11 +46,43 @@ const Home = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [currentUser]);
+  }, [currentUser, sortType]);
+
+  const getPopularGroups = useCallback(async () => {
+    try {
+      const res = await axios.get("/groups/popular");
+      setPopularGroups(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   useEffect(() => {
     getPosts();
-  }, [getPosts]);
+    getPopularGroups();
+  }, [getPosts, getPopularGroups]);
+
+  const handleFollow = async (groupId) => {
+    try {
+      if (currentUser.followedGroups.includes(groupId)) {
+        await axios.put(
+          `/users/unfollow-group/${groupId}`,
+          {},
+          { withCredentials: true }
+        );
+      } else {
+        await axios.put(
+          `/users/follow-group/${groupId}`,
+          {},
+          { withCredentials: true }
+        );
+      }
+      dispatch(followGroup(groupId));
+      getPopularGroups();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   // Todo: filter based on distance
   // check preferences -> if no, as nomral,
@@ -94,27 +136,26 @@ const Home = () => {
                 }}
               >
                 <Chip
-                  component={RouterLink}
-                  to="/"
+                  onClick={() => setSortType("createdAt")}
                   icon={<DynamicFeedIcon fontSize="small" />}
                   label="Custom"
-                  sx={{ cursor: "pointer" }}
+                  sx={{
+                    cursor: "pointer",
+                    color: sortType === "createdAt" ? "#fff" : "inherit",
+                  }}
+                  color={sortType === "createdAt" ? "primary" : "default"}
+                  variant={sortType === "createdAt" ? "filled" : "outlined"}
                 />
                 <Chip
-                  component={RouterLink}
-                  to="/soon"
-                  icon={<WhatshotIcon fontSize="small" />}
-                  label="Soon"
-                  sx={{ cursor: "pointer" }}
-                  variant="outlined"
-                />
-                <Chip
-                  component={RouterLink}
                   icon={<FiberNewIcon fontSize="small" />}
+                  onClick={() => setSortType("new")}
                   label="New"
-                  sx={{ cursor: "pointer" }}
-                  to="/new"
-                  variant="outlined"
+                  sx={{
+                    cursor: "pointer",
+                    color: sortType === "new" ? "#fff" : "inherit",
+                  }}
+                  color={sortType === "new" ? "primary" : "default"}
+                  variant={sortType === "new" ? "filled" : "outlined"}
                 />
                 <Grid container alignItems="center" justifyContent="flex-end">
                   <Button
@@ -169,7 +210,121 @@ const Home = () => {
               )}
             </Grid>
           </Grid>
-          <Grid item xs={12} md={4}></Grid>
+          <Grid item xs={12} md={4}>
+            <Paper
+              sx={{
+                padding: { xs: ".5rem", md: "1rem" },
+              }}
+            >
+              <Typography mb={1} sx={{ fontWeight: 500 }}>
+                Welcome to Sportify!
+              </Typography>
+              <Typography mb={1} color="text.secondary">
+                Sportify is an online sports-matchmaking application where you
+                can meet people that play the same sports with you and setup
+                quick games! You can find others that are nearby you and on a
+                similar skill level to maximize the game experience! Or you can
+                explore different and unique games happening close to you.
+              </Typography>
+              <Divider sx={{ margin: ".5rem 0" }} />
+              <Button
+                fullWidth
+                color="tertiary"
+                component={RouterLink}
+                to="/games/create"
+                variant="contained"
+              >
+                Create Game
+              </Button>
+            </Paper>
+            <Paper
+              sx={{
+                marginTop: "1rem",
+                padding: { xs: ".5rem", md: "1rem" },
+              }}
+            >
+              <Grid container justifyContent="space-between">
+                <Typography mb={1} sx={{ fontWeight: 500 }}>
+                  Popular Groups
+                </Typography>
+                <Button
+                  component={RouterLink}
+                  to="/groups"
+                  size="small"
+                  color="inherit"
+                >
+                  View All
+                </Button>
+              </Grid>
+              <List
+                sx={{
+                  width: "100%",
+                }}
+              >
+                {popularGroups?.map((group) => (
+                  <Box key={group?._id}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar
+                          component={RouterLink}
+                          to={`/groups/${group?.title}`}
+                          src={group?.avatar}
+                        />
+                      </ListItemAvatar>
+                      <ListItemButton
+                        dense
+                        component={RouterLink}
+                        to={`/groups/${group?.title}`}
+                      >
+                        <ListItemText
+                          primary={group?.title}
+                          secondary={`${group?.followers} Follower${
+                            group?.followers !== 1 ? "s" : ""
+                          }`}
+                        />
+                      </ListItemButton>
+                      {currentUser ? (
+                        <>
+                          {currentUser?.followedGroups.includes(group._id) ? (
+                            <Button
+                              onClick={() => handleFollow(group._id)}
+                              variant="text"
+                              size="small"
+                              color="error"
+                            >
+                              Unfollow
+                            </Button>
+                          ) : (
+                            <Button
+                              onClick={() => handleFollow(group._id)}
+                              variant="text"
+                              size="small"
+                              color="tertiary"
+                            >
+                              Follow
+                            </Button>
+                          )}
+                        </>
+                      ) : (
+                        <>
+                          <Button
+                            component={RouterLink}
+                            to="/login"
+                            variant="text"
+                            size="small"
+                            color="tertiary"
+                          >
+                            Follow
+                          </Button>
+                        </>
+                      )}
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                  </Box>
+                ))}
+              </List>
+            </Paper>
+          </Grid>
         </Grid>
       </Container>
     </Box>
