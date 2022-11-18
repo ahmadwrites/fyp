@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Chip,
-  CircularProgress,
-  Divider,
-  Grid,
-  Rating,
-  Typography,
-} from "@mui/material";
+import { Avatar, Box, Chip, Grid, Rating, Typography } from "@mui/material";
 import axios from "axios";
 import React from "react";
 import { useEffect } from "react";

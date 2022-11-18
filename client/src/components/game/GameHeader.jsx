@@ -22,6 +22,10 @@ const GameHeader = ({
         position: "relative",
         background: "#000",
         borderRadius: "5px",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,2,1) 100%), url('${post?.image}')`,
       }}
     >
       <Box
@@ -29,19 +33,6 @@ const GameHeader = ({
       >
         <GameCardMenu handleDelete={handleDelete} post={post} color="#FFF" />
       </Box>
-      <Avatar
-        src={post?.image}
-        sx={{
-          height: "100%",
-          width: "100%",
-          position: "absolute",
-          borderRadius: "5px",
-          top: 0,
-          left: 0,
-          opacity: "0.3",
-          zIndex: "1",
-        }}
-      />
       <Box
         sx={{
           height: "100%",

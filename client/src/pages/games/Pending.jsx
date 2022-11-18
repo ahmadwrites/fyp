@@ -45,6 +45,7 @@ const Pending = ({ post, acceptUser, declineUser }) => {
             {post?.pendingUsers.map((pendingUser) => (
               <Grid key={pendingUser} item xs={6} md={2.5}>
                 <UserCard
+                  post={post}
                   declineUser={declineUser}
                   type="pending"
                   acceptUser={acceptUser}

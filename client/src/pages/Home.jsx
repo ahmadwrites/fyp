@@ -18,7 +18,6 @@ import {
 } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { Link as RouterLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";

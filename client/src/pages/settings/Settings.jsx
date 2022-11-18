@@ -1,4 +1,4 @@
-import { Grid, Grow, Tabs, Typography, useMediaQuery } from "@mui/material";
+import { Grid, Tabs, Typography, useMediaQuery } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -8,16 +8,17 @@ import EditProfile from "./EditProfile";
 import Preferences from "./Preferences";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
-import NotificationsNoneIcon from "@mui/icons-material/NotificationsNone";
 import KeyIcon from "@mui/icons-material/Key";
 import theme from "../../theme";
 import { useEffect } from "react";
+import ChangePassword from "./ChangePassword";
 
 function LinkTab(props) {
   return (
     <Tab
       sx={{
         textTransform: "none",
+        minHeight: { xs: "auto", md: "72px" },
         marginRight: "auto",
         paddingLeft: 0,
       }}
@@ -47,11 +48,8 @@ const Settings = () => {
       case "preferences":
         setValue(1);
         break;
-      case "notifications":
-        setValue(2);
-        break;
       case "change-password":
-        setValue(3);
+        setValue(2);
         break;
       default:
         setValue(0);
@@ -118,7 +116,7 @@ const Settings = () => {
             <Routes>
               <Route path="profile" element={<EditProfile />} />
               <Route path="preferences" element={<Preferences />} />
-              <Route path="change-password" element={<>Change Passsword</>} />
+              <Route path="change-password" element={<ChangePassword />} />
             </Routes>
           </Grid>
         </Grid>

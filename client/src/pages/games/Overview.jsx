@@ -203,23 +203,23 @@ const Overview = ({ post, creator }) => {
             sx={{
               padding: "1rem",
               height: { xs: "auto", md: "304px" },
-              overflowY: "scroll",
-              "&:hover::-webkit-scrollbar": {
-                display: "block",
-              },
-              "&::-webkit-scrollbar": {
-                display: "none",
-                width: "0.512rem",
-              },
-              "&::-webkit-scrollbar-track": {
-                boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "#ccc",
-                height: "4px",
-                borderRadius: "4px",
-              },
+              // overflowY: "scroll",
+              // "&:hover::-webkit-scrollbar": {
+              //   display: "block",
+              // },
+              // "&::-webkit-scrollbar": {
+              //   display: "none",
+              //   width: "0.512rem",
+              // },
+              // "&::-webkit-scrollbar-track": {
+              //   boxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              //   webkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              // },
+              // "&::-webkit-scrollbar-thumb": {
+              //   backgroundColor: "#ccc",
+              //   height: "4px",
+              //   borderRadius: "4px",
+              // },
             }}
           >
             <Typography variant="body1" color="text.primary">

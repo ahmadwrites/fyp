@@ -3,9 +3,7 @@ import {
   Avatar,
   Box,
   Button,
-  Divider,
   Grid,
-  Paper,
   Typography,
   Container,
   Rating,
@@ -13,16 +11,10 @@ import {
   Tabs,
   useMediaQuery,
 } from "@mui/material";
-import {
-  Link as RouterLink,
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { useSelector } from "react-redux";
-import getAge from "../../utils/getAge";
 import theme from "../../theme";
 import ProfileListings from "./ProfileListings";
 import ProfileReviews from "./ProfileReviews";
@@ -44,7 +36,6 @@ function LinkTab(props) {
 }
 
 const Profile = () => {
-  const navigate = useNavigate();
   const location = useLocation().pathname.split("/")[2];
   const { currentUser } = useSelector((state) => state.user);
   const tab = new URLSearchParams(useLocation().search).get("tab");

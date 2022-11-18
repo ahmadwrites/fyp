@@ -227,7 +227,10 @@ const ListingCard = ({ post }) => {
             <Typography variant="body1" sx={{ fontWeight: 500 }}>
               {post?.noOfPeople - (post?.isMatched.length + 1)}
             </Typography>
-            <Typography variant="body2">Available Slots</Typography>
+            <Typography variant="body2">
+              Available Slot
+              {post?.noOfPeople - (post?.isMatched.length + 1) !== 1 ? "s" : ""}
+            </Typography>
           </Box>
         </Grid>
       </Box>

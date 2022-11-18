@@ -66,7 +66,6 @@ const Preferences = () => {
         const res = await axios.get("/preferences");
         if (res.data !== null) {
           setPreference(res.data);
-          console.log(res.data);
         } else {
           return;
         }

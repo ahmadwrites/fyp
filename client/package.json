@@ -5,6 +5,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@mui/icons-material": "^5.10.9",
     "@mui/lab": "^5.0.0-alpha.105",
     "@mui/material": "^5.10.9",
@@ -23,6 +24,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-google-autocomplete": "^2.7.0",
+    "react-google-maps": "^9.4.5",
     "react-redux": "^8.0.4",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",

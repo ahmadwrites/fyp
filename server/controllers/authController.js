@@ -60,3 +60,39 @@ export const signout = (req, res, next) => {
     next(error);
   }
 };
+
+export const changePassword = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    const comparePassword = bcrypt.compareSync(
+      req.body.password,
+      user.password
+    );
+
+    if (comparePassword) {
+      if (req.body.newPassword !== req.body.confirmNewPassword) {
+        return res.status(403).json("New passwords do not match!");
+      } else {
+        if (req.body.password === req.body.newPassword)
+          return res.status(403).json("Change to a new password!");
+
+        const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(req.body.newPassword, salt);
+
+        await User.findByIdAndUpdate(
+          req.user.id,
+          {
+            $set: { password: hashedPassword },
+          },
+          { new: true }
+        );
+        res.status(200).json("Password changed successfully.");
+      }
+    } else {
+      return res.status(401).json("Incorrect password.");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};

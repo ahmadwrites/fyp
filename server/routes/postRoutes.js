@@ -13,6 +13,7 @@ import {
   getPostsWithUser,
   searchPosts,
   getCustom,
+  getAllPosts,
 } from "../controllers/postController.js";
 import { verifyToken } from "../verifyToken.js";
 const router = express.Router();
@@ -56,6 +57,7 @@ router.delete("/:id", verifyToken, deletePost);
 router.get("/filter", getFilteredPosts);
 router.get("/following", verifyToken, getFollowingNew);
 router.get("/search", searchPosts);
+router.get("/all", getAllPosts);
 router.get("/preference", verifyToken, getCustom);
 router.get("/:id", getPost);
 router.get("/with-user/:userId", getPostsWithUser);

@@ -8,9 +8,7 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React from "react";
 import Review from "../../components/profile/Review";
 
 const ProfileReviews = ({ ratings, setRatingsSort }) => {
@@ -49,7 +47,7 @@ const ProfileReviews = ({ ratings, setRatingsSort }) => {
             >
               No Reviews Yet
             </Typography>
-          </Grid>{" "}
+          </Grid>
         </>
       ) : (
         <>

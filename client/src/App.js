@@ -18,6 +18,7 @@ import Profile from "./pages/profile/Profile";
 import Games from "./pages/games/Games";
 import Search from "./pages/search/Search";
 import Group from "./pages/groups/Group";
+import Explore from "./pages/explore/Explore";
 
 function App() {
   return (
@@ -104,6 +105,14 @@ function App() {
                 element={
                   <PrivateRoute>
                     <Search />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="explore"
+                element={
+                  <PrivateRoute>
+                    <Explore />
                   </PrivateRoute>
                 }
               />

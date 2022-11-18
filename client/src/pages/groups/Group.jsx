@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import TuneIcon from "@mui/icons-material/Tune";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
-import WhatshotIcon from "@mui/icons-material/Whatshot";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -84,6 +83,7 @@ const Group = () => {
         sx={{
           position: "relative",
           height: { xs: "120px", md: "200px" },
+          backgroundPosition: "center",
           backgroundSize: "cover",
           backgroundRepeat: "no-repeat",
           backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0.8) 60%, rgba(0,0,2,1) 100%), url('${group?.banner}')`,
