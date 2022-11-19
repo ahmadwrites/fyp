@@ -11,6 +11,8 @@ import ratingRoutes from "./routes/ratingRoutes.js";
 import venueRoutes from "./routes/venueRoutes.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import preferenceRoutes from "./routes/preferenceRoutes.js";
+import conversationRoutes from "./routes/conversationRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -33,6 +35,8 @@ app.use("/api/ratings", ratingRoutes);
 app.use("/api/venues", venueRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/preferences", preferenceRoutes);
+app.use("/api/conversations", conversationRoutes);
+app.use("/api/messages", messageRoutes);
 
 app.use((err, req, res, next) => {
   const status = err.status || 500;

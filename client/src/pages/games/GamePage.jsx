@@ -21,6 +21,7 @@ import theme from "../../theme";
 import CustomAlert from "../../components/feedback/CustomAlert";
 import Pending from "./Pending";
 import Participants from "./Participants";
+import Chat from "./Chat";
 
 function LinkTab(props) {
   return (
@@ -257,7 +258,7 @@ const GamePage = () => {
           />
           <LinkTab
             icon={
-              <Badge max={5} badgeContent={3} size="small" color="error">
+              <Badge badgeContent={1} variant="dot" size="small" color="error">
                 <ChatBubbleIcon fontSize="small" />
               </Badge>
             }
@@ -294,7 +295,7 @@ const GamePage = () => {
             path="participants"
             element={<Participants getPost={getPost} post={post} />}
           />
-          <Route path="chat" element={<>Chat</>} />
+          <Route path="chat" element={<Chat post={post} />} />
           <Route
             path="pending"
             element={

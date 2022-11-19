@@ -5,11 +5,21 @@ import Notification from "../models/Notification.js";
 import User from "../models/User.js";
 import Rating from "../models/Rating.js";
 import Preference from "../models/Preference.js";
+import Conversation from "../models/Conversation.js";
+import Message from "../models/Message.js";
 
 export const addPost = async (req, res, next) => {
   try {
     const newPost = new Post({ userId: req.user.id, ...req.body });
     const savedPost = await newPost.save();
+
+    const newConversation = new Conversation({
+      postId: savedPost._id,
+      members: req.user.id,
+    });
+
+    await newConversation.save();
+
     res.status(200).json(savedPost);
   } catch (error) {
     next(error);
@@ -63,6 +73,9 @@ export const deletePost = async (req, res, next) => {
     await Notification.deleteMany({ postId: req.params.id });
     await Rating.deleteMany({ postId: req.params.id });
     await Post.findByIdAndDelete(req.params.id);
+    const conversation = await Conversation.findOne({ postId: req.params.id });
+    await Message.deleteMany({ conversationId: conversation._id });
+    await Conversation.findOneAndDelete({ postId: req.params.id });
     res.status(200).json("Post deleted successfully.");
   } catch (error) {
     next(error);

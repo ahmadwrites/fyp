@@ -4,6 +4,7 @@ import Post from "../models/Post.js";
 import { createError } from "../error.js";
 import Group from "../models/Group.js";
 import Notification from "../models/Notification.js";
+import Conversation from "../models/Conversation.js";
 
 export const updateUser = async (req, res, next) => {
   try {
@@ -227,6 +228,13 @@ export const acceptRequest = async (req, res, next) => {
 
       await notification.save();
 
+      await Conversation.findOneAndUpdate(
+        { postId: req.params.postId },
+        {
+          $addToSet: { members: req.body.senderId },
+        }
+      );
+
       res.status(200).json(updatedPost);
     } else {
       return res.status(403).json("This game is no longer joinable.");
@@ -298,6 +306,11 @@ export const completeGame = async (req, res, next) => {
 
       await notification.save();
     }
+
+    await Conversation.findOneAndUpdate(
+      { postId: req.params.postId },
+      { $set: { isActive: false } }
+    );
 
     res.status(200).json(updatedPost);
   } catch (error) {

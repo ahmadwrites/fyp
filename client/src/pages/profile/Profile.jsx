@@ -130,11 +130,18 @@ const Profile = () => {
               src={user?.avatar}
               sx={{ height: "128px", width: "128px", marginBottom: "1rem" }}
             />
-            <Grid container sx={{ gap: ".5rem" }} alignItems="center">
+            <Grid
+              container
+              sx={{
+                gap: ".25rem",
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}
+              alignItems="center"
+            >
               {user?.gender === "male" ? (
-                <MaleIcon fontSize="small" color="tertiary" />
+                <MaleIcon color="tertiary" />
               ) : (
-                <FemaleIcon fontSize="small" sx={{ color: "#DE3163" }} />
+                <FemaleIcon sx={{ color: "#DE3163" }} />
               )}
               <Typography>{user?.age} Years Old</Typography>
             </Grid>
