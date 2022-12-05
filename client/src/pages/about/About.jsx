@@ -7,16 +7,14 @@ import {
   Grid,
   Grow,
   Paper,
-  Slide,
   Step,
-  StepIcon,
   StepLabel,
   Stepper,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import { Container } from "@mui/system";
-import React, { useContext } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import CreateIcon from "@mui/icons-material/Create";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
@@ -36,16 +34,37 @@ import img5 from "../../images/square_5.jpg";
 import img6 from "../../images/square_6.jpg";
 import img7 from "../../images/square_7.jpg";
 import me from "../../images/me.jpg";
-import {
-  IntersectionContext,
-  IntersectionObserver,
-} from "../../components/observer/observer";
+
+function useIsInViewport(ref) {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+
+  const observer = useMemo(
+    () =>
+      new IntersectionObserver(([entry]) =>
+        setIsIntersecting(entry.isIntersecting)
+      ),
+    []
+  );
+
+  useEffect(() => {
+    observer.observe(ref.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [ref, observer]);
+
+  return isIntersecting;
+}
 
 const About = () => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
-  const { inView } = useContext(IntersectionContext);
 
-  console.log(inView);
+  const ref1 = useRef(null);
+  const isInViewport1 = useIsInViewport(ref1);
+
+  const cardContainerRef = useRef(null);
+  const isInViewPort2 = useIsInViewport(cardContainerRef);
 
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
@@ -68,11 +87,7 @@ const About = () => {
           justifyContent: "center",
         }}
       >
-        <Fade
-          in={inView ? true : false}
-          appear={inView ? true : false}
-          timeout={2000}
-        >
+        <Fade in={true} appear={true} timeout={2000}>
           <Typography
             sx={{
               fontWeight: 500,
@@ -87,7 +102,7 @@ const About = () => {
           </Typography>
         </Fade>
 
-        <Fade in={true} appear={true} timeout={2500}>
+        <Fade in={true} appear={true} timeout={1500}>
           <Button
             variant="contained"
             color="tertiary"
@@ -128,7 +143,12 @@ const About = () => {
                 players of similar skill, level and location can join your game
                 making each game a complete experience! It's as smiple as:
               </Typography>
-              <Grow in={true} appear={true} timeout={1500}>
+              <Grow
+                ref={ref1}
+                in={isInViewport1 ? true : false}
+                appear={true}
+                timeout={1500}
+              >
                 <Stepper
                   sx={{ marginTop: { xs: "1rem", md: "2rem" } }}
                   activeStep={3}
@@ -195,109 +215,127 @@ const About = () => {
             Feature Packed Application
           </Typography>
 
-          <Grid container spacing={{ xs: 2, md: 4 }}>
-            <Grid
-              item
-              xs={12}
-              md={4}
-              sx={{
-                "&:hover": { transform: "scale(1.025)" },
-                transition: ".3s ease all",
-              }}
+          <Grid ref={cardContainerRef} container spacing={{ xs: 2, md: 4 }}>
+            <Grow
+              in={isInViewPort2 ? true : false}
+              appear={true}
+              timeout={1500}
             >
-              <Paper elevation={20}>
-                <img
-                  variant="rounded"
-                  style={{
-                    width: "100%",
-                    height: isMatch ? 220 : 200,
-                    objectPosition: "top",
-                    objectFit: "cover",
-                  }}
-                  alt=""
-                  src={img3}
-                />
-                <Box
-                  sx={{
-                    padding: { xs: ".5rem", md: "1rem" },
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h6">Room Live Chats</Typography>
-                  <Typography varaint="body2">
-                    Secure live chat channels to discuss game events.
-                  </Typography>
-                </Box>
-              </Paper>
-            </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                sx={{
+                  "&:hover": { transform: "scale(1.025)" },
+                  transition: ".3s ease all",
+                }}
+              >
+                <Paper elevation={20}>
+                  <img
+                    variant="rounded"
+                    style={{
+                      width: "100%",
+                      height: isMatch ? 220 : 200,
+                      objectPosition: "top",
+                      objectFit: "cover",
+                    }}
+                    alt=""
+                    src={img3}
+                  />
+                  <Box
+                    sx={{
+                      padding: { xs: ".5rem", md: "1rem" },
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography variant="h6">Room Live Chats</Typography>
+                    <Typography varaint="body2">
+                      Secure live chat channels to discuss game events.
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grow>
 
-            <Grid
-              item
-              xs={12}
-              md={4}
-              sx={{
-                "&:hover": { transform: "scale(1.025)" },
-                transition: ".3s ease all",
-              }}
+            <Grow
+              in={isInViewPort2 ? true : false}
+              appear={true}
+              timeout={1500}
             >
-              <Paper elevation={20}>
-                <img
-                  style={{
-                    width: "100%",
-                    height: isMatch ? 220 : 200,
-                    objectPosition: "top",
-                    objectFit: "cover",
-                  }}
-                  alt=""
-                  src={img7}
-                />
-                <Box
-                  sx={{
-                    padding: { xs: ".5rem", md: "1rem" },
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h6">Advanced Matchmaking</Typography>
-                  <Typography varaint="body2">
-                    Filter & sort out the players you want to play with.
-                  </Typography>
-                </Box>
-              </Paper>
-            </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                sx={{
+                  "&:hover": { transform: "scale(1.025)" },
+                  transition: ".3s ease all",
+                }}
+              >
+                <Paper elevation={20}>
+                  <img
+                    style={{
+                      width: "100%",
+                      height: isMatch ? 220 : 200,
+                      objectPosition: "top",
+                      objectFit: "cover",
+                    }}
+                    alt=""
+                    src={img7}
+                  />
+                  <Box
+                    sx={{
+                      padding: { xs: ".5rem", md: "1rem" },
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography variant="h6">Advanced Matchmaking</Typography>
+                    <Typography varaint="body2">
+                      Filter & sort out the players you want to play with.
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grow>
 
-            <Grid
-              item
-              xs={12}
-              md={4}
-              sx={{
-                "&:hover": { transform: "scale(1.025)" },
-                transition: ".3s ease all",
-              }}
+            <Grow
+              in={isInViewPort2 ? true : false}
+              appear={true}
+              timeout={1500}
             >
-              <Paper elevation={20}>
-                <img
-                  style={{
-                    width: "100%",
-                    height: isMatch ? 220 : 200,
-                    objectPosition: "top",
-                    objectFit: "cover",
-                  }}
-                  alt=""
-                  src={img6}
-                />
-                <Box
-                  sx={{
-                    padding: { xs: ".5rem", md: "1rem" },
-                    textAlign: "center",
-                  }}
-                >
-                  <Typography variant="h6">Explore New Games</Typography>
-                  <Typography varaint="body2">
-                    Find games based on your local area that may interest you!
-                  </Typography>
-                </Box>
-              </Paper>
-            </Grid>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                sx={{
+                  "&:hover": { transform: "scale(1.025)" },
+                  transition: ".3s ease all",
+                }}
+              >
+                <Paper elevation={20}>
+                  <img
+                    style={{
+                      width: "100%",
+                      height: isMatch ? 220 : 200,
+                      objectPosition: "top",
+                      objectFit: "cover",
+                    }}
+                    alt=""
+                    src={img6}
+                  />
+                  <Box
+                    sx={{
+                      padding: { xs: ".5rem", md: "1rem" },
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography variant="h6">Explore New Games</Typography>
+                    <Typography varaint="body2">
+                      Find games based on your local area that may interest you!
+                    </Typography>
+                  </Box>
+                </Paper>
+              </Grid>
+            </Grow>
           </Grid>
         </Container>
       </Box>
