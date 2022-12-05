@@ -1,17 +1,14 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
-import { Grid, CircularProgress, Paper } from "@mui/material";
-import {
-  GoogleMap,
-  useLoadScript,
-  MarkerF,
-  InfoWindow,
-} from "@react-google-maps/api";
+import { useNavigate } from "react-router-dom";
+import { Grid, CircularProgress } from "@mui/material";
+import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
+import { useCookies } from "react-cookie";
 import CustomAlert from "../../components/feedback/CustomAlert";
 import axios from "axios";
 import { Box } from "@mui/system";
 import ExploreDialog from "../../components/dialogs/ExploreDialog";
+import ExploreHelpDialog from "../../components/dialogs/ExploreHelpDialog";
 
 const Explore = () => {
   const navigate = useNavigate();
@@ -31,6 +28,38 @@ const Explore = () => {
     message: null,
   });
 
+  // Cookie Dialog
+  const [cookies, setCookie] = useCookies(["isShown"]);
+  const [checkbox, setCheckbox] = useState(false);
+
+  useEffect(() => {
+    if (cookies.isShown === undefined) {
+      setCookie("isShown", true, {
+        path: "/",
+      });
+    }
+  }, [cookies, setCookie]);
+
+  const [openHelpDialog, setOpenHelpDialog] = useState(true);
+
+  const handleCloseHelpDialog = () => {
+    setOpenHelpDialog(false);
+    if (checkbox === true) {
+      setCookie("isShown", false, {
+        path: "/",
+      });
+    } else {
+      setCookie("isShown", true, {
+        path: "/",
+      });
+    }
+  };
+
+  const handleCheck = () => {
+    setCheckbox((prev) => !prev);
+  };
+
+  // Others
   const handleOpenInfo = (post) => {
     setOpenInfo({ open: true, post: post });
   };
@@ -117,18 +146,18 @@ const Explore = () => {
               lat: parseFloat(post?.latitude),
               lng: parseFloat(post?.longitude),
             }}
-          >
-            {/* {openInfo.open && post?._id === openInfo.id && (
-              <Paper
-                sx={{ position: "absolute", top: 0, left: 0, width: "200px" }}
-              >
-                {post?.title}
-              </Paper>
-            )} */}
-          </MarkerF>
+          ></MarkerF>
         ))}
       </GoogleMap>
 
+      {cookies.isShown === "true" && (
+        <ExploreHelpDialog
+          checkbox={checkbox}
+          handleCheck={handleCheck}
+          open={openHelpDialog}
+          handleClose={handleCloseHelpDialog}
+        />
+      )}
       <ExploreDialog
         open={openInfo.open}
         post={openInfo.post}

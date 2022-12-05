@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider } from "@emotion/react";
+import { CookiesProvider } from "react-cookie";
 import theme from "./theme";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
@@ -22,115 +23,117 @@ import Explore from "./pages/explore/Explore";
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <Box sx={{ backgroundColor: theme.palette.background.main }}>
-          <Navbar />
-          <Routes>
-            <Route path="/">
-              <Route index element={<Home />} />
-              <Route path="login" element={<Login />} />
-              <Route path="register" element={<Register />} />
-              <Route
-                path="settings/*"
-                element={
-                  <PrivateRoute>
-                    <Settings />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="profile/:id"
-                element={
-                  <PrivateRoute>
-                    <Profile />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="games">
+    <CookiesProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <Box sx={{ backgroundColor: theme.palette.background.main }}>
+            <Navbar />
+            <Routes>
+              <Route path="/">
+                <Route index element={<Home />} />
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
                 <Route
-                  index
+                  path="settings/*"
                   element={
                     <PrivateRoute>
-                      <Games />
+                      <Settings />
                     </PrivateRoute>
                   }
                 />
                 <Route
-                  path="create"
+                  path="profile/:id"
                   element={
                     <PrivateRoute>
-                      <CreateGame />
+                      <Profile />
+                    </PrivateRoute>
+                  }
+                />
+                <Route path="games">
+                  <Route
+                    index
+                    element={
+                      <PrivateRoute>
+                        <Games />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="create"
+                    element={
+                      <PrivateRoute>
+                        <CreateGame />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path=":id/*"
+                    element={
+                      <PrivateRoute>
+                        <GamePage />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path="edit/:id"
+                    element={
+                      <PrivateRoute>
+                        <EditGame />
+                      </PrivateRoute>
+                    }
+                  />
+                </Route>
+                <Route path="groups">
+                  <Route index element={<Groups />} />
+                  <Route
+                    path="create"
+                    element={
+                      <PrivateRoute>
+                        <CreateGroup />
+                      </PrivateRoute>
+                    }
+                  />
+                  <Route
+                    path=":title"
+                    element={
+                      <PrivateRoute>
+                        <Group />
+                      </PrivateRoute>
+                    }
+                  />
+                </Route>
+                <Route
+                  path="search"
+                  element={
+                    <PrivateRoute>
+                      <Search />
                     </PrivateRoute>
                   }
                 />
                 <Route
-                  path=":id/*"
+                  path="explore"
                   element={
                     <PrivateRoute>
-                      <GamePage />
+                      <Explore />
                     </PrivateRoute>
                   }
                 />
-                <Route
-                  path="edit/:id"
-                  element={
-                    <PrivateRoute>
-                      <EditGame />
-                    </PrivateRoute>
-                  }
-                />
+                <Route path="notifications">
+                  <Route
+                    index
+                    element={
+                      <PrivateRoute>
+                        <Notifications />
+                      </PrivateRoute>
+                    }
+                  />
+                </Route>
               </Route>
-              <Route path="groups">
-                <Route index element={<Groups />} />
-                <Route
-                  path="create"
-                  element={
-                    <PrivateRoute>
-                      <CreateGroup />
-                    </PrivateRoute>
-                  }
-                />
-                <Route
-                  path=":title"
-                  element={
-                    <PrivateRoute>
-                      <Group />
-                    </PrivateRoute>
-                  }
-                />
-              </Route>
-              <Route
-                path="search"
-                element={
-                  <PrivateRoute>
-                    <Search />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="explore"
-                element={
-                  <PrivateRoute>
-                    <Explore />
-                  </PrivateRoute>
-                }
-              />
-              <Route path="notifications">
-                <Route
-                  index
-                  element={
-                    <PrivateRoute>
-                      <Notifications />
-                    </PrivateRoute>
-                  }
-                />
-              </Route>
-            </Route>
-          </Routes>
-        </Box>
-      </BrowserRouter>
-    </ThemeProvider>
+            </Routes>
+          </Box>
+        </BrowserRouter>
+      </ThemeProvider>
+    </CookiesProvider>
   );
 }
 

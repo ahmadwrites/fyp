@@ -1,8 +1,17 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, Grid, Paper, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Message from "../../components/game/Message";
 import { useEffect } from "react";
 import axios from "axios";
+import moment from "moment";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
@@ -111,6 +120,15 @@ const Chat = ({ post }) => {
           },
         }}
       >
+        <Divider>
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ textAlign: "center", marginBottom: ".5rem" }}
+          >
+            Chat started on {moment(post?.createdAt).format("Do MMMM YYYY")}
+          </Typography>
+        </Divider>
         {messages.map((message, i) => (
           <div key={message?._id} ref={scrollRef}>
             <Message

@@ -63,7 +63,7 @@ const Home = () => {
 
   const handleFollow = async (groupId) => {
     try {
-      if (currentUser.followedGroups.includes(groupId)) {
+      if (currentUser?.followedGroups.includes(groupId)) {
         await axios.put(
           `/users/unfollow-group/${groupId}`,
           {},
