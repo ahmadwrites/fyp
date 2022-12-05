@@ -20,8 +20,11 @@ import Games from "./pages/games/Games";
 import Search from "./pages/search/Search";
 import Group from "./pages/groups/Group";
 import Explore from "./pages/explore/Explore";
+import About from "./pages/about/About";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <CookiesProvider>
       <ThemeProvider theme={theme}>
@@ -30,9 +33,10 @@ function App() {
             <Navbar />
             <Routes>
               <Route path="/">
-                <Route index element={<Home />} />
+                <Route index element={currentUser ? <Home /> : <About />} />
                 <Route path="login" element={<Login />} />
                 <Route path="register" element={<Register />} />
+                <Route path="about" element={<About />} />
                 <Route
                   path="settings/*"
                   element={
