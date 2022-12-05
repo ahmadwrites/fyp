@@ -14,6 +14,7 @@ import {
   Button,
   Avatar,
   Tooltip,
+  InputAdornment,
 } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "axios";
@@ -57,6 +58,7 @@ const EditGame = () => {
     noOfPeople: 2,
     latitude: undefined,
     longitude: undefined,
+    price: null,
   });
   const [alert, setAlert] = useState({
     open: false,
@@ -279,21 +281,42 @@ const EditGame = () => {
                       setPostForm({ ...postForm, location: e.target.value })
                     }
                   />
-                  <FormControl fullWidth size="small">
-                    <InputLabel id="gender-label">Gender</InputLabel>
-                    <Select
-                      name="gender"
-                      onChange={handleChange}
-                      labelId="gender-label"
-                      id="gender"
-                      label="Gender"
-                      defaultValue="all"
-                    >
-                      <MenuItem value="all">All</MenuItem>
-                      <MenuItem value="male">Male</MenuItem>
-                      <MenuItem value="female">Female</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                      <FormControl fullWidth size="small">
+                        <InputLabel id="gender-label">Gender</InputLabel>
+                        <Select
+                          name="gender"
+                          onChange={handleChange}
+                          labelId="gender-label"
+                          id="gender"
+                          label="Gender"
+                          defaultValue="all"
+                        >
+                          <MenuItem value="all">All</MenuItem>
+                          <MenuItem value="male">Male</MenuItem>
+                          <MenuItem value="female">Female</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <TextField
+                        label="Price"
+                        name="price"
+                        fullWidth
+                        placeholder="0.00 (FREE)"
+                        size="small"
+                        type="number"
+                        value={postForm?.price}
+                        onChange={handleChange}
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position="start">RM</InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
                   {isMatch ? (
                     <MobileDatePicker
                       label="Date"

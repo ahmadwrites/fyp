@@ -342,7 +342,7 @@ const GameCard = ({ getPosts, post }) => {
           >
             <PaidOutlinedIcon />
             <Typography variant="body2" color="text.secondary">
-              {!post?.venueId && "Free"}
+              {post?.price === 0 ? "FREE" : `RM${post?.price}`}
             </Typography>
           </Grid>
 

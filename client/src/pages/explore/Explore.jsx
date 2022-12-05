@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Grid, CircularProgress } from "@mui/material";
+import { Grid, CircularProgress, Button } from "@mui/material";
 import { GoogleMap, useLoadScript, MarkerF } from "@react-google-maps/api";
 import { useCookies } from "react-cookie";
 import CustomAlert from "../../components/feedback/CustomAlert";
@@ -38,9 +38,17 @@ const Explore = () => {
         path: "/",
       });
     }
+    if (cookies.isShown === "false") {
+      setOpenHelpDialog(false);
+      setCheckbox(true);
+    }
   }, [cookies, setCookie]);
 
   const [openHelpDialog, setOpenHelpDialog] = useState(true);
+
+  const handleClickHelp = () => {
+    setOpenHelpDialog(true);
+  };
 
   const handleCloseHelpDialog = () => {
     setOpenHelpDialog(false);
@@ -148,9 +156,17 @@ const Explore = () => {
             }}
           ></MarkerF>
         ))}
+        <Button
+          variant="contained"
+          onClick={handleClickHelp}
+          color="tertiary"
+          sx={{ position: "absolute", bottom: 0, margin: "1rem" }}
+        >
+          Help
+        </Button>
       </GoogleMap>
 
-      {cookies.isShown === "true" && (
+      {(cookies.isShown === "true" || openHelpDialog) && (
         <ExploreHelpDialog
           checkbox={checkbox}
           handleCheck={handleCheck}

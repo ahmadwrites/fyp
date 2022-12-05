@@ -57,7 +57,9 @@ const Overview = ({ post, creator }) => {
                 >
                   Price
                 </Typography>
-                <Typography variant="body2">Free</Typography>
+                <Typography variant="body2">
+                  {post?.price === 0 ? "FREE" : `RM${post?.price}`}
+                </Typography>
               </Grid>
               <Grid item xs={4}>
                 <Typography

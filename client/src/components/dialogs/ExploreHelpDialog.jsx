@@ -62,7 +62,7 @@ const ExploreHelpDialog = ({ open, handleClose, checkbox, handleCheck }) => {
                 color="tertiary"
               />
             }
-            label="Don't show again."
+            label="Don't show again on refresh."
             sx={{ color: theme.palette.text.secondary }}
           />
         </FormGroup>

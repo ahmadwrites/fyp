@@ -44,6 +44,7 @@ const Preferences = () => {
   const [preference, setPreference] = useState({
     maxDistance: 80,
     gender: "all",
+    price: "all",
   });
 
   const [alert, setAlert] = useState({
@@ -183,9 +184,35 @@ const Preferences = () => {
                 defaultValue="all"
                 size="small"
               >
+                <MenuItem value="all">All</MenuItem>
                 <MenuItem value="male">Male</MenuItem>
                 <MenuItem value="female">Female</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+
+          <Grid item xs={12} md={6}>
+            <Typography>Price</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Choose the games with preferred prices.
+            </Typography>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="price-label">Price</InputLabel>
+              <Select
+                labelId="price-label"
+                id="price"
+                label="price"
+                name="price"
+                value={preference?.price}
+                fullWidth
+                onChange={handleChange}
+                defaultValue="all"
+                size="small"
+              >
                 <MenuItem value="all">All</MenuItem>
+                <MenuItem value="free">Free</MenuItem>
               </Select>
             </FormControl>
           </Grid>
