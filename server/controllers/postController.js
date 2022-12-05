@@ -51,6 +51,7 @@ export const updatePost = async (req, res, next) => {
           noOfPeople: req.body.noOfPeople,
           latitude: req.body.latitude,
           longitude: req.body.longitude,
+          price: req.body.price,
         },
       },
       { new: true }
@@ -203,6 +204,7 @@ export const getCustom = async (req, res, next) => {
             groupId: group,
             isCompleted: false,
             joinable: true,
+            price: preference.price === "free" ? { $eq: 0 } : { $gte: 0 },
             gender:
               preference.gender === "all"
                 ? { $in: ["male", "female", "all"] }

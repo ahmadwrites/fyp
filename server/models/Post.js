@@ -14,6 +14,10 @@ const PostSchema = new mongoose.Schema(
     venueId: {
       type: String,
     },
+    price: {
+      type: Number,
+      default: 0,
+    },
     noOfPeople: {
       type: Number,
       required: true,

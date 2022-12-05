@@ -44,6 +44,10 @@ const PreferenceSchema = new mongoose.Schema(
     date: {
       type: Date,
     },
+    price: {
+      type: String,
+      default: "all",
+    },
   },
   { timestamps: true }
 );
