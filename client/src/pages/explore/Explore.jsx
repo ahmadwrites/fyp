@@ -146,13 +146,13 @@ const Explore = () => {
         zoom={13}
         center={center}
       >
-        {posts.map((post) => (
+        {posts.map((post, index) => (
           <MarkerF
             key={post?._id}
             onClick={() => handleOpenInfo(post)}
             position={{
-              lat: parseFloat(post?.latitude),
-              lng: parseFloat(post?.longitude),
+              lat: parseFloat(post?.latitude + index * 0.001),
+              lng: parseFloat(post?.longitude + index * 0.001),
             }}
           ></MarkerF>
         ))}

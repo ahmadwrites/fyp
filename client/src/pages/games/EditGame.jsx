@@ -58,7 +58,7 @@ const EditGame = () => {
     noOfPeople: 2,
     latitude: undefined,
     longitude: undefined,
-    price: null,
+    price: 0,
   });
   const [alert, setAlert] = useState({
     open: false,
@@ -192,6 +192,8 @@ const EditGame = () => {
       console.log(error);
     }
   };
+
+  console.log(postForm);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
