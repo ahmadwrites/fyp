@@ -284,7 +284,7 @@ const Home = () => {
                       </ListItemButton>
                       {currentUser ? (
                         <>
-                          {currentUser?.followedGroups.includes(group._id) ? (
+                          {currentUser?.followedGroups?.includes(group._id) ? (
                             <Button
                               onClick={() => handleFollow(group._id)}
                               variant="text"

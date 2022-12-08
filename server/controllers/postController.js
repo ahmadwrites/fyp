@@ -137,10 +137,22 @@ export const getGroupPosts = async (req, res, next) => {
         .status(200)
         .json({ message: `${req.params.groupTitle} does not exist!` });
 
+    const user = await User.findById(req.user.id);
+    if (!user) return res.status(400).json("User does not exist!");
+
+    const preference = await Preference.findOne({ userId: req.user.id });
+
     const posts = await Post.find({
       groupId: group._id,
       joinable: true,
       isCompleted: false,
+      price: preference.price === "free" ? { $eq: 0 } : { $gte: 0 },
+      gender:
+        preference.gender === "all"
+          ? { $in: ["male", "female", "all"] }
+          : preference.gender === "male"
+          ? "male"
+          : "female",
     }).sort(sortType === "createdAt" ? { createdAt: -1 } : { date: 1 });
     res.status(200).json({ posts, group });
   } catch (error) {
@@ -185,36 +197,23 @@ export const getCustom = async (req, res, next) => {
     const followedGroups = user.followedGroups;
     let followingPosts;
 
-    // Todo: delete as preference is already setup upon signup ->
-    if (preference === null) {
-      followingPosts = await Promise.all(
-        followedGroups.map((group) => {
-          return Post.find({
-            groupId: group,
-            isCompleted: false,
-            joinable: true,
-          });
-        })
-      );
-    } else {
-      // Todo: filter distance
-      followingPosts = await Promise.all(
-        followedGroups.map((group) => {
-          return Post.find({
-            groupId: group,
-            isCompleted: false,
-            joinable: true,
-            price: preference.price === "free" ? { $eq: 0 } : { $gte: 0 },
-            gender:
-              preference.gender === "all"
-                ? { $in: ["male", "female", "all"] }
-                : preference.gender === "male"
-                ? "male"
-                : "female",
-          });
-        })
-      );
-    }
+    // Todo: filter distance
+    followingPosts = await Promise.all(
+      followedGroups.map((group) => {
+        return Post.find({
+          groupId: group,
+          isCompleted: false,
+          joinable: true,
+          price: preference.price === "free" ? { $eq: 0 } : { $gte: 0 },
+          gender:
+            preference.gender === "all"
+              ? { $in: ["male", "female", "all"] }
+              : preference.gender === "male"
+              ? "male"
+              : "female",
+        });
+      })
+    );
 
     res.status(200).json(
       followingPosts.flat().sort((a, b) => {

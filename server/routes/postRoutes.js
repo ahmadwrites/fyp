@@ -62,7 +62,7 @@ router.get("/preference", verifyToken, getCustom);
 router.get("/:id", getPost);
 router.get("/with-user/:userId", getPostsWithUser);
 router.get("/", getPosts);
-router.get("/group/:groupTitle", getGroupPosts);
+router.get("/group/:groupTitle", verifyToken, getGroupPosts);
 router.get("/user/:userId", getUserPosts);
 router.post("/distance", verifyToken, getDistance);
 // router.get("/following", getFollowingPosts);

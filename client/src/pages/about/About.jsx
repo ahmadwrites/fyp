@@ -15,14 +15,21 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper";
+import { Link as RouterLink } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import CreateIcon from "@mui/icons-material/Create";
 import SwipeRightIcon from "@mui/icons-material/SwipeRight";
 import SportsEsportsIcon from "@mui/icons-material/SportsEsports";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import ShieldIcon from "@mui/icons-material/Shield";
-import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon";
+import VideogameAssetIcon from "@mui/icons-material/VideogameAsset";
 import DevicesOtherIcon from "@mui/icons-material/DevicesOther";
 
+import sportifyIcon from "../../images/sportify-icon-square.svg";
 import theme from "../../theme";
 import Banner_2 from "../../images/banner_2.jpg";
 import Banner_1 from "../../images/banner_1.jpg";
@@ -34,6 +41,12 @@ import img5 from "../../images/square_5.jpg";
 import img6 from "../../images/square_6.jpg";
 import img7 from "../../images/square_7.jpg";
 import me from "../../images/me.jpg";
+
+import ss1 from "../../images/ss1.png";
+import ss2 from "../../images/ss2.png";
+import ss3 from "../../images/ss3.png";
+import ss4 from "../../images/ss4.png";
+import ss5 from "../../images/ss5.png";
 
 function useIsInViewport(ref) {
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -66,6 +79,9 @@ const About = () => {
   const cardContainerRef = useRef(null);
   const isInViewPort2 = useIsInViewport(cardContainerRef);
 
+  const missionContainerRef = useRef(null);
+  const isInViewPort3 = useIsInViewport(missionContainerRef);
+
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Box
@@ -88,32 +104,37 @@ const About = () => {
         }}
       >
         <Fade in={true} appear={true} timeout={2000}>
-          <Typography
-            sx={{
-              fontWeight: 500,
-              letterSpacing: "3px",
-              background: `-webkit-linear-gradient(180deg, #fff 33%, #fff 67%)`,
-              "-webkit-background-clip": "text",
-              " -webkit-text-fill-color": "transparent",
-            }}
-            variant="h1"
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="center"
+            sx={{ gap: "1rem" }}
           >
-            Sportify
-          </Typography>
-        </Fade>
-
-        <Fade in={true} appear={true} timeout={1500}>
-          <Button
-            variant="contained"
-            color="tertiary"
-            size={isMatch ? "medium" : "large"}
-          >
-            About Us
-          </Button>
+            <Avatar
+              sx={{
+                width: { xs: "72px", md: "100px" },
+                height: { xs: "72px", md: "100px" },
+              }}
+              src={sportifyIcon}
+              alt=""
+            />
+            <Typography
+              sx={{
+                fontWeight: 500,
+                letterSpacing: "3px",
+                background: `-webkit-linear-gradient(90deg, #fff 5%,#FFF 80% )`,
+                "-webkit-background-clip": "text",
+                " -webkit-text-fill-color": "transparent",
+              }}
+              variant="h1"
+            >
+              Sportify
+            </Typography>
+          </Grid>
         </Fade>
       </Box>
 
-      <Container maxWidth="lg">
+      <Container maxWidth="lg" id="about">
         <Box sx={{ padding: { xs: "1rem", md: "2rem" } }}>
           <Typography
             sx={{
@@ -147,7 +168,7 @@ const About = () => {
                 ref={ref1}
                 in={isInViewport1 ? true : false}
                 appear={true}
-                timeout={1500}
+                timeout={1000}
               >
                 <Stepper
                   sx={{ marginTop: { xs: "1rem", md: "2rem" } }}
@@ -161,7 +182,7 @@ const About = () => {
                   </Step>
                   <Step>
                     <StepLabel icon={<SwipeRightIcon color="tertiary" />}>
-                      Accepts Requests
+                      Accept Requests
                     </StepLabel>
                   </Step>
                   <Step>
@@ -193,6 +214,7 @@ const About = () => {
           justifyContent: "center",
           flexDirection: "column",
           alignItems: "center",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
         }}
       >
         <Container
@@ -221,16 +243,14 @@ const About = () => {
               appear={true}
               timeout={1500}
             >
-              <Grid
-                item
-                xs={12}
-                md={4}
-                sx={{
-                  "&:hover": { transform: "scale(1.025)" },
-                  transition: ".3s ease all",
-                }}
-              >
-                <Paper elevation={20}>
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    "&:hover": { transform: "scale(1.025)" },
+                    transition: ".3s ease all",
+                  }}
+                  elevation={20}
+                >
                   <img
                     variant="rounded"
                     style={{
@@ -262,16 +282,14 @@ const About = () => {
               appear={true}
               timeout={1500}
             >
-              <Grid
-                item
-                xs={12}
-                md={4}
-                sx={{
-                  "&:hover": { transform: "scale(1.025)" },
-                  transition: ".3s ease all",
-                }}
-              >
-                <Paper elevation={20}>
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    "&:hover": { transform: "scale(1.025)" },
+                    transition: ".3s ease all",
+                  }}
+                  elevation={20}
+                >
                   <img
                     style={{
                       width: "100%",
@@ -302,16 +320,14 @@ const About = () => {
               appear={true}
               timeout={1500}
             >
-              <Grid
-                item
-                xs={12}
-                md={4}
-                sx={{
-                  "&:hover": { transform: "scale(1.025)" },
-                  transition: ".3s ease all",
-                }}
-              >
-                <Paper elevation={20}>
+              <Grid item xs={12} md={4}>
+                <Paper
+                  sx={{
+                    "&:hover": { transform: "scale(1.025)" },
+                    transition: ".3s ease all",
+                  }}
+                  elevation={20}
+                >
                   <img
                     style={{
                       width: "100%",
@@ -358,14 +374,15 @@ const About = () => {
           <Grid container spacing={{ xs: 2, md: 6 }}>
             <Grid item xs={12} md={6}>
               <Typography sx={{ lineHeight: 1.75, textAlign: "justify" }}>
-                "Lorem ipsum dolor sit, amet consectetur adipisicing elit.
-                Consequatur ab omnis placeat deleniti consectetur quidem fugit
-                facilis ullam. Rerum impedit veritatis aperiam itaque nostrum.
-                Beatae aspernatur possimus itaque assumenda natus molestiae
-                velit molestias, quas porro nobis recusandae officiis sapiente,
-                hic aliquid obcaecati odio ipsa similique ab corrupti sunt nemo
-                eligendi quaerat error accusantium? Maiores amet architecto
-                laborum. A, fugiat deserunt."
+                "My goal is to make an application that will influence the
+                increase of physical activities and community bonding of the
+                citizens of Malaysia. Additionally, with the explore feature,
+                people can view events that are happening nearby and explore
+                with new activities that they may find interesting. The
+                application's vision is to grow into a scalable platform for
+                widespread usage such that people use it on a daily basis to
+                fullfil their sports activities and enjoy their games to the
+                fullest, whilst simplifying the event creation process."
               </Typography>
               <Grid
                 container
@@ -389,103 +406,228 @@ const About = () => {
               </Grid>
             </Grid>
             <Grid item xs={12} md={6}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <Paper sx={{ padding: "1rem" }}>
-                    <Typography
-                      variant="h6"
-                      color="tertiary"
-                      sx={{
-                        fontWeight: 500,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: ".5rem",
-                      }}
-                      mb={1}
-                    >
-                      <AccessibilityIcon color="tertiary" />
-                      Accessible
-                    </Typography>
-                    <Divider />
-                    <Typography variant="body2" mt={1} color="text.secondary">
-                      Made for everyone.
-                    </Typography>
-                  </Paper>
-                </Grid>
+              <Grid ref={missionContainerRef} container spacing={2}>
+                <Grow
+                  in={isInViewPort3 ? true : false}
+                  appear={true}
+                  timeout={1000}
+                >
+                  <Grid item xs={6}>
+                    <Paper sx={{ padding: "1rem" }}>
+                      <Typography
+                        variant="h6"
+                        color="tertiary"
+                        sx={{
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: ".5rem",
+                        }}
+                        mb={1}
+                      >
+                        <AccessibilityIcon color="tertiary" />
+                        Accessible
+                      </Typography>
+                      <Divider />
+                      <Typography variant="body2" mt={1} color="text.secondary">
+                        Made for everyone.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grow>
 
-                <Grid item xs={6}>
-                  <Paper sx={{ padding: "1rem" }}>
-                    <Typography
-                      variant="h6"
-                      color="tertiary"
-                      sx={{
-                        fontWeight: 500,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: ".5rem",
-                      }}
-                      mb={1}
-                    >
-                      <ShieldIcon color="tertiary" />
-                      Secure
-                    </Typography>
-                    <Divider />
-                    <Typography variant="body2" mt={1} color="text.secondary">
-                      Passwords are hashed.
-                    </Typography>
-                  </Paper>
-                </Grid>
+                <Grow
+                  in={isInViewPort3 ? true : false}
+                  appear={true}
+                  timeout={1000}
+                >
+                  <Grid item xs={6}>
+                    <Paper sx={{ padding: "1rem" }}>
+                      <Typography
+                        variant="h6"
+                        color="tertiary"
+                        sx={{
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: ".5rem",
+                        }}
+                        mb={1}
+                      >
+                        <ShieldIcon color="tertiary" />
+                        Secure
+                      </Typography>
+                      <Divider />
+                      <Typography variant="body2" mt={1} color="text.secondary">
+                        Passwords are hashed.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grow>
 
-                <Grid item xs={6}>
-                  <Paper sx={{ padding: "1rem" }}>
-                    <Typography
-                      variant="h6"
-                      color="tertiary"
-                      sx={{
-                        fontWeight: 500,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: ".5rem",
-                      }}
-                      mb={1}
-                    >
-                      <DevicesOtherIcon color="tertiary" />
-                      Responsive
-                    </Typography>
-                    <Divider />
-                    <Typography variant="body2" mt={1} color="text.secondary">
-                      Made for all screen sizes.
-                    </Typography>
-                  </Paper>
-                </Grid>
+                <Grow
+                  in={isInViewPort3 ? true : false}
+                  appear={true}
+                  timeout={1000}
+                >
+                  <Grid item xs={6}>
+                    <Paper sx={{ padding: "1rem" }}>
+                      <Typography
+                        variant="h6"
+                        color="tertiary"
+                        sx={{
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: ".5rem",
+                        }}
+                        mb={1}
+                      >
+                        <DevicesOtherIcon color="tertiary" />
+                        Responsive
+                      </Typography>
+                      <Divider />
+                      <Typography variant="body2" mt={1} color="text.secondary">
+                        Made for all screen sizes.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grow>
 
-                <Grid item xs={6}>
-                  <Paper sx={{ padding: "1rem" }}>
-                    <Typography
-                      variant="h6"
-                      color="tertiary"
-                      sx={{
-                        fontWeight: 500,
-                        display: "flex",
-                        alignItems: "center",
-                        gap: ".5rem",
-                      }}
-                      mb={1}
-                    >
-                      <InsertEmoticonIcon color="tertiary" />
-                      Adaptable
-                    </Typography>
-                    <Divider />
-                    <Typography variant="body2" mt={1} color="text.secondary">
-                      You love to see it.
-                    </Typography>
-                  </Paper>
-                </Grid>
+                <Grow
+                  in={isInViewPort3 ? true : false}
+                  appear={true}
+                  timeout={1000}
+                >
+                  <Grid item xs={6}>
+                    <Paper sx={{ padding: "1rem" }}>
+                      <Typography
+                        variant="h6"
+                        color="tertiary"
+                        sx={{
+                          fontWeight: 500,
+                          display: "flex",
+                          alignItems: "center",
+                          gap: ".5rem",
+                        }}
+                        mb={1}
+                      >
+                        <VideogameAssetIcon color="tertiary" />
+                        Adaptable
+                      </Typography>
+                      <Divider />
+                      <Typography variant="body2" mt={1} color="text.secondary">
+                        You love to see it.
+                      </Typography>
+                    </Paper>
+                  </Grid>
+                </Grow>
               </Grid>
             </Grid>
           </Grid>
         </Box>
       </Container>
+
+      <Box
+        sx={{
+          background: "#fff",
+          borderTopLeftRadius: "20%",
+          borderTopRightRadius: "20%",
+          boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Box sx={{ padding: { xs: "1rem", md: "2rem" } }}>
+            <Typography
+              sx={{
+                background: `-webkit-linear-gradient(30deg, ${theme.palette.secondary.main}, ${theme.palette.tertiary.main})`,
+                "-webkit-background-clip": "text",
+                " -webkit-text-fill-color": "transparent",
+                fontWeight: 600,
+                textAlign: "center",
+              }}
+              variant="h4"
+              marginBottom={{ xs: "1rem", md: "1rem" }}
+            >
+              Ready to Get Started?
+            </Typography>
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontWeight: 300,
+                marginBottom: "1rem",
+              }}
+              variant="h6"
+            >
+              Join the community today. The MVP system is free to use,
+              feature-packed and live.
+            </Typography>
+            <Grid
+              mb={2}
+              gap={2}
+              container
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Button
+                component={RouterLink}
+                to="/register"
+                variant="contained"
+                size="large"
+              >
+                Register For Free
+              </Button>
+            </Grid>
+            <Container maxWidth="md">
+              <Swiper
+                spaceBetween={50}
+                autoplay={{
+                  delay: 2000,
+                  pauseOnMouseEnter: true,
+                  disableOnInteraction: false,
+                }}
+                modules={[Navigation, Autoplay]}
+                pagination={{ clickable: true }}
+                loop
+                slidesPerView={1}
+              >
+                <SwiperSlide>
+                  <Avatar
+                    variant="rounded"
+                    alt=""
+                    sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}
+                    src={ss1}
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Avatar
+                    variant="rounded"
+                    alt=""
+                    sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}
+                    src={ss2}
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Avatar
+                    variant="rounded"
+                    alt=""
+                    sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}
+                    src={ss4}
+                  />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <Avatar
+                    variant="rounded"
+                    alt=""
+                    sx={{ height: { xs: "200px", md: "400px" }, width: "100%" }}
+                    src={ss3}
+                  />
+                </SwiperSlide>
+              </Swiper>
+            </Container>
+          </Box>
+        </Container>
+      </Box>
     </Box>
   );
 };

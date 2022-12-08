@@ -110,7 +110,7 @@ const Groups = () => {
               style={{ display: "flex" }}
               key={group._id}
               item
-              xs={12}
+              xs={6}
               sm={6}
               md={3}
             >

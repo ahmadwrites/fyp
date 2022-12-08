@@ -83,7 +83,6 @@ const EditGame = () => {
       componentRestrictions: { country: "my" },
     },
     onPlaceSelected: (place) => {
-      console.log(place);
       setPostForm((prev) => {
         return {
           ...prev,

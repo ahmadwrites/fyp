@@ -8,6 +8,10 @@ import {
   CircularProgress,
   Typography,
   Tooltip,
+  Select,
+  FormControl,
+  InputLabel,
+  MenuItem,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -43,6 +47,7 @@ const EditProfile = () => {
     location: currentUser.location,
     latitude: currentUser.latitude,
     longitude: currentUser.longitude,
+    gender: currentUser.gender,
   });
 
   const { ref } = usePlacesWidget({
@@ -262,14 +267,35 @@ const EditProfile = () => {
           </Grid>
         </Grid>
 
-        <TextField
-          defaultValue={currentUser.email}
-          fullWidth
-          name="email"
-          size="small"
-          label="Email Address"
-          onChange={handleChange}
-        />
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              defaultValue={currentUser.email}
+              fullWidth
+              name="email"
+              size="small"
+              label="Email Address"
+              onChange={handleChange}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <FormControl fullWidth size="small">
+              <InputLabel id="gender-label">Gender</InputLabel>
+              <Select
+                onChange={handleChange}
+                labelId="gender-label"
+                id="gender"
+                label="gender"
+                name="gender"
+                defaultValue={currentUser.gender}
+              >
+                <MenuItem value="male">Male</MenuItem>
+                <MenuItem value="female">Female</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
 
         <TextField
           defaultValue={currentUser.location}
