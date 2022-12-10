@@ -146,7 +146,8 @@ const UserCard = ({
                 </Button>
                 {rating.length < 1 &&
                   post?.isCompleted &&
-                  post.isMatched.includes(currentUser._id) &&
+                  (post?.userId === currentUser._id ||
+                    post?.isMatched.includes(currentUser._id)) &&
                   user?._id !== currentUser._id && (
                     <Button
                       onClick={handleOpenRatingModal}
