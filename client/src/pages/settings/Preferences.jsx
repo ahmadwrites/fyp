@@ -65,7 +65,9 @@ const Preferences = () => {
   useEffect(() => {
     const getPreference = async () => {
       try {
-        const res = await axios.get(`${serverUrl}/preferences`);
+        const res = await axios.get(`${serverUrl}/preferences`, {
+          withCredentials: true,
+        });
         if (res.data !== null) {
           setPreference(res.data);
         } else {
