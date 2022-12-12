@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "axios";
-import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import theme from "../../theme";

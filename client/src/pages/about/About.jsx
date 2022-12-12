@@ -33,11 +33,8 @@ import sportifyIcon from "../../images/sportify-icon-square.svg";
 import theme from "../../theme";
 import Banner_2 from "../../images/banner_2.jpg";
 import Banner_1 from "../../images/banner_1.jpg";
-import img1 from "../../images/square_1.jpg";
 import img2 from "../../images/square_2.jpg";
 import img3 from "../../images/square_3.jpg";
-import img4 from "../../images/square_4.jpg";
-import img5 from "../../images/square_5.jpg";
 import img6 from "../../images/square_6.jpg";
 import img7 from "../../images/square_7.jpg";
 import me from "../../images/me.jpg";
@@ -46,7 +43,6 @@ import ss1 from "../../images/ss1.png";
 import ss2 from "../../images/ss2.png";
 import ss3 from "../../images/ss3.png";
 import ss4 from "../../images/ss4.png";
-import ss5 from "../../images/ss5.png";
 
 function useIsInViewport(ref) {
   const [isIntersecting, setIsIntersecting] = useState(false);

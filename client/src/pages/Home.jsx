@@ -19,7 +19,7 @@ import {
 import TuneIcon from "@mui/icons-material/Tune";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../components/gamecard/GameCard";
 import { useEffect } from "react";

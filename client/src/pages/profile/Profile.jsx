@@ -169,7 +169,11 @@ const Profile = () => {
               <Typography>({ratings?.length})</Typography>
             </Grid>
             {/* Todo: Change location */}
-            <Typography mb={1} variant="body2">
+            <Typography
+              mb={1}
+              variant="body2"
+              sx={{ textAlign: { xs: "center", md: "left" } }}
+            >
               {user?.location} ∙ Joined {format(user?.createdAt)}
             </Typography>
             {currentUser?._id === user?._id && (
