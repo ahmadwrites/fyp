@@ -194,8 +194,6 @@ const EditGame = () => {
     }
   };
 
-  console.log(postForm);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <Box sx={{ minHeight: "calc(100vh - 64px)" }}>

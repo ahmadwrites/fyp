@@ -15,7 +15,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
-import serverUrl from "../../utils/serverUrl";
+import serverUrl, { chatUrl } from "../../utils/serverUrl";
 
 const Chat = ({ post }) => {
   const location = useLocation().pathname.split("/")[2];
@@ -27,7 +27,7 @@ const Chat = ({ post }) => {
   const socket = useRef();
 
   useEffect(() => {
-    socket.current = io("ws://localhost:8900");
+    socket.current = io(chatUrl);
     socket.current.emit("join", location);
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
@@ -52,7 +52,9 @@ const Chat = ({ post }) => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get(`${serverUrl}/messages/${post?._id}`);
+        const res = await axios.get(`${serverUrl}/messages/${post?._id}`, {
+          withCredentials: true,
+        });
         setMessages(res.data);
       } catch (error) {
         console.log(error);
