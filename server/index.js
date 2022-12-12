@@ -19,7 +19,7 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: ["http://localhost:3000", "https://sportify-test.netlify.app"],
     credentials: true,
     exposedHeaders: ["set-cookie"],
   })
