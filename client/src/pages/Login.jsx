@@ -47,7 +47,9 @@ const Login = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post(`${serverUrl}/auth/signin`, userForm);
+      const res = await axios.post(`${serverUrl}/auth/signin`, userForm, {
+        withCredentials: true,
+      });
       dispatch(loginSuccess(res.data));
       setAlert({
         open: true,
