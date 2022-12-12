@@ -22,6 +22,7 @@ import Group from "./pages/groups/Group";
 import Explore from "./pages/explore/Explore";
 import About from "./pages/about/About";
 import { useSelector } from "react-redux";
+import Boarding from "./pages/boarding/Boarding";
 
 function App() {
   const { currentUser } = useSelector((state) => state.user);
@@ -87,6 +88,14 @@ function App() {
                     }
                   />
                 </Route>
+                <Route
+                  path="boarding"
+                  element={
+                    <PrivateRoute>
+                      <Boarding />
+                    </PrivateRoute>
+                  }
+                />
                 <Route path="groups">
                   <Route index element={<Groups />} />
                   <Route

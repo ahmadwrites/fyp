@@ -11,17 +11,31 @@ import {
 } from "@mui/material";
 import { Container } from "@mui/system";
 import axios from "axios";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import theme from "../../theme";
 import { useCallback } from "react";
-import { followGroup } from "../../redux/userSlice";
+import { editProfile, followGroup } from "../../redux/userSlice";
+import BoardingDialog from "../../components/dialogs/BoardingDialog";
 
-const Groups = () => {
+const Boarding = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [groups, setGroups] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpen = () => {
+    setOpenModal(true);
+  };
+
+  const handleClose = async () => {
+    setOpenModal(false);
+    const res = await axios.put(`/users/${currentUser._id}`, {
+      boarding: false,
+    });
+    dispatch(editProfile(res.data));
+  };
 
   const getGroups = useCallback(async () => {
     try {
@@ -58,16 +72,42 @@ const Groups = () => {
     getGroups();
   }, [getGroups]);
 
+  useEffect(() => {
+    if (currentUser.followedGroups.length >= 3) {
+      handleOpen();
+    }
+  }, [currentUser]);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser.boarding === false) {
+      navigate("/");
+    }
+  }, [currentUser, navigate]);
+
   return (
     <Box sx={{ minHeight: "calc(100vh - 64px)" }}>
       <Container maxWidth="lg" sx={{ padding: { xs: ".5rem", md: "1rem" } }}>
         <Typography
-          mb=".5rem"
-          variant="h5"
-          sx={{ fontWeight: 500 }}
+          sx={{
+            fontWeight: 600,
+            textAlign: "center",
+          }}
+          variant="h4"
           color="text.primary"
         >
-          All Groups
+          What Are Your Interests?
+        </Typography>
+        <Typography
+          sx={{
+            fontWeight: 400,
+            textAlign: "center",
+          }}
+          color="text.secondary"
+          mb=".5rem"
+        >
+          Follow some groups to get started
         </Typography>
 
         <Grid alignItems="stretch" spacing={{ xs: 1, md: 2 }} container>
@@ -207,9 +247,12 @@ const Groups = () => {
             </Grid>
           ))}
         </Grid>
+        {currentUser.followedGroups.length >= 3 && (
+          <BoardingDialog handleClose={handleClose} open={openModal} />
+        )}
       </Container>
     </Box>
   );
 };
 
-export default Groups;
+export default Boarding;

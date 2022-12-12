@@ -19,7 +19,7 @@ import {
 import TuneIcon from "@mui/icons-material/Tune";
 import DynamicFeedIcon from "@mui/icons-material/DynamicFeed";
 import FiberNewIcon from "@mui/icons-material/FiberNew";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, Navigate, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import GameCard from "../components/gamecard/GameCard";
 import { useEffect } from "react";
@@ -31,6 +31,7 @@ const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
   const [popularGroups, setPopularGroups] = useState([]);
   const [sortType, setSortType] = useState("createdAt");
 
@@ -82,6 +83,12 @@ const Home = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (currentUser.boarding === true) {
+      navigate("/boarding");
+    }
+  }, [currentUser, navigate]);
 
   // Todo: filter based on distance
   // check preferences -> if no, as nomral,
