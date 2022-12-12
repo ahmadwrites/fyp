@@ -19,8 +19,9 @@ const app = express();
 dotenv.config();
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://sportify-4u9r.onrender.com"],
+    origin: ["http://localhost:3000"],
     credentials: true,
+    exposedHeaders: ["set-cookie"],
   })
 );
 app.set("trust proxy", 1);
