@@ -81,7 +81,9 @@ const Preferences = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.get(`${serverUrl}/preferences`);
+      const res = await axios.get(`${serverUrl}/preferences`, {
+        withCredentials: true,
+      });
 
       if (res.data === null) {
         await axios.post(`${serverUrl}/preferences`, preference, {
