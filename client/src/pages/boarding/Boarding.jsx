@@ -32,9 +32,13 @@ const Boarding = () => {
 
   const handleClose = async () => {
     setOpenModal(false);
-    const res = await axios.put(`${serverUrl}/users/${currentUser._id}`, {
-      boarding: false,
-    });
+    const res = await axios.put(
+      `${serverUrl}/users/${currentUser._id}`,
+      {
+        boarding: false,
+      },
+      { withCredentials: true }
+    );
     dispatch(editProfile(res.data));
   };
 
