@@ -66,6 +66,10 @@ const UserSchema = new mongoose.Schema(
     longitude: {
       type: String,
     },
+    boarding: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );
