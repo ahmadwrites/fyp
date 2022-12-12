@@ -18,6 +18,7 @@ import { Link as RouterLink, useSearchParams } from "react-router-dom";
 import ListingCard from "../../components/profile/ListingCard";
 import { followGroup } from "../../redux/userSlice";
 import theme from "../../theme";
+import serverUrl from "../../utils/serverUrl";
 
 const Search = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -30,7 +31,7 @@ const Search = () => {
   const getGroups = useCallback(async () => {
     try {
       const groupRes = await axios.get(
-        `/groups/search?q=${searchParams.get("title")}`
+        `${serverUrl}/groups/search?q=${searchParams.get("title")}`
       );
       setGroups(groupRes.data);
     } catch (error) {
@@ -42,7 +43,7 @@ const Search = () => {
     const getPosts = async () => {
       try {
         const postsRes = await axios.get(
-          `/posts/search?title=${searchParams.get("title")}`
+          `${serverUrl}/posts/search?title=${searchParams.get("title")}`
         );
         setPosts(postsRes.data);
       } catch (error) {
@@ -58,13 +59,13 @@ const Search = () => {
     try {
       if (currentUser.followedGroups.includes(groupId)) {
         await axios.put(
-          `/users/unfollow-group/${groupId}`,
+          `${serverUrl}/users/unfollow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
       } else {
         await axios.put(
-          `/users/follow-group/${groupId}`,
+          `${serverUrl}/users/follow-group/${groupId}`,
           {},
           { withCredentials: true }
         );

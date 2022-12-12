@@ -37,6 +37,7 @@ import app from "../../firebase";
 import theme from "../../theme";
 import CustomAlert from "../../components/feedback/CustomAlert";
 import { useLocation, useNavigate } from "react-router-dom";
+import serverUrl from "../../utils/serverUrl";
 
 const EditGame = () => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
@@ -137,7 +138,7 @@ const EditGame = () => {
   useEffect(() => {
     const getPost = async () => {
       try {
-        const res = await axios.get(`/posts/${location}`);
+        const res = await axios.get(`${serverUrl}/posts/${location}`);
         setPostForm(res.data);
       } catch (error) {
         console.log(error);
@@ -154,7 +155,7 @@ const EditGame = () => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const res = await axios.get("/groups");
+        const res = await axios.get(`${serverUrl}/groups`);
         setGroups(res.data);
       } catch (error) {
         console.log(error);
@@ -174,7 +175,7 @@ const EditGame = () => {
       return;
     }
     try {
-      await axios.put(`/posts/${location}`, postForm, {
+      await axios.put(`${serverUrl}/posts/${location}`, postForm, {
         withCredentials: true,
       });
       setAlert({

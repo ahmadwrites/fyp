@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import CustomAlert from "../../components/feedback/CustomAlert";
+import serverUrl from "../../utils/serverUrl";
 
 const ChangePassword = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -34,7 +35,7 @@ const ChangePassword = () => {
     e.preventDefault();
 
     try {
-      await axios.put(`/auth/change-password`, passwordForm, {
+      await axios.put(`${serverUrl}/auth/change-password`, passwordForm, {
         withCredentials: true,
       });
       setAlert({

@@ -21,6 +21,7 @@ import axios from "axios";
 import CustomAlert from "../components/feedback/CustomAlert";
 import MuiPhoneNumber from "material-ui-phone-number";
 import { useSelector } from "react-redux";
+import serverUrl from "../utils/serverUrl";
 
 const Register = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -69,7 +70,7 @@ const Register = () => {
     }
 
     try {
-      await axios.post("/auth/signup", userForm);
+      await axios.post(`${serverUrl}/auth/signup`, userForm);
       setAlert({
         open: true,
         severity: "success",

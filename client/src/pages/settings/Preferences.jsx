@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import CustomAlert from "../../components/feedback/CustomAlert";
+import serverUrl from "../../utils/serverUrl";
 
 function valuetext(value) {
   return `${value}°C`;
@@ -64,7 +65,7 @@ const Preferences = () => {
   useEffect(() => {
     const getPreference = async () => {
       try {
-        const res = await axios.get("/preferences");
+        const res = await axios.get(`${serverUrl}/preferences`);
         if (res.data !== null) {
           setPreference(res.data);
         } else {
@@ -80,10 +81,10 @@ const Preferences = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.get(`/preferences`);
+      const res = await axios.get(`${serverUrl}/preferences`);
 
       if (res.data === null) {
-        await axios.post("/preferences", preference, {
+        await axios.post(`${serverUrl}/preferences`, preference, {
           withCredentials: true,
         });
         // Todo: Change to toast
@@ -93,7 +94,7 @@ const Preferences = () => {
           message: "Successfully saved preference.",
         });
       } else {
-        await axios.put("/preferences", preference, {
+        await axios.put(`${serverUrl}/preferences`, preference, {
           withCredentials: true,
         });
         setAlert({

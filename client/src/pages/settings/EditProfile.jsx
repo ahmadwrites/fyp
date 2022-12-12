@@ -27,6 +27,7 @@ import CustomAlert from "../../components/feedback/CustomAlert";
 import axios from "axios";
 import { editProfile } from "../../redux/userSlice";
 import { usePlacesWidget } from "react-google-autocomplete";
+import serverUrl from "../../utils/serverUrl";
 
 const EditProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -140,9 +141,13 @@ const EditProfile = () => {
     }
 
     try {
-      const res = await axios.put(`/users/${currentUser._id}`, userForm, {
-        withCredentials: true,
-      });
+      const res = await axios.put(
+        `${serverUrl}/users/${currentUser._id}`,
+        userForm,
+        {
+          withCredentials: true,
+        }
+      );
       dispatch(editProfile(res.data));
       setAlert({
         open: true,

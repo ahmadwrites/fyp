@@ -11,6 +11,7 @@ import { Link as RouterLink } from "react-router-dom";
 import theme from "../../theme";
 import { useEffect } from "react";
 import axios from "axios";
+import serverUrl from "../../utils/serverUrl";
 
 const Message = ({ message, own }) => {
   const [messageOwner, setMessageOwner] = useState();
@@ -19,7 +20,9 @@ const Message = ({ message, own }) => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`/users/${message?.senderId}`);
+        const res = await axios.get(`${serverUrl}/users/${message?.senderId}`, {
+          withCredentials: true,
+        });
         setMessageOwner(res.data);
       } catch (error) {
         console.log(error);

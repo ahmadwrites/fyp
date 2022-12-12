@@ -15,6 +15,7 @@ import { logout } from "../../redux/userSlice";
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import serverUrl from "../../utils/serverUrl";
 
 const NavUser = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -32,7 +33,11 @@ const NavUser = () => {
 
   const signout = async () => {
     try {
-      await axios.post("/auth/signout", {}, { withCredentials: true });
+      await axios.post(
+        `${serverUrl}/auth/signout`,
+        {},
+        { withCredentials: true }
+      );
       dispatch(logout());
       Navigate("/");
     } catch (error) {

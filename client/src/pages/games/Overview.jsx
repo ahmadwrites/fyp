@@ -16,6 +16,7 @@ import getAge from "../../utils/getAge";
 import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import axios from "axios";
+import serverUrl from "../../utils/serverUrl";
 
 const capitalize = (s) =>
   s?.charAt(0).toUpperCase() + s?.slice(1).toLowerCase();
@@ -27,7 +28,7 @@ const Overview = ({ post, creator }) => {
   const getRating = useCallback(async () => {
     try {
       const averageRes = await axios.get(
-        `/ratings/user-received-average/${post?.userId}`
+        `${serverUrl}/ratings/user-received-average/${post?.userId}`
       );
       setAverageRating(averageRes.data);
     } catch (error) {

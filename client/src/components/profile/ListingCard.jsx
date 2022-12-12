@@ -18,6 +18,7 @@ import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 import MapIcon from "@mui/icons-material/Map";
 import axios from "axios";
+import serverUrl from "../../utils/serverUrl";
 
 const ListingCard = ({ post }) => {
   const { currentUser } = useSelector((state) => state.user);
@@ -27,7 +28,7 @@ const ListingCard = ({ post }) => {
   useEffect(() => {
     const getGroup = async () => {
       try {
-        const res = await axios.get(`/groups/${post?.groupId}`);
+        const res = await axios.get(`${serverUrl}/groups/${post?.groupId}`);
         setGroup(res.data);
       } catch (error) {
         console.log(error);
@@ -44,7 +45,7 @@ const ListingCard = ({ post }) => {
           setDistance(0);
         } else {
           const res = await axios.post(
-            `/posts/distance`,
+            `${serverUrl}/posts/distance`,
             {
               lat1: post?.latitude,
               long1: post?.longitude,

@@ -24,6 +24,7 @@ import theme from "../../theme";
 import axios from "axios";
 import { format } from "timeago.js";
 import { useCallback } from "react";
+import serverUrl from "../../utils/serverUrl";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -41,7 +42,7 @@ const Notifications = () => {
   const readNotification = async (notification) => {
     try {
       await axios.put(
-        `/notifications/read/${notification._id}`,
+        `${serverUrl}/notifications/read/${notification._id}`,
         {},
         { withCredentials: true }
       );
@@ -54,9 +55,12 @@ const Notifications = () => {
 
   const getNotifications = useCallback(async () => {
     try {
-      const res = await axios.get("/notifications/received?limit=5", {
-        withCredentials: true,
-      });
+      const res = await axios.get(
+        `${serverUrl}/notifications/received?limit=5`,
+        {
+          withCredentials: true,
+        }
+      );
       setNotifications(res.data);
     } catch (error) {
       console.log(error);

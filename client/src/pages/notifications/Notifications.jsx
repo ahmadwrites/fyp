@@ -22,6 +22,7 @@ import theme from "../../theme";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import React, { useCallback, useEffect, useState } from "react";
 import { format } from "timeago.js";
+import serverUrl from "../../utils/serverUrl";
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([]);
@@ -38,7 +39,7 @@ const Notifications = () => {
   const readNotification = async (notification) => {
     try {
       await axios.put(
-        `/notifications/read/${notification._id}`,
+        `${serverUrl}/notifications/read/${notification._id}`,
         {},
         { withCredentials: true }
       );
@@ -51,14 +52,17 @@ const Notifications = () => {
   const getNotifications = useCallback(async () => {
     try {
       if (mode === "all") {
-        const res = await axios.get(`/notifications/received`, {
+        const res = await axios.get(`${serverUrl}/notifications/received`, {
           withCredentials: true,
         });
         setNotifications(res.data);
       } else {
-        const res = await axios.get(`/notifications/received/false`, {
-          withCredentials: true,
-        });
+        const res = await axios.get(
+          `${serverUrl}/notifications/received/false`,
+          {
+            withCredentials: true,
+          }
+        );
         setNotifications(res.data);
       }
     } catch (error) {

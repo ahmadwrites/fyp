@@ -18,6 +18,7 @@ import theme from "../../theme";
 import { useCallback } from "react";
 import { editProfile, followGroup } from "../../redux/userSlice";
 import BoardingDialog from "../../components/dialogs/BoardingDialog";
+import serverUrl from "../../utils/serverUrl";
 
 const Boarding = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -31,7 +32,7 @@ const Boarding = () => {
 
   const handleClose = async () => {
     setOpenModal(false);
-    const res = await axios.put(`/users/${currentUser._id}`, {
+    const res = await axios.put(`${serverUrl}/users/${currentUser._id}`, {
       boarding: false,
     });
     dispatch(editProfile(res.data));
@@ -39,7 +40,7 @@ const Boarding = () => {
 
   const getGroups = useCallback(async () => {
     try {
-      const res = await axios.get("/groups");
+      const res = await axios.get(`${serverUrl}/groups`);
       setGroups(res.data);
     } catch (error) {
       console.log(error);
@@ -50,13 +51,13 @@ const Boarding = () => {
     try {
       if (currentUser.followedGroups.includes(groupId)) {
         await axios.put(
-          `/users/unfollow-group/${groupId}`,
+          `${serverUrl}/users/unfollow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
       } else {
         await axios.put(
-          `/users/follow-group/${groupId}`,
+          `${serverUrl}/users/follow-group/${groupId}`,
           {},
           { withCredentials: true }
         );

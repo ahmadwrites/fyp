@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import theme from "../../theme";
 import { useCallback } from "react";
 import { followGroup } from "../../redux/userSlice";
+import serverUrl from "../../utils/serverUrl";
 
 const Groups = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -25,7 +26,7 @@ const Groups = () => {
 
   const getGroups = useCallback(async () => {
     try {
-      const res = await axios.get("/groups");
+      const res = await axios.get(`${serverUrl}/groups`);
       setGroups(res.data);
     } catch (error) {
       console.log(error);
@@ -36,13 +37,13 @@ const Groups = () => {
     try {
       if (currentUser.followedGroups.includes(groupId)) {
         await axios.put(
-          `/users/unfollow-group/${groupId}`,
+          `${serverUrl}/users/unfollow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
       } else {
         await axios.put(
-          `/users/follow-group/${groupId}`,
+          `${serverUrl}/users/follow-group/${groupId}`,
           {},
           { withCredentials: true }
         );

@@ -27,6 +27,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import axios from "axios";
 import { logout } from "../../redux/userSlice";
 import { useNavigate, Link as RouterLink } from "react-router-dom";
+import serverUrl from "../../utils/serverUrl";
 
 const DrawerMobile = () => {
   const dispatch = useDispatch();
@@ -37,7 +38,11 @@ const DrawerMobile = () => {
   const signout = async () => {
     try {
       setOpenDrawer(false);
-      await axios.post("/auth/signout", {}, { withCredentials: true });
+      await axios.post(
+        `${serverUrl}/auth/signout`,
+        {},
+        { withCredentials: true }
+      );
       dispatch(logout());
       navigate("/");
     } catch (error) {

@@ -17,6 +17,7 @@ import MaleIcon from "@mui/icons-material/Male";
 import FemaleIcon from "@mui/icons-material/Female";
 import { useSelector } from "react-redux";
 import RatingDialog from "../dialogs/RatingDialog";
+import serverUrl from "../../utils/serverUrl";
 
 const UserCard = ({
   userId,
@@ -44,11 +45,11 @@ const UserCard = ({
   const getRating = useCallback(async () => {
     try {
       const ratingRes = await axios.get(
-        `/ratings/post/${post?._id}?raterId=${currentUser._id}&rateeId=${userId}`
+        `${serverUrl}/ratings/post/${post?._id}?raterId=${currentUser._id}&rateeId=${userId}`
       );
       setRating(ratingRes.data);
       const averageRes = await axios.get(
-        `/ratings/user-received-average/${userId}`
+        `${serverUrl}/ratings/user-received-average/${userId}`
       );
       setAverageRating(averageRes.data);
     } catch (error) {
@@ -59,7 +60,7 @@ const UserCard = ({
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`/users/${userId}`);
+        const res = await axios.get(`${serverUrl}/users/${userId}`);
         setUser(res.data);
       } catch (error) {
         console.log(error);

@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "timeago.js";
+import serverUrl from "../../utils/serverUrl";
 
 const Review = ({ rating }) => {
   const [user, setUser] = useState();
@@ -14,13 +15,17 @@ const Review = ({ rating }) => {
   useEffect(() => {
     const getDetails = async () => {
       try {
-        const userRes = await axios.get(`/users/${rating?.raterId}`);
+        const userRes = await axios.get(
+          `${serverUrl}/users/${rating?.raterId}`
+        );
         setUser(userRes.data);
 
-        const postRes = await axios.get(`/posts/${rating?.postId}`);
+        const postRes = await axios.get(`${serverUrl}/posts/${rating?.postId}`);
         setPost(postRes.data);
 
-        const groupRes = await axios.get(`/groups/${postRes?.data.groupId}`);
+        const groupRes = await axios.get(
+          `${serverUrl}/groups/${postRes?.data.groupId}`
+        );
         setGroup(groupRes.data);
       } catch (error) {
         console.log(error);

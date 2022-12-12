@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import ListingCard from "../../components/profile/ListingCard";
+import serverUrl from "../../utils/serverUrl";
 
 const Games = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -19,7 +20,7 @@ const Games = () => {
     const getPosts = async () => {
       try {
         const postRes = await axios.get(
-          `/posts/with-user/${currentUser._id}?isCompleted=${completed}`
+          `${serverUrl}/posts/with-user/${currentUser._id}?isCompleted=${completed}`
         );
         setPosts(postRes.data);
       } catch (error) {

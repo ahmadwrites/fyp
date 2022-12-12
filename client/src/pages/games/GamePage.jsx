@@ -22,6 +22,7 @@ import CustomAlert from "../../components/feedback/CustomAlert";
 import Pending from "./Pending";
 import Participants from "./Participants";
 import Chat from "./Chat";
+import serverUrl from "../../utils/serverUrl";
 
 function LinkTab(props) {
   return (
@@ -64,7 +65,7 @@ const GamePage = () => {
   const acceptUser = async (senderId) => {
     try {
       await axios.post(
-        `/users/accept-request/${post?._id}`,
+        `${serverUrl}/users/accept-request/${post?._id}`,
         { senderId },
         { withCredentials: true }
       );
@@ -82,7 +83,7 @@ const GamePage = () => {
   const declineUser = async (senderId) => {
     try {
       await axios.post(
-        `/users/decline-request/${post?._id}`,
+        `${serverUrl}/users/decline-request/${post?._id}`,
         { senderId },
         { withCredentials: true }
       );
@@ -100,7 +101,7 @@ const GamePage = () => {
   const handleRequest = async () => {
     try {
       await axios.post(
-        `/users/request/${post?._id}`,
+        `${serverUrl}/users/request/${post?._id}`,
         {},
         { withCredentials: true }
       );
@@ -118,7 +119,7 @@ const GamePage = () => {
   const handleCancelRequest = async () => {
     try {
       await axios.post(
-        `/users/unrequest/${post?._id}`,
+        `${serverUrl}/users/unrequest/${post?._id}`,
         {},
         { withCredentials: true }
       );
@@ -135,7 +136,7 @@ const GamePage = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${post?._id}`, {
+      await axios.delete(`${serverUrl}/posts/${post?._id}`, {
         withCredentials: true,
       });
       setAlert({
@@ -152,7 +153,7 @@ const GamePage = () => {
   const handleComplete = async () => {
     try {
       await axios.post(
-        `/users/complete-game/${post?._id}`,
+        `${serverUrl}/users/complete-game/${post?._id}`,
         {},
         { withCredentials: true }
       );
@@ -193,13 +194,13 @@ const GamePage = () => {
 
   const getPost = useCallback(async () => {
     try {
-      const postRes = await axios.get(`/posts/${postId}`);
+      const postRes = await axios.get(`${serverUrl}/posts/${postId}`);
       setPost(postRes.data);
 
-      const userRes = await axios.get(`/users/${post?.userId}`);
+      const userRes = await axios.get(`${serverUrl}/users/${post?.userId}`);
       setCreator(userRes.data);
 
-      const groupRes = await axios.get(`/groups/${post?.groupId}`);
+      const groupRes = await axios.get(`${serverUrl}/groups/${post?.groupId}`);
       setGroup(groupRes.data);
     } catch (error) {
       console.log(error);

@@ -26,6 +26,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useCallback } from "react";
 import { followGroup } from "../redux/userSlice";
+import serverUrl from "../utils/serverUrl";
 
 const Home = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -38,10 +39,13 @@ const Home = () => {
   const getPosts = useCallback(async () => {
     try {
       const res = currentUser
-        ? await axios.get(`/posts/preference?sortType=${sortType}`, {
-            withCredentials: true,
-          })
-        : await axios.get("/posts");
+        ? await axios.get(
+            `${serverUrl}/posts/preference?sortType=${sortType}`,
+            {
+              withCredentials: true,
+            }
+          )
+        : await axios.get(`${serverUrl}/posts`);
       setPosts(res.data);
     } catch (error) {
       console.log(error);
@@ -50,7 +54,7 @@ const Home = () => {
 
   const getPopularGroups = useCallback(async () => {
     try {
-      const res = await axios.get("/groups/popular");
+      const res = await axios.get(`${serverUrl}/groups/popular`);
       setPopularGroups(res.data);
     } catch (error) {
       console.log(error);
@@ -66,13 +70,13 @@ const Home = () => {
     try {
       if (currentUser?.followedGroups.includes(groupId)) {
         await axios.put(
-          `/users/unfollow-group/${groupId}`,
+          `${serverUrl}/users/unfollow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
       } else {
         await axios.put(
-          `/users/follow-group/${groupId}`,
+          `${serverUrl}/users/follow-group/${groupId}`,
           {},
           { withCredentials: true }
         );

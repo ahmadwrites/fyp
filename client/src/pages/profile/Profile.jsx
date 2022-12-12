@@ -21,6 +21,7 @@ import ProfileReviews from "./ProfileReviews";
 import axios from "axios";
 import { format } from "timeago.js";
 import capitalize from "../../utils/capitalize";
+import serverUrl from "../../utils/serverUrl";
 
 function LinkTab(props) {
   return (
@@ -52,7 +53,7 @@ const Profile = () => {
   useEffect(() => {
     const getUser = async () => {
       try {
-        const res = await axios.get(`/users/${location}`);
+        const res = await axios.get(`${serverUrl}/users/${location}`);
         setUser(res.data);
       } catch (error) {
         console.log(error);
@@ -66,7 +67,7 @@ const Profile = () => {
     const getPosts = async () => {
       try {
         const res = await axios.get(
-          `/posts/user/${location}?sort=${postsSort}`
+          `${serverUrl}/posts/user/${location}?sort=${postsSort}`
         );
         setPosts(res.data);
       } catch (error) {
@@ -81,12 +82,12 @@ const Profile = () => {
     const getRatings = async () => {
       try {
         const res = await axios.get(
-          `/ratings/user-received/${user?._id}?sort=${ratingsSort}`
+          `${serverUrl}/ratings/user-received/${user?._id}?sort=${ratingsSort}`
         );
         setRatings(res.data);
 
         const averageRes = await axios.get(
-          `/ratings/user-received-average/${user?._id}`
+          `${serverUrl}/ratings/user-received-average/${user?._id}`
         );
         setAverageRating(averageRes.data);
       } catch (error) {

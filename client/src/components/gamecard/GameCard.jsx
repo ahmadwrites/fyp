@@ -28,6 +28,7 @@ import RequestDialog from "../dialogs/RequestDialog";
 import DeleteGameDialog from "../dialogs/DeleteGameDialog";
 import CustomAlert from "../feedback/CustomAlert";
 import CancelRequestDialog from "../dialogs/CancelRequestDialog";
+import serverUrl from "../../utils/serverUrl";
 
 const capitalize = (s) =>
   s?.charAt(0).toUpperCase() + s?.slice(1).toLowerCase();
@@ -59,7 +60,7 @@ const GameCard = ({ getPosts, post }) => {
   const handleRequest = async () => {
     try {
       await axios.post(
-        `/users/request/${post?._id}`,
+        `${serverUrl}/users/request/${post?._id}`,
         {},
         { withCredentials: true }
       );
@@ -78,7 +79,7 @@ const GameCard = ({ getPosts, post }) => {
   const handleCancelRequest = async () => {
     try {
       await axios.post(
-        `/users/unrequest/${post?._id}`,
+        `${serverUrl}/users/unrequest/${post?._id}`,
         {},
         { withCredentials: true }
       );
@@ -96,7 +97,7 @@ const GameCard = ({ getPosts, post }) => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/posts/${post?._id}`, {
+      await axios.delete(`${serverUrl}/posts/${post?._id}`, {
         withCredentials: true,
       });
       handleCloseDelete(true);
@@ -138,12 +139,14 @@ const GameCard = ({ getPosts, post }) => {
   useEffect(() => {
     const getData = async () => {
       try {
-        const userRes = await axios.get(`/users/${post?.userId}`);
+        const userRes = await axios.get(`${serverUrl}/users/${post?.userId}`);
         setUser(userRes.data);
-        const groupRes = await axios.get(`/groups/${post?.groupId}`);
+        const groupRes = await axios.get(
+          `${serverUrl}/groups/${post?.groupId}`
+        );
         setGroup(groupRes.data);
         const averageRes = await axios.get(
-          `/ratings/user-received-average/${post?.userId}`
+          `${serverUrl}/ratings/user-received-average/${post?.userId}`
         );
         setAverageRating(averageRes.data);
       } catch (error) {
@@ -161,7 +164,7 @@ const GameCard = ({ getPosts, post }) => {
           setDistance(0);
         } else {
           const res = await axios.post(
-            `/posts/distance`,
+            `${serverUrl}/posts/distance`,
             {
               lat1: post?.latitude,
               long1: post?.longitude,

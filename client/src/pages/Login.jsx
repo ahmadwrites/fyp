@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link as RouterLink, Navigate } from "react-router-dom";
 import CustomAlert from "../components/feedback/CustomAlert";
 import { loginStart, loginSuccess, loginFailure } from "../redux/userSlice";
+import serverUrl from "../utils/serverUrl";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -46,7 +47,7 @@ const Login = () => {
     dispatch(loginStart());
 
     try {
-      const res = await axios.post("/auth/signin", userForm);
+      const res = await axios.post(`${serverUrl}/auth/signin`, userForm);
       dispatch(loginSuccess(res.data));
       setAlert({
         open: true,

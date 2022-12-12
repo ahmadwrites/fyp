@@ -9,6 +9,7 @@ import axios from "axios";
 import { Box } from "@mui/system";
 import ExploreDialog from "../../components/dialogs/ExploreDialog";
 import ExploreHelpDialog from "../../components/dialogs/ExploreHelpDialog";
+import serverUrl from "../../utils/serverUrl";
 
 const Explore = () => {
   const navigate = useNavigate();
@@ -117,7 +118,7 @@ const Explore = () => {
   useEffect(() => {
     const getPosts = async () => {
       try {
-        const res = await axios.get("/posts");
+        const res = await axios.get(`${serverUrl}/posts`);
         setPosts(res.data);
       } catch (error) {
         console.log(error);

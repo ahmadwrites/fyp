@@ -37,6 +37,7 @@ import app from "../../firebase";
 import theme from "../../theme";
 import CustomAlert from "../../components/feedback/CustomAlert";
 import { useNavigate } from "react-router-dom";
+import serverUrl from "../../utils/serverUrl";
 
 const CreateGame = () => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
@@ -140,7 +141,7 @@ const CreateGame = () => {
   useEffect(() => {
     const getGroups = async () => {
       try {
-        const res = await axios.get("/groups");
+        const res = await axios.get(`${serverUrl}/groups`);
         setGroups(res.data);
       } catch (error) {
         console.log(error);
@@ -160,7 +161,9 @@ const CreateGame = () => {
       return;
     }
     try {
-      await axios.post("/posts", postForm, { withCredentials: true });
+      await axios.post(`${serverUrl}/posts`, postForm, {
+        withCredentials: true,
+      });
       setAlert({
         open: true,
         severity: "success",

@@ -15,6 +15,7 @@ import moment from "moment";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { useLocation, Navigate } from "react-router-dom";
+import serverUrl from "../../utils/serverUrl";
 
 const Chat = ({ post }) => {
   const location = useLocation().pathname.split("/")[2];
@@ -51,7 +52,7 @@ const Chat = ({ post }) => {
   useEffect(() => {
     const getMessages = async () => {
       try {
-        const res = await axios.get(`/messages/${post?._id}`);
+        const res = await axios.get(`${serverUrl}/messages/${post?._id}`);
         setMessages(res.data);
       } catch (error) {
         console.log(error);
@@ -73,7 +74,7 @@ const Chat = ({ post }) => {
 
     try {
       const res = await axios.post(
-        `/messages/${post?._id}`,
+        `${serverUrl}/messages/${post?._id}`,
         { text: newMessage },
         {
           withCredentials: true,

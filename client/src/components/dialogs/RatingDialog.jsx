@@ -16,6 +16,7 @@ import {
 import axios from "axios";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import serverUrl from "../../utils/serverUrl";
 import CustomAlert from "../feedback/CustomAlert";
 
 const capitalize = (s) =>
@@ -53,7 +54,9 @@ const RatingDialog = ({ post, handleClose, open, user, userId, getRating }) => {
 
   const addRating = async () => {
     try {
-      await axios.post(`/ratings`, ratingForm, { withCredentials: true });
+      await axios.post(`${serverUrl}/ratings`, ratingForm, {
+        withCredentials: true,
+      });
       setAlert({
         open: true,
         severity: "success",

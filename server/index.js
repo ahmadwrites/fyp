@@ -16,6 +16,13 @@ import messageRoutes from "./routes/messageRoutes.js";
 
 const app = express();
 dotenv.config();
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
+app.set("trust proxy", 1);
 
 const connect = () => {
   mongoose

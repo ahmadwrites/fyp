@@ -27,6 +27,7 @@ import theme from "../../theme";
 import CakeIcon from "@mui/icons-material/Cake";
 import { Stack } from "@mui/system";
 import { followGroup } from "../../redux/userSlice";
+import serverUrl from "../../utils/serverUrl";
 
 const Group = () => {
   const isMatch = useMediaQuery(theme.breakpoints.down("md"));
@@ -42,13 +43,13 @@ const Group = () => {
     try {
       if (currentUser.followedGroups.includes(groupId)) {
         await axios.put(
-          `/users/unfollow-group/${groupId}`,
+          `${serverUrl}/users/unfollow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
       } else {
         await axios.put(
-          `/users/follow-group/${groupId}`,
+          `${serverUrl}/users/follow-group/${groupId}`,
           {},
           { withCredentials: true }
         );
@@ -63,7 +64,7 @@ const Group = () => {
   const getPosts = useCallback(async () => {
     try {
       const res = await axios.get(
-        `/posts/group/${location}?sortType=${sortType}`
+        `${serverUrl}/posts/group/${location}?sortType=${sortType}`
       );
       if (res.data.message) return navigate("/groups");
       setPosts(res.data.posts);
