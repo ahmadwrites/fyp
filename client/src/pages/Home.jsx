@@ -118,10 +118,10 @@ const Home = () => {
                   gap: { xs: ".5rem", md: "0" },
                 }}
               >
-                <Grid item xs={1}>
+                <Grid item xs={2} md={1}>
                   <Avatar src={currentUser?.avatar} />
                 </Grid>
-                <Grid item xs={11}>
+                <Grid item xs={9} md={11}>
                   <TextField
                     component={RouterLink}
                     to="/games/create"
@@ -189,7 +189,7 @@ const Home = () => {
               {posts.length === 0 ? (
                 <>
                   <Grid
-                    sx={{ marginTop: "1rem" }}
+                    sx={{ marginTop: "1rem", textAlign: "center" }}
                     container
                     direction="column"
                     alignItems="center"
