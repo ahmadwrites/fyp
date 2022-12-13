@@ -70,7 +70,7 @@ const GameCardMenu = ({ post, color, handleDelete }) => {
           onClick={handleClose}
           component={Link}
           target="_blank"
-          href={`https://api.whatsapp.com/send?text=https://sportify-test.netlify.app//games/${post?._id}`}
+          href={`https://api.whatsapp.com/send?text=https://sportify-test.netlify.app/games/${post?._id}`}
         >
           <ListItemIcon>
             <MapsUgcOutlinedIcon />
