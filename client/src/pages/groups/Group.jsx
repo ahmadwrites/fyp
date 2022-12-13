@@ -64,7 +64,8 @@ const Group = () => {
   const getPosts = useCallback(async () => {
     try {
       const res = await axios.get(
-        `${serverUrl}/posts/group/${location}?sortType=${sortType}`
+        `${serverUrl}/posts/group/${location}?sortType=${sortType}`,
+        { withCredentials: true }
       );
       if (res.data.message) return navigate("/groups");
       setPosts(res.data.posts);
