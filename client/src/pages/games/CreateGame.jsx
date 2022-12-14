@@ -36,7 +36,7 @@ import {
 import app from "../../firebase";
 import theme from "../../theme";
 import CustomAlert from "../../components/feedback/CustomAlert";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link as RouterLink } from "react-router-dom";
 import serverUrl from "../../utils/serverUrl";
 
 const CreateGame = () => {
@@ -534,7 +534,12 @@ const CreateGame = () => {
                   )}
 
                   <Grid container justifyContent="flex-end">
-                    <Button variant="contained" color="inherit">
+                    <Button
+                      component={RouterLink}
+                      to="/"
+                      variant="contained"
+                      color="inherit"
+                    >
                       Cancel
                     </Button>
                     <Button
