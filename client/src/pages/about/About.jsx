@@ -43,6 +43,7 @@ import ss1 from "../../images/ss1.png";
 import ss2 from "../../images/ss2.png";
 import ss3 from "../../images/ss3.png";
 import ss4 from "../../images/ss4.png";
+import Tutorial from "./Tutorial";
 
 function useIsInViewport(ref) {
   const [isIntersecting, setIsIntersecting] = useState(false);
@@ -523,6 +524,9 @@ const About = () => {
           </Grid>
         </Box>
       </Container>
+
+      {/* Tutorial Component */}
+      <Tutorial />
 
       <Box
         sx={{
