@@ -38,7 +38,7 @@ const TutorialStep = ({
           sx={{
             width: "100%",
             objectFit: "contain",
-            height: { xs: "300px", md: "450px" },
+            height: { xs: "300px", md: "250px", xl: "450px" },
           }}
           src={tutorial.img}
         ></Box>
