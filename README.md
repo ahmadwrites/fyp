@@ -8,3 +8,5 @@ Sportify is the one stop web application that solves your problem.
 4. Review system
 5. Notification system
 6. Google maps integration for finding games nearby you
+### Note
+Backend takes a few minutes to start up from a cold start. If the application has not been used for a while, allow a few minutes for the server to start up.
